@@ -55,11 +55,13 @@ namespace KinematicCharacterController.Examples
 
         private const int MaxObstructions = 32;
 
+        //used when any changes are made within the editor for when the script gets reloaded, is used to make sure that values remain within certain ranges. 
         void OnValidate()
         {
             DefaultDistance = Mathf.Clamp(DefaultDistance, MinDistance, MaxDistance);
             DefaultVerticalAngle = Mathf.Clamp(DefaultVerticalAngle, MinVerticalAngle, MaxVerticalAngle);
         }
+
 
         void Awake()
         {
@@ -81,6 +83,7 @@ namespace KinematicCharacterController.Examples
             _currentFollowPosition = FollowTransform.position;
         }
 
+
         public void UpdateWithInput(float deltaTime, float zoomInput, Vector3 rotationInput)
         {
             if (FollowTransform)
@@ -99,6 +102,7 @@ namespace KinematicCharacterController.Examples
                 PlanarDirection = rotationFromInput * PlanarDirection;
                 PlanarDirection = Vector3.Cross(FollowTransform.up, Vector3.Cross(PlanarDirection, FollowTransform.up));
                 Quaternion planarRot = Quaternion.LookRotation(PlanarDirection, FollowTransform.up);
+
 
                 _targetVerticalAngle -= (rotationInput.y * RotationSpeed);
                 _targetVerticalAngle = Mathf.Clamp(_targetVerticalAngle, MinVerticalAngle, MaxVerticalAngle);
@@ -150,7 +154,7 @@ namespace KinematicCharacterController.Examples
                         }
                     }
 
-                    // If obstructions detecter
+                    // If obstructions detected
                     if (closestHit.distance < Mathf.Infinity)
                     {
                         _distanceIsObstructed = true;
