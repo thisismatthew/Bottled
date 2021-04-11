@@ -44,6 +44,8 @@ namespace KinematicCharacterController.Examples
     {
         public KinematicCharacterMotor Motor;
 
+        public Animator anim;
+
         [Header("Stable Movement")]
         public float MaxStableMoveSpeed = 10f;
         public float StableMovementSharpness = 15f;
@@ -93,9 +95,17 @@ namespace KinematicCharacterController.Examples
         {
             // Handle initial state
             TransitionToState(CharacterState.Default);
-
             // Assign the characterController to the motor
             Motor.CharacterController = this;
+        }
+
+        private void Update()
+        {
+            CharacterMoving();
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                anim.SetTrigger("Dance");
+            }
         }
 
         /// <summary>
@@ -312,6 +322,7 @@ namespace KinematicCharacterController.Examples
                             Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
                             Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
 
+
                             // Smooth movement Velocity
                             currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
                         }
@@ -516,14 +527,31 @@ namespace KinematicCharacterController.Examples
 
         protected void OnLanded()
         {
+            anim.SetTrigger("Grounded");
+            anim.SetBool("Airborne", false);
         }
 
         protected void OnLeaveStableGround()
         {
+            anim.SetTrigger("Jump");
+            anim.SetBool("Airborne", true);
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
+        }
+
+        private void CharacterMoving()
+        {
+            if (_moveInputVector.magnitude >= 1 && Motor.GroundingStatus.IsStableOnGround)
+            {
+                anim.SetBool("Run", true);
+            }
+            else if (_moveInputVector.magnitude == 0 && Motor.GroundingStatus.IsStableOnGround)
+            {
+                anim.SetBool("Run", false);
+            }
+ 
         }
     }
 }
