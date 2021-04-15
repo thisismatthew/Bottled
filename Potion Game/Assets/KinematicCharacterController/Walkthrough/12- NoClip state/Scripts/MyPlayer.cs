@@ -9,7 +9,7 @@ namespace KinematicCharacterController.Walkthrough.NoClipState
 {
     public class MyPlayer : MonoBehaviour
     {
-        public ExampleCharacterCamera OrbitCamera;
+        public MainCharacterCamera OrbitCamera;
         public Transform CameraFollowPoint;
         public MyCharacterController Character;
 
