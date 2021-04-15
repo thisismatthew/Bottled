@@ -23,6 +23,7 @@ namespace KinematicCharacterController.Examples
         public float MoveAxisRight;
         public Quaternion CameraRotation;
         public bool JumpDown;
+        public bool JumpUp;
         public bool CrouchDown;
         public bool CrouchUp;
     }
@@ -59,7 +60,9 @@ namespace KinematicCharacterController.Examples
 
         [Header("Jumping")]
         public bool AllowJumpingWhenSliding = false;
-        public float JumpUpSpeed = 10f;
+        public float TimeToMaxJumpApex = 0.3f;
+        public float MaxJumpHeight = 4f;
+        public float MinJumpHeight = 1f;
         public float JumpScalableForwardSpeed = 10f;
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
@@ -79,6 +82,9 @@ namespace KinematicCharacterController.Examples
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
         private Vector3 _lookInputVector;
+        private float _maxJumpVelocity;
+        private float _minJumpVelocity;
+        private bool _jumpEndRequested = false;
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
@@ -93,6 +99,7 @@ namespace KinematicCharacterController.Examples
 
         private void Awake()
         {
+
             // Handle initial state
             TransitionToState(CharacterState.Default);
             // Assign the characterController to the motor
@@ -101,6 +108,9 @@ namespace KinematicCharacterController.Examples
 
         private void Update()
         {
+            Gravity.y = -(2 * MaxJumpHeight) / Mathf.Pow(TimeToMaxJumpApex, 2);
+            _maxJumpVelocity = (TimeToMaxJumpApex * Mathf.Abs(Gravity.y));
+            _minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(Gravity.y) * MinJumpHeight);
             CharacterMoving();
             //lol lets not forget to remove this... or at least add it to the player input struct.
             if (Input.GetKeyDown(KeyCode.X))
@@ -186,7 +196,14 @@ namespace KinematicCharacterController.Examples
                         {
                             _timeSinceJumpRequested = 0f;
                             _jumpRequested = true;
+
                         }
+
+                        if (inputs.JumpUp && !Motor.GroundingStatus.IsStableOnGround)
+                        {
+                            _jumpEndRequested = true;
+                        }
+
 
                         // Crouching input
                         if (inputs.CrouchDown)
@@ -377,13 +394,13 @@ namespace KinematicCharacterController.Examples
                         // Handle jumping
                         _jumpedThisFrame = false;
                         _timeSinceJumpRequested += deltaTime;
+                        Vector3 jumpDirection = Motor.CharacterUp;
                         if (_jumpRequested)
                         {
                             // See if we actually are allowed to jump
                             if (!_jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime))
                             {
                                 // Calculate jump direction before ungrounding
-                                Vector3 jumpDirection = Motor.CharacterUp;
                                 if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
                                 {
                                     jumpDirection = Motor.GroundingStatus.GroundNormal;
@@ -394,12 +411,23 @@ namespace KinematicCharacterController.Examples
                                 Motor.ForceUnground();
 
                                 // Add to the return velocity and reset jump state
-                                currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                                currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
                                 currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
                                 _jumpedThisFrame = true;
                             }
+                        }
+
+                        if (_jumpEndRequested)
+                        {
+                            //check we are traveling up
+                            if (currentVelocity.y > _minJumpVelocity)
+                            {
+                                //TODO also reduce the forward velocity of the jump. 
+                                currentVelocity += (jumpDirection * _minJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                            }
+                            _jumpEndRequested = false;
                         }
 
                         // Take into account additive velocity
