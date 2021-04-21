@@ -163,6 +163,19 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void SetInputs(ref PlayerCharacterInputs inputs)
         {
+            float speedMod = 1;
+            if (inputs.MoveAxisForward == 1 || inputs.MoveAxisForward == -1 || inputs.MoveAxisRight == 1 || inputs.MoveAxisRight == -1)
+            {
+                if (speedMod < 3f)
+                {
+                    speedMod += Time.deltaTime;
+                }
+                Debug.Log("Top Speed: multiplier:" + speedMod);
+            }
+            else
+            {
+                speedMod = 1;
+            }
             // Clamp input
             Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
 
