@@ -4,6 +4,7 @@ using UnityEngine;
 using KinematicCharacterController;
 using System;
 
+
 namespace KinematicCharacterController.Examples
 {
     public enum CharacterState
@@ -26,6 +27,7 @@ namespace KinematicCharacterController.Examples
         public bool JumpUp;
         public bool CrouchDown;
         public bool CrouchUp;
+        public bool UsePotion;
     }
 
     public struct AICharacterInputs
@@ -41,6 +43,7 @@ namespace KinematicCharacterController.Examples
         TowardsGroundSlopeAndGravity,
     }
 
+    [RequireComponent(typeof(Potion))]
     public class MainCharacterController : MonoBehaviour, ICharacterController
     {
         public KinematicCharacterMotor Motor;
@@ -96,13 +99,15 @@ namespace KinematicCharacterController.Examples
         private Vector3 _internalVelocityAdd = Vector3.zero;
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
+        private Potion _potion;
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
 
         private void Awake()
         {
-
+            //get Potion Component;
+            _potion = GetComponent<Potion>();
             // Handle initial state
             TransitionToState(CharacterState.Default);
             // Assign the characterController to the motor
@@ -224,6 +229,12 @@ namespace KinematicCharacterController.Examples
                         else if (inputs.CrouchUp)
                         {
                             _shouldBeCrouching = false;
+                        }
+
+                        //Use Potion input
+                        if (inputs.UsePotion)
+                        {
+                            _potion.UsePotion();
                         }
 
                         break;
