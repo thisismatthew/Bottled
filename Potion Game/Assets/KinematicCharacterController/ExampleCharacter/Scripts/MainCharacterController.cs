@@ -82,6 +82,10 @@ namespace KinematicCharacterController.Examples
         public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
 
+        [Header("Interaction")]
+        public GameObject Interactable;
+        
+
         public CharacterState CurrentCharacterState { get; private set; }
 
         private Collider[] _probedColliders = new Collider[8];
@@ -100,6 +104,7 @@ namespace KinematicCharacterController.Examples
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
         private Potion _potion;
+        private bool _isHolding = false;
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
@@ -231,10 +236,35 @@ namespace KinematicCharacterController.Examples
                             _shouldBeCrouching = false;
                         }
 
-                        //Use Potion input
+                        //Use input
                         if (inputs.UsePotion)
                         {
-                            _potion.UsePotion();
+                            if (Interactable == null)
+                            {
+                                _potion.UsePotion();
+                            }
+                            else
+                            {
+                                if (_isHolding)
+                                {
+                                    Debug.Log("drop?");
+                                    Interactable.transform.parent = null;
+                                    IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
+                                    Interactable.GetComponent<Rigidbody>().useGravity = true;
+                                    Interactable.GetComponent<Rigidbody>().freezeRotation = false;
+                                    _isHolding = false;
+                                }
+                                else
+                                {
+                                    _isHolding = true;
+                                    Interactable.transform.parent = this.transform;
+                                    IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
+                                    Interactable.GetComponent<Rigidbody>().useGravity = false;
+                                    Interactable.GetComponent<Rigidbody>().freezeRotation = true;
+                                }
+                                
+                            }
+
                         }
 
                         break;
@@ -252,6 +282,7 @@ namespace KinematicCharacterController.Examples
         }
 
         private Quaternion _tmpTransientRot;
+        
 
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
