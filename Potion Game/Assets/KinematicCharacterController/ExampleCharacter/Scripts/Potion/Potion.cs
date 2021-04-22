@@ -4,24 +4,43 @@ using UnityEngine;
 
 public class Potion : MonoBehaviour
 {
-    public int Charges { get; set; }
+    
+    private int _charges; 
     public List<IPotionAttribute>[] Attributes;
 
     public void UsePotion()
     {
-        foreach (IPotionAttribute a in Attributes)
+        //do we have any charges of potion left
+        if (_charges >= 1)
         {
-            a.Use();
+            //ok we do, lets reduce one and call the use method on all attributes
+            _charges--;
+            foreach (IPotionAttribute a in Attributes)
+            {
+                a.Use();
+            }
+            //if that was our last charge call unequip on all attributes. 
+            if (_charges <= 0)
+            {
+                foreach (IPotionAttribute a in Attributes)
+                {
+                    a.Unequip();
+                }
+            }
         }
     }
 
     public void EquipPotion(List<IPotionAttribute>[] _newAttributes)
     {
-        //unequip all attributes
+        //unequip all attributes if we haven't already. 
         foreach (IPotionAttribute a in Attributes)
         {
-            a.Unequip();
+            if (_charges > 0)
+            {
+                a.Unequip();
+            }
         }
+        //bring in the new ones
         Attributes = _newAttributes;
         foreach (IPotionAttribute a in Attributes)
         {
@@ -29,6 +48,7 @@ public class Potion : MonoBehaviour
         }
     }
 
+    //just a debug method for calling the ID names on the attributes. 
     public void DebugAttributes()
     {
         Debug.Log("\nCurrent Potion Attributes:");
@@ -38,4 +58,6 @@ public class Potion : MonoBehaviour
             Debug.Log(a.Name);
         }
     }
+    public int Charges { get => _charges; }
 }
+
