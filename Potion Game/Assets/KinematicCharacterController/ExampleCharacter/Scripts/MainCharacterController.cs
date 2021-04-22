@@ -48,7 +48,10 @@ namespace KinematicCharacterController.Examples
         public Animator anim;
 
         [Header("Stable Movement")]
-        public float MaxStableMoveSpeed = 10f;
+        public float DefaultStableMoveSpeed = 10f;
+        public float ActualMoveSpeed = 0f;
+        public float TopStableMoveSpeed = 18f;
+        public float Acceleration = 0.5f;
         public float StableMovementSharpness = 15f;
         public float OrientationSharpness = 10f;
         public OrientationMethod OrientationMethod = OrientationMethod.TowardsCamera;
@@ -163,19 +166,7 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void SetInputs(ref PlayerCharacterInputs inputs)
         {
-            float speedMod = 1;
-            if (inputs.MoveAxisForward == 1 || inputs.MoveAxisForward == -1 || inputs.MoveAxisRight == 1 || inputs.MoveAxisRight == -1)
-            {
-                if (speedMod < 3f)
-                {
-                    speedMod += Time.deltaTime;
-                }
-                Debug.Log("Top Speed: multiplier:" + speedMod);
-            }
-            else
-            {
-                speedMod = 1;
-            }
+
             // Clamp input
             Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
 
@@ -328,6 +319,7 @@ namespace KinematicCharacterController.Examples
                         // Ground movement
                         if (Motor.GroundingStatus.IsStableOnGround)
                         {
+
                             float currentVelocityMagnitude = currentVelocity.magnitude;
 
                             Vector3 effectiveGroundNormal = Motor.GroundingStatus.GroundNormal;
@@ -348,10 +340,23 @@ namespace KinematicCharacterController.Examples
                             // Reorient velocity on slope
                             currentVelocity = Motor.GetDirectionTangentToSurface(currentVelocity, effectiveGroundNormal) * currentVelocityMagnitude;
 
+                            //update Acceleration to movespeed
+                            if (currentVelocity.magnitude < DefaultStableMoveSpeed - 0.5f)
+                            {
+                                ActualMoveSpeed = DefaultStableMoveSpeed;
+                            }
+                            else
+                            {
+                                if (ActualMoveSpeed < TopStableMoveSpeed)
+                                {
+                                    ActualMoveSpeed += Acceleration;
+                                }
+                            }
+
                             // Calculate target velocity
                             Vector3 inputRight = Vector3.Cross(_moveInputVector, Motor.CharacterUp);
                             Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
-                            Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
+                            Vector3 targetMovementVelocity = reorientedInput * ActualMoveSpeed;
 
 
                             // Smooth movement Velocity
