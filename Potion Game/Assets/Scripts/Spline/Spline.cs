@@ -35,8 +35,8 @@ public class Spline : MonoBehaviour
     {
         this.gameObject.AddComponent<LineRenderer>();
         renderer = GetComponent<LineRenderer>();
-        renderer.SetWidth(0.04f, 0.04f);
-        renderer.SetColors(Color.white, Color.white);
+        renderer.SetWidth(0.5f, 0.5f);
+        renderer.SetColors(Color.red, Color.red);
         Material whiteDiffuseMat = new Material(Shader.Find("Unlit/Texture"));
         renderer.material = whiteDiffuseMat;
     }
