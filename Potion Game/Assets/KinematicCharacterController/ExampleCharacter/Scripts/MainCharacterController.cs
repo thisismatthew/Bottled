@@ -237,6 +237,7 @@ namespace KinematicCharacterController.Examples
                         }
 
                         //Use input
+                        //this is pretty messy, the rigidbody gets detroyed and remade when an object is picked up/down. 
                         if (inputs.UsePotion)
                         {
                             if (Interactable == null)
@@ -247,20 +248,20 @@ namespace KinematicCharacterController.Examples
                             {
                                 if (_isHolding)
                                 {
-                                    Debug.Log("drop?");
+                                    Interactable.AddComponent<Rigidbody>();
                                     Interactable.transform.parent = null;
                                     IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
-                                    Interactable.GetComponent<Rigidbody>().useGravity = true;
-                                    Interactable.GetComponent<Rigidbody>().freezeRotation = false;
                                     _isHolding = false;
                                 }
                                 else
                                 {
+
                                     _isHolding = true;
                                     Interactable.transform.parent = this.transform;
                                     IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
-                                    Interactable.GetComponent<Rigidbody>().useGravity = false;
-                                    Interactable.GetComponent<Rigidbody>().freezeRotation = true;
+                                    Destroy(Interactable.GetComponent<Rigidbody>());
+                                    
+
                                 }
                                 
                             }
