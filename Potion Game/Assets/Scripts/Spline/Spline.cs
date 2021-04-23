@@ -65,7 +65,7 @@ public class Spline : MonoBehaviour
         int numPoints = _pieces.Count * _POINT_MULTIPLIER;
         Vector3[] points = new Vector3[numPoints];
         renderer.positionCount = numPoints;
-        for (int i = 0; i< _pieces.Count; i++)
+        for (int i = 0; i < _pieces.Count; i++)
         {
             for (int j = 0; j < _POINT_MULTIPLIER; j++)
             {
@@ -89,6 +89,21 @@ public class Spline : MonoBehaviour
         }
     }
 
+    public Vector3 GetClosestSplinePosition(Vector3 pos)
+    {
+        
+        Vector3[] points = GetPoints(_pieces);
+        Vector3 closestPoint = points[0];
+        float currentDistance = Vector3.Distance(pos, closestPoint);
+        foreach (Vector3 p in points)
+        {
+            if (Vector3.Distance(pos,p)< currentDistance)
+            {
+                closestPoint = p;
+                currentDistance = Vector3.Distance(pos, closestPoint);
+            }
+        }
+        return closestPoint;
 
-
+    }
 }
