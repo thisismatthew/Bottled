@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Wobble : MonoBehaviour
@@ -47,21 +45,21 @@ public class Wobble : MonoBehaviour
         //Debug.Log("wbbb is: " + wobbleAmountX + " "+ wobbleAmountZ);
 
         float waveUpdate;
-        waveUpdate = (waveSize > 0.1f) ? waveSize*0.7f : 0.009f*6f;
+        waveUpdate = (waveSize > 0.1f) ? waveSize * 0.7f : 0.009f * 6f;
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("Dance"))
         {
             //Debug.Log("shoopdawoop");
             waveUpdate = 0.2f;
         }
-        rend.material.SetFloat("_WaveAmplitude", (waveUpdate));
+        //rend.material.SetFloat("_WaveAmplitude", (waveUpdate));
 
         if (waveSize > 0)
         {
-            rend.material.SetFloat("_WavesBool", 1);
+            //rend.material.SetFloat("_WavesBool", 1);
         }
         else
-        {      
-            rend.material.SetFloat("_WavesBool", 0.009f);
+        {
+            //rend.material.SetFloat("_WavesBool", 0.009f);
         }
 
 
@@ -72,7 +70,7 @@ public class Wobble : MonoBehaviour
 
         // add clamped velocity to wobble
         wobbleAmountToAddX += Mathf.Clamp((0.04f * velocity.x + (angularVelocity.z * 0.1f)) * MaxWobble, -MaxWobble, MaxWobble);
-        wobbleAmountToAddZ += Mathf.Clamp((0.04f *velocity.z + (angularVelocity.x * 0.1f)) * MaxWobble, -MaxWobble, MaxWobble);
+        wobbleAmountToAddZ += Mathf.Clamp((0.04f * velocity.z + (angularVelocity.x * 0.1f)) * MaxWobble, -MaxWobble, MaxWobble);
 
         // keep last position
         lastPos = transform.position;

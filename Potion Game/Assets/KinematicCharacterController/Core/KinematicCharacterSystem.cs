@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace KinematicCharacterController
@@ -277,7 +275,7 @@ namespace KinematicCharacterController
             for (int i = 0; i < PhysicsMovers.Count; i++)
             {
                 PhysicsMover mover = PhysicsMovers[i];
-                
+
                 mover.Transform.SetPositionAndRotation(
                     Vector3.Lerp(mover.InitialTickPosition, mover.TransientPosition, interpolationFactor),
                     Quaternion.Slerp(mover.InitialTickRotation, mover.TransientRotation, interpolationFactor));

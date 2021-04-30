@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: liquiddev
-  m_Shader: {fileID: -6465566751694194690, guid: 736dc7f27feced94e9f18f7d9b1985b5, type: 3}
+  m_Shader: {fileID: 4800000, guid: b1d02d20cbd6bd14ca3773851b203831, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,8 +19,44 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BotTexture1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 5e98de278b2ccc14f89b76b85596a3f3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MidTexture1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture0:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 9fbef4b79ca3b784ba023cb1331520d5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample2:
+        m_Texture: {fileID: 2800000, guid: b242fe489263703469ebf9495f2d3e2e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample4:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample5:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TriplanarAlbedo:
+        m_Texture: {fileID: 2800000, guid: 64e7766099ad46747a07014e44d0aea1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -61,16 +97,55 @@ Material:
     - Vector1_e55406b509a04dc4acc416535a265634: 0.44
     - Vector1_e7d6889e3e9a4de88edd14362b70b600: 0
     - Vector1_fae0c36764c34880862452735230fdb2: 0.49
+    - _AlphaCutoff: 0.5
+    - _CoverageFalloff: 4.48
+    - _CoverageFalloff1: 0.5
     - _FillAmount: 0.3
+    - _Float0: 0.27
+    - _Float1: 0.828
+    - _FoamMultiplier: 4.86
     - _Glossiness: 0.5
-    - _LiquidHeight: 0.517
+    - _Height: 0.362
+    - _IndexofRefraction: 1
+    - _IndexofRefraction1: 1
+    - _LiquidHeight: 0.46
     - _Metallic: 0
+    - _NormalContrast: 0.06
+    - _Opacity: 0
+    - _Opacity1: 0
     - _Rim: 0.055
     - _RimPower: 2.59
-    - _WaveAmplitude: 12.84
+    - _SphereRadius: 0.48
+    - _TessValue: 16
+    - _TransAmbient: 0.555
+    - _TransDirect: 1
+    - _TransNormal: 0.597
+    - _TransNormalDistortion: 0.1
+    - _TransScattering: 50
+    - _TransShadow: 1
+    - _TransStrength: 29.3
+    - _Translucency: 1
+    - _TransmissionShadow: 1
+    - _WaveAmplitude: 0
+    - _WaveDensity: 0.25
     - _WavesBool: 0.009
     - _WobbleX: 0
+    - _WobbleY: 1.04
     - _WobbleZ: 0
+    - __dirty: 0
+    - _heighOffset: 0.42
+    - _heightOffset: 0.43
+    - _occ: -0.16
+    - _occ1: 0
+    - _planex: 0
+    - _planey: 1
+    - _planez: 0
+    - _smth: 0
+    - _smth1: 0
+    - _spec: 0
+    - _spec1: 0
+    - _wobbleX: 0
+    - _wobbleZ: 0
     m_Colors:
     - Color_17C6C3C7: {r: 0.19339621, g: 0.30535024, b: 1, a: 0}
     - Color_FB35205B: {r: 0.16967781, g: 0.2291099, b: 0.8773585, a: 0}
@@ -86,12 +161,21 @@ Material:
     - Vector3_9ee88d6eb1684488880656bfb3d973ef: {r: 2.198199, g: 0.93400013, b: 3.9433727, a: 0}
     - Vector3_f4e11e666c284a309b2bdae3e55aff9e: {r: 0, g: 0, b: 0, a: 0}
     - Vector3_fe664c2dd2cb4a9a90f4ee6afc313be1: {r: 0.45, g: -6.22, b: -58.05, a: 0}
+    - _Albedo: {r: 0, g: 0.20736784, b: 1, a: 0}
+    - _Albedo1: {r: 0, g: 0.20736787, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color0: {r: 0.17254902, g: 0.1882353, b: 0.8117647, a: 0}
+    - _Color4: {r: 0.8301887, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _PlaneNormal: {r: 0, g: 1, b: 0, a: 0}
+    - _PlanePosition: {r: 0, g: 0.04, b: 0, a: 0}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _Speed: {r: 0.3, g: 0.26, b: 0, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
     - _TopColor: {r: 0, g: 0.03182933, b: 0.5283019, a: 1}
+    - _Vector0: {r: 1, g: 1, b: 1, a: 0}
+    - _planeNormal: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8610657337166633881
 MonoBehaviour:

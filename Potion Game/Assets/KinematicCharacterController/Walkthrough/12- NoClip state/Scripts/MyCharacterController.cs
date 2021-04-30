@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using KinematicCharacterController;
-using System;
 
 namespace KinematicCharacterController.Walkthrough.NoClipState
 {
@@ -172,7 +169,7 @@ namespace KinematicCharacterController.Walkthrough.NoClipState
                 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.up, Motor.CharacterUp).normalized;
             }
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
-            
+
             switch (CurrentCharacterState)
             {
                 case CharacterState.Default:

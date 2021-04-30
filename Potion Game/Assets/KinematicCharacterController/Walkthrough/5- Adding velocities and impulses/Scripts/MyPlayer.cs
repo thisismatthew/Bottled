@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using KinematicCharacterController;
 using KinematicCharacterController.Examples;
+using UnityEngine;
 
 namespace KinematicCharacterController.Walkthrough.AddingImpulses
 {
@@ -88,7 +85,7 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
             Character.SetInputs(ref characterInputs);
 
             // Apply impulse
-            if(Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 Character.Motor.ForceUnground(0.1f);
                 Character.AddVelocity(Vector3.one * 10f);

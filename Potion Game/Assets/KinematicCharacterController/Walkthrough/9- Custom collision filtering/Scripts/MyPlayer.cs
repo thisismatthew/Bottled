@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using KinematicCharacterController;
 using KinematicCharacterController.Examples;
 using System.Linq;
+using UnityEngine;
 
 namespace KinematicCharacterController.Walkthrough.CollisionFiltering
 {

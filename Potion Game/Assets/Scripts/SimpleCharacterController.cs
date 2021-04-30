@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using KinematicCharacterController;
+using UnityEngine;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
 public class SimpleCharacterController : MonoBehaviour, ICharacterController
@@ -18,7 +16,7 @@ public class SimpleCharacterController : MonoBehaviour, ICharacterController
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void BeforeCharacterUpdate(float deltaTime)

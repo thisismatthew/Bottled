@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using KinematicCharacterController;
-using System;
 
 namespace KinematicCharacterController.Examples
 {
@@ -551,7 +548,7 @@ namespace KinematicCharacterController.Examples
             {
                 anim.SetBool("Run", false);
             }
- 
+
         }
     }
 }

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using KinematicCharacterController;
-using System;
 
 namespace KinematicCharacterController.Walkthrough.OrientingArbitraryDirection
 {
@@ -49,7 +45,7 @@ namespace KinematicCharacterController.Walkthrough.OrientingArbitraryDirection
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
-        private float _timeSinceJumpRequested = Mathf.Infinity; 
+        private float _timeSinceJumpRequested = Mathf.Infinity;
         private float _timeSinceLastAbleToJump = 0f;
         private bool _doubleJumpConsumed = false;
         private bool _canWallJump = false;

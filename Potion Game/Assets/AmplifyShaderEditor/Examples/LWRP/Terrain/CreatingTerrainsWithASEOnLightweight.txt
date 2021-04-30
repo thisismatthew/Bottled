@@ -1,0 +1,131 @@
+Creating terrains with Amplify Shader Editor over the Lightweight SRP template differs a bit over the Standard Surface type.
+We will give you a brief explanation on how you can start creating terrain shaders with ASE under the Lightweight SRP in no time.
+
+You'll first need to setup ASE with the Lightweight SRP. Please check the link bellow for additional information:
+(http://wiki.amplify.pt/index.php?title=Unity_Products:Amplify_Shader_Editor/Scriptable_Rendering_Pipeline
+
+All shaders bellow are created using the Lightweight PBR template. Please name your shaders wisely, as it will be important later on. 
+
+A fully functional sample is provided with ASE. Import the 'AmplifyShaderEditor > Examples > Official > LW SRP Samples' package to get access to the 'SRP Lightweight Terrain' sample located at the 'AmplifyShaderEditor > Examples > Official > SRP Lightweight Terrain' folder.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+[Create Base Shader]
+'AmplifyShaderEditor > Examples > Official > SRP Lightweight Terrain > SRP Lightweight Terrain Base Pass'
+
+Like in the Standard terrain, a Base shader must be created as well over the Lightweight SRP.  This shader will be responsible by rendering the terrain when viewed over a certain distance, specified at the Base Map Distance on the terrain settings. Beyond this distance, a lower resolution composite image will be used with this shader for efficiency reasons.
+
+[[SubShader Setup]]
+
+SubShader Tags:
+- Set RenderType value to Opaque
+- Set Queue value to Geometry-100
+
+[[Pass Setup]]
+
+Blend Mode:
+- Set both Blend RGB and Blend Alpha to OFF
+ 
+Additional Directives:
+Add a new Directive
+- Set the directive type to Define
+- Set the directive value to TERRAIN_SPLAT_BASEPASS 1
+
+Misc Options:
+- Toggle on the Final Color x Alpha option
+
+[[Graph Setup]]
+Two Texture Sample nodes must be created:
+- The first one, MainTex, gives access to Albedo color over its RGB channels and Smoothness value over its Alpha channels
+- The second one, MetallicTex, gives access to Metallic value over its R channels
+
+Naming over all properties is very strict. Please refer to our "SRP Lightweight Terrain Base Pass" shader for a complete example.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+[Create Add Shader]
+'AmplifyShaderEditor > Examples > Official > SRP Lightweight Terrain > SRP Lightweight Terrain Add Pass'
+
+This shader will only be needed if you want to paint your terrain with more than four splats. If that's not the case please ignore this step.
+
+[[SubShader Setup]]
+
+SubShader Tags:
+- Set RenderType value to Opaque
+- Set Queue value to Geometry-99
+
+[[Pass Setup]]
+
+Blend Mode:
+- Set Blend RGB to Additive
+- Set Blend Alpha to OFF
+
+Additional Directives:
+- Add a new Directive
+- Set the directive type to Define
+- Set the directive value to TERRAIN_SPLAT_ADDPASS 1
+
+Misc Options:
+- Toggle on the Final Color x Alpha option
+
+[[Graph Setup]]
+Please refer to [[Graph Setup]] from First Pass as it is similar.
+
+[Create First Pass Shader]
+'AmplifyShaderEditor > Examples > Official > SRP Lightweight Terrain > SRP Lightweight Terrain First Pass'
+---------------------------------------------------------------------------------------------------------------------------------------------
+This shader will be responsible for painting the first four splats when the terrain is viewed from a distance less than 'Base Map Distance'.
+
+[[Common Properties Setup]]
+
+Dependencies:
+Create either one or two dependencies if you are using an additional Add Pass ( more than four splats )
+This is where shader name matters. The exact shader name must be set over the dependency value, group path included. To get this info open the shader on a text editor, and it will be the string between "" after the Shader keyword on the beginning of the text file.
+
+First Dependency:
+Name: BaseMapShader
+Value: <Your Base Shader Name>
+
+Second Dependency(optional):
+Name: AddPassShader
+Value: <Your Add Shader Name>
+
+[[SubShader Setup]]
+
+SubShader Tags:
+- Set RenderType value to Opaque
+- Set Queue value to Geometry-100
+
+[[Pass Setup]]
+
+Blend Mode:
+- Set both Blend RGB and Blend Alpha to OFF
+
+Misc Options:
+- Toggle on the Final Color x Alpha option
+
+[[Graph Setup]]
+We already have a shader function, Four Splats First Pass Terrain, which replicates Unity default terrain behavior and should be used as starting point on creating your own shader.
+
+These are the main properties to take into account.
+
+Diffuse:
+Each splat can be accessed via their properties, having yet again strict naming to be maintained.
+The splat diffuse colors are accessed through the sampler variables _Splat0 through _Splat3, so in your shader you must create four Texture Sampler nodes with the names Splat 0 through Splat 3 as the _ is automatically placed and the empty spaces are also automatically removed from the created variable name.
+
+Normal:
+The same goes to normal maps, they are accessed through the sampler variables _Normal0 through _Normal3 so, like with diffuse, in your shader you must create four Texture Sampler nodes with the names Normal 0 through Normal 3. One detail to take into account is that Unpack Normal Map should be turned off for each one of the nodes and an Unpack Scale Normal node should be applied after their values are combined.
+
+Smoothness + Metallic:
+Smoothness and Metallic values must also have specific variable names, _Smoothness0 through _Smoothness3 and _Metallic0 through _Metallic3 respectively.
+
+These variables however are Float properties, so to access them you need to create Float nodes, set them to Properties with the names Smoothness 0 through Smoothness 3 and Metallic 0 through Metallic 3 respectively.
+
+To maintain consistency with the Unity terrain shader, you should add the Gamma attribute to the Metallic property nodes.
+
+Combining Maps:
+The weight of each layer is given by yet another sampler variable. The _Control sampler variable contains, in each of its channels, the contribution each layer/splat have on the final result.
+To get access to it, simply create a Texture Sampler node in your shader with its name being Control.
+This Control texture is dynamically created when you paint your terrain with the Terrain tools and can be inspected by selecting the terrain asset on the Project view.
+
+Again, we invite you to check the Four Splats First Pass Terrain shader function located at AmplifyShaderEditor > Plugins > EditorResources > ShaderFunctions > Four Splats First Pass Terrain for a more in-depth view on how the Control texture is used.
