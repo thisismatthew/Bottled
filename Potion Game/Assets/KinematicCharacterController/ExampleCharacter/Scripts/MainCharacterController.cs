@@ -4,6 +4,7 @@ using UnityEngine;
 using KinematicCharacterController;
 using System;
 
+
 namespace KinematicCharacterController.Examples
 {
     public enum CharacterState
@@ -26,6 +27,7 @@ namespace KinematicCharacterController.Examples
         public bool JumpUp;
         public bool CrouchDown;
         public bool CrouchUp;
+        public bool UsePotion;
     }
 
     public struct AICharacterInputs
@@ -41,6 +43,7 @@ namespace KinematicCharacterController.Examples
         TowardsGroundSlopeAndGravity,
     }
 
+    [RequireComponent(typeof(Potion))]
     public class MainCharacterController : MonoBehaviour, ICharacterController
     {
         public KinematicCharacterMotor Motor;
@@ -48,7 +51,10 @@ namespace KinematicCharacterController.Examples
         public Animator anim;
 
         [Header("Stable Movement")]
-        public float MaxStableMoveSpeed = 10f;
+        public float DefaultStableMoveSpeed = 10f;
+        public float ActualMoveSpeed = 0f;
+        public float TopStableMoveSpeed = 18f;
+        public float Acceleration = 0.5f;
         public float StableMovementSharpness = 15f;
         public float OrientationSharpness = 10f;
         public OrientationMethod OrientationMethod = OrientationMethod.TowardsCamera;
@@ -76,6 +82,10 @@ namespace KinematicCharacterController.Examples
         public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
 
+        [Header("Interaction")]
+        public GameObject Interactable;
+        
+
         public CharacterState CurrentCharacterState { get; private set; }
 
         private Collider[] _probedColliders = new Collider[8];
@@ -93,13 +103,16 @@ namespace KinematicCharacterController.Examples
         private Vector3 _internalVelocityAdd = Vector3.zero;
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
+        private Potion _potion;
+        private bool _isHolding = false;
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
 
         private void Awake()
         {
-
+            //get Potion Component;
+            _potion = GetComponent<Potion>();
             // Handle initial state
             TransitionToState(CharacterState.Default);
             // Assign the characterController to the motor
@@ -163,6 +176,7 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void SetInputs(ref PlayerCharacterInputs inputs)
         {
+
             // Clamp input
             Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
 
@@ -222,6 +236,38 @@ namespace KinematicCharacterController.Examples
                             _shouldBeCrouching = false;
                         }
 
+                        //Use input
+                        //this is pretty messy, the rigidbody gets detroyed and remade when an object is picked up/down. 
+                        if (inputs.UsePotion)
+                        {
+                            if (Interactable == null)
+                            {
+                                _potion.UsePotion();
+                            }
+                            else
+                            {
+                                if (_isHolding)
+                                {
+                                    Interactable.AddComponent<Rigidbody>();
+                                    Interactable.transform.parent = null;
+                                    IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
+                                    _isHolding = false;
+                                }
+                                else
+                                {
+
+                                    _isHolding = true;
+                                    Interactable.transform.parent = this.transform;
+                                    IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
+                                    Destroy(Interactable.GetComponent<Rigidbody>());
+                                    
+
+                                }
+                                
+                            }
+
+                        }
+
                         break;
                     }
             }
@@ -237,6 +283,7 @@ namespace KinematicCharacterController.Examples
         }
 
         private Quaternion _tmpTransientRot;
+        
 
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
@@ -315,6 +362,7 @@ namespace KinematicCharacterController.Examples
                         // Ground movement
                         if (Motor.GroundingStatus.IsStableOnGround)
                         {
+
                             float currentVelocityMagnitude = currentVelocity.magnitude;
 
                             Vector3 effectiveGroundNormal = Motor.GroundingStatus.GroundNormal;
@@ -335,10 +383,23 @@ namespace KinematicCharacterController.Examples
                             // Reorient velocity on slope
                             currentVelocity = Motor.GetDirectionTangentToSurface(currentVelocity, effectiveGroundNormal) * currentVelocityMagnitude;
 
+                            //update Acceleration to movespeed
+                            if (currentVelocity.magnitude < DefaultStableMoveSpeed - 0.5f)
+                            {
+                                ActualMoveSpeed = DefaultStableMoveSpeed;
+                            }
+                            else
+                            {
+                                if (ActualMoveSpeed < TopStableMoveSpeed)
+                                {
+                                    ActualMoveSpeed += Acceleration;
+                                }
+                            }
+
                             // Calculate target velocity
                             Vector3 inputRight = Vector3.Cross(_moveInputVector, Motor.CharacterUp);
                             Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
-                            Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
+                            Vector3 targetMovementVelocity = reorientedInput * ActualMoveSpeed;
 
 
                             // Smooth movement Velocity
