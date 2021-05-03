@@ -1027,6 +1027,12 @@ namespace AmplifyShaderEditor
 			return false;
 		}
 
+		public WirePortDataType GetVertexPositionDataType()
+		{
+			InterpDataHelper info = GetInfo( TemplateInfoOnSematics.POSITION , false, MasterNodePortCategory.Vertex);
+			return info.VarType;
+		}
+
 		public string GetVertexPosition( WirePortDataType type, PrecisionType precisionType, bool useMasterNodeCategory = true, MasterNodePortCategory customCategory = MasterNodePortCategory.Fragment )
 		{
 			if( HasInfo( TemplateInfoOnSematics.POSITION, useMasterNodeCategory, customCategory ) )

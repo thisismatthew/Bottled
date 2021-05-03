@@ -1377,7 +1377,7 @@ namespace AmplifyShaderEditor
 						if( dataCollector.PortCategory == MasterNodePortCategory.Vertex || dataCollector.PortCategory == MasterNodePortCategory.Tessellation )
 							dataCollector.AddToVertexLocalVariables( UniqueId, m_precisionString + " " + textureFetchedValue + " = " + samplerOp + ";" );
 						else
-							dataCollector.AddToLocalVariables( UniqueId, m_precisionString + " " + textureFetchedValue + " = " + samplerOp + ";" );
+							dataCollector.AddToFragmentLocalVariables( UniqueId, m_precisionString + " " + textureFetchedValue + " = " + samplerOp + ";" );
 
 
 						m_colorPort.SetLocalValue( textureFetchedValue, dataCollector.PortCategory );

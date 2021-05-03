@@ -363,7 +363,7 @@ namespace AmplifyShaderEditor
 
 			return TextureChannelUsage.Not_Used;
 		}
-		public string SurfaceVertexStructure { get { return ( m_dirtyAppData ? Constants.CustomAppDataFullName : Constants.AppDataFullName ); } }
+
 		public void OpenPerVertexHeader( bool includeCustomData )
 		{
 			string appData = "inout " + ( m_dirtyAppData ? Constants.CustomAppDataFullName : Constants.AppDataFullName ) + " ";
@@ -1204,7 +1204,7 @@ namespace AmplifyShaderEditor
 				return false;
 
 			string value = UIUtils.PrecisionWirePortToCgType( precisionType, type ) + " " + varName + " = " + varValue + ";";
-			return AddToLocalVariables( nodeId, value );
+			return AddToFragmentLocalVariables( nodeId, value );
 		}
 
 		public bool AddToLocalVariables( MasterNodePortCategory category, int nodeId, string value, bool ignoreDuplicates = false )
@@ -1222,7 +1222,7 @@ namespace AmplifyShaderEditor
 				case MasterNodePortCategory.Fragment:
 				case MasterNodePortCategory.Debug:
 				{
-					return AddToLocalVariables( nodeId, value, ignoreDuplicates );
+					return AddToFragmentLocalVariables( nodeId, value, ignoreDuplicates );
 				}
 			}
 
@@ -1324,7 +1324,7 @@ namespace AmplifyShaderEditor
 				case MasterNodePortCategory.Fragment:
 				case MasterNodePortCategory.Debug:
 				{
-					return AddToLocalVariables( nodeId, value, ignoreDuplicates );
+					return AddToFragmentLocalVariables( nodeId, value, ignoreDuplicates );
 				}
 			}
 
@@ -1372,7 +1372,7 @@ namespace AmplifyShaderEditor
 			}
 			else
 			{
-				AddToLocalVariables( 0, IOUtils.CreateCodeComments( forceForwardSlash, comments ) );
+				AddToFragmentLocalVariables( 0, IOUtils.CreateCodeComments( forceForwardSlash, comments ) );
 			}
 		}
 
@@ -1401,7 +1401,7 @@ namespace AmplifyShaderEditor
 			return false;
 		}
 
-		public bool AddToLocalVariables( int nodeId, string value, bool ignoreDuplicates = false )
+		public bool AddToFragmentLocalVariables( int nodeId, string value, bool ignoreDuplicates = false )
 		{
 			if( string.IsNullOrEmpty( value ) )
 				return false;
@@ -1746,8 +1746,14 @@ namespace AmplifyShaderEditor
 			m_customAppDataItems += "\t\t\t" + value + "\n";
 			m_dirtyAppData = true;
 		}
-		public string CustomAppDataName { get { return m_dirtyAppData ? Constants.CustomAppDataFullName : Constants.AppDataFullName; } }
 
+		public void ForceCustomAppDataUsage()
+		{
+			m_dirtyAppData = true;
+		}
+
+		//public string CustomAppDataName { get { return m_dirtyAppData ? Constants.CustomAppDataFullName : Constants.AppDataFullName; } }
+		public string SurfaceVertexStructure { get { return ( m_dirtyAppData ? Constants.CustomAppDataFullName : Constants.AppDataFullName ); } }
 		public string CustomAppData
 		{
 			get

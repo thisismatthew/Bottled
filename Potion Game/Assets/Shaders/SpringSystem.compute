@@ -1,0 +1,113 @@
+#pragma kernel CSMainVel
+#pragma kernel CSMainPos
+
+//#pragma target 4.0
+#define SPRING_COUNT 16
+struct Properties
+{
+    float damping;
+    float springStiffness;
+};
+
+
+RWTexture2D<float4>Result;
+RWStructuredBuffer<float> springPositionsArray;
+RWStructuredBuffer<float> spring1DVelocityArray;
+RWStructuredBuffer<float> externalForcesBuffer;
+RWStructuredBuffer<float> deltaTimeBuffer;
+RWStructuredBuffer<Properties> propertiesBuffer;
+
+int Id2dTo1d(uint2 idxy, int length)
+{
+    int output = length * idxy.y +idxy.x;
+
+    return output;
+}
+
+float findAdd(float ext, uint2 idxy)
+{   
+    float output = 10*sin((idxy.x)/2)*ext;
+    if (idxy.x <=1 && idxy.x>=7 && idxy.y <=1 && idxy.y>=7)
+    {
+        output = 0;
+    }
+    return output;
+}
+
+[numthreads (SPRING_COUNT, SPRING_COUNT, 1)]
+void CSMainVel (uint3 id : SV_DispatchThreadID)
+{
+    
+    // Get our 1Dimensional id for writing to our buffer
+   int id1d = Id2dTo1d(id.xy, SPRING_COUNT);
+  
+   const float stiffness = propertiesBuffer[0].springStiffness;
+   const float damp = propertiesBuffer[0].damping;
+
+   float timestep = deltaTimeBuffer[0];
+   float springHeight = springPositionsArray[id1d];
+   float velocity = spring1DVelocityArray[id1d];
+   float acceleration = 0;
+
+   
+   int minX = (int)id.x - 1;
+   int minY = (int)id.y - 1;
+   int maxX = (int)id.x + 1;
+   int maxY = (int)id.y + 1;
+  
+   for (int x = minX; x <= maxX; x++){
+       for (int y = minY; y <= maxY; y++){
+           // Ignore self
+           if (x == (int)id.x && y == (int)id.y){
+               continue;
+           }
+           float nHeight = 0;
+           float nVel = 0;
+
+           // Skip out of range spring IDs
+           if (x < 0 
+               || y < 0 
+               || x > SPRING_COUNT-1
+               || y > SPRING_COUNT-1){
+               continue;
+           }
+           else {
+               int nId = Id2dTo1d(int2(x, y), SPRING_COUNT);
+               nHeight = springPositionsArray[nId];
+               nVel = spring1DVelocityArray[nId];
+           }
+          
+           float dampingForce = (nVel - velocity) * damp;
+           acceleration += ((nHeight - springHeight) * stiffness) + dampingForce;
+       }
+   }
+    
+   spring1DVelocityArray[id1d] += acceleration * timestep;
+
+}
+
+[numthreads (SPRING_COUNT, SPRING_COUNT, 1)]
+void CSMainPos (uint3 id : SV_DispatchThreadID)
+{
+    float timestep = deltaTimeBuffer[0];
+    int id1d = Id2dTo1d(id.xy, SPRING_COUNT);
+
+    float velocity = spring1DVelocityArray[id1d];
+    float ex = externalForcesBuffer[id1d];
+
+    float exadd = findAdd(ex, id.xy);
+
+    velocity += exadd; // Scale by external forces...
+
+
+    springPositionsArray[id1d] = saturate(springPositionsArray[id1d] + velocity * timestep);
+
+    // Normalise our values before packing into texture
+    float outPosPct = saturate(springPositionsArray[id1d]);
+
+    // Pack into texture
+    //springOutTex[id.xy] = outPosPct;
+       //float4 newVector = lerp(Result[int2(id.x, id.y)], float4(0, 1, 0, 1), 0.01);
+    Result[id.xy] = outPosPct;
+
+}

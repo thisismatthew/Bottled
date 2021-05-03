@@ -313,7 +313,7 @@ namespace AmplifyShaderEditor
 		"\t\t\tfloat4 texcoord1 : TEXCOORD1;\n" +
 		"\t\t\tfloat4 texcoord2 : TEXCOORD2;\n" +
 		"\t\t\tfloat4 texcoord3 : TEXCOORD3;\n" +
-		"\t\t\tfixed4 color : COLOR;\n" +
+		"\t\t\tfloat4 color : COLOR;\n" +
 		"\t\t\tUNITY_VERTEX_INPUT_INSTANCE_ID\n";
 		
 		public readonly static string IncludeFormat = "#include \"{0}\"";

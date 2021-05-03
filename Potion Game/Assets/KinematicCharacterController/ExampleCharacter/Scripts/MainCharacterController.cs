@@ -633,15 +633,49 @@ namespace KinematicCharacterController.Examples
 
         private void CharacterMoving()
         {
-            if (_moveInputVector.magnitude >= 1 && Motor.GroundingStatus.IsStableOnGround)
+            Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
+            Vector3 localVel = transform.InverseTransformDirection(vel);
+            //Debug.Log(localVel.z + " " +localVel.x);
+            if(localVel.x <= 0.1f && localVel.x > -0.1f)
             {
-                anim.SetBool("Run", true);
+                if (localVel.z > 0.1f && Motor.GroundingStatus.IsStableOnGround)
+                {
+                    anim.SetBool("RunBackwards", false);
+                    anim.SetBool("Run", true);
+                }
+                else if (localVel.z < -0.1f && Motor.GroundingStatus.IsStableOnGround)
+                {
+                    anim.SetBool("Run", false);
+                    anim.SetBool("RunBackwards", true);
+                }
+
+                else if (localVel.z <= 0.1f && localVel.z > -0.1f && Motor.GroundingStatus.IsStableOnGround)
+                {
+                    anim.SetBool("Run", false);
+                    anim.SetBool("RunBackwards", false);
+                }
+                anim.SetBool("RunRight", false);
+                anim.SetBool("RunLeft", false);
             }
-            else if (_moveInputVector.magnitude == 0 && Motor.GroundingStatus.IsStableOnGround)
+            else
             {
-                anim.SetBool("Run", false);
+                if (localVel.x > 0.2 && Motor.GroundingStatus.IsStableOnGround)
+                {
+                    anim.SetBool("Run", false);
+                    anim.SetBool("RunBackwards", false);
+                    anim.SetBool("RunRight", true);
+                }
+
+                if (localVel.x < -0.2 && Motor.GroundingStatus.IsStableOnGround)
+                {
+                    anim.SetBool("Run", false);
+                    anim.SetBool("RunBackwards", false);
+                    anim.SetBool("RunLeft", true);
+                }
             }
- 
+
+            
+
         }
     }
 }

@@ -1,4 +1,58 @@
 Release Notes:
+v1.8.9 rev 05:
+* Fixes:
+    * Fixed compilation error on 'Voronoi' node
+
+v1.8.9 rev 04:
+* Fixes:
+    * Removed duplicate Dependencies on URP Terrain sample
+    * Fixed issue on 'Camera Depth Fade', 'Depth Fade' and 'Surface Depth' nodes when used on vertex body alone and alongside fragment function
+    * Fixed incorrect code generation when using 'Depth Fade' on Surface's vertex function
+
+* Improvements:
+    * Added Diffuse Tint capabilities into Four Splats First Pass Terrain SF for URP
+        * User also needs to change the shader's Custom Inspector to UnityEditor.Rendering.Universal.TerrainLitShaderGUI
+            * A Unity restart is required after saving the shader for the Terrain inspector to correctly show the values
+            * This info is available inside the shader function over a sticky note
+
+v1.8.9 rev 03:
+* New Node:
+    * Reflection Probe
+        * Only available for URP
+
+* Improvements:
+    * Added Legacy Behavior for 'LOD Fade' node over 2019 and above 
+        * Values given by internal variable unity_LODFade.x now can be either positive (fade-out) or negative (fade-in)
+             * Toggling Legacy option makes that value given is similar to old one ( always positive and sum of fade in/out is 1 )
+    * Added new Apply To Id over 'Voronoi' node to apply smoothess to IDs
+        * Behavior similar to Blender Voronoi Smooth Ids
+    * Added Shadow Mask option for 'SRP Additional Light' shader function
+        * Only available for URP 10 and above
+
+* Fixes:
+    * Fixed issue with 'Billboard' node over URP
+
+v1.8.9 rev 02:
+* Fixes:
+    * Fixed conditional error thrown by Custom Lighting over Unity 2020.3
+    * Correct template is now imported on SRP 7.6.0
+    * Fixed issue on using undeclared clipPos variable on all URP Unlit versions
+    * Fixed issue on usage of undeclared struct over Decal HDRP 10
+
+* Improvements:
+    * Internal AddRGBToHSVFunction is now static (API)
+    * 'HD Emission' node is now imported with main package 
+        * Adding failsafe and error message to when used outside an HDRP shader
+    * Adding File mode into 'Custom Expression' node
+        * User can drag and drop a .cginc/.hsls file into the new Source field and will automatically include it on shader as an #include
+        * Function call uses value set on Name
+            * Can also automatically add precision suffix into call via the Precision Suffix toggle
+                * Behavior similar to Shader Graph
+
+v1.8.9 rev 01:
+* Fixes:
+    * Fixed issue when using Tessellation on Standard Surface type shaders over iOS
+
 v1.8.9 rev 00:
 * Improvements:
     * Added Safe Normalize option into 'Normalize' node to prevent division by zero warnings

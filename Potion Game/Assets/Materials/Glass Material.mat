@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Glass Material
-  m_Shader: {fileID: -6465566751694194690, guid: 261efa6397b5b6641bb7aba400345cc6, type: 3}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 4800000, guid: 15ddd911fd4f6e045a6e2d1394e57258, type: 3}
+  m_ShaderKeywords: _DIRECTION_Y _INVERTDIRECTION_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -43,6 +43,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CubeMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -71,7 +75,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Noise:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: f88677df267a41d6be1e7a6133e7d227, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normals:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -84,6 +100,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture0:
+        m_Texture: {fileID: 2800000, guid: af5ab63a69b074347be0e4c17fb9dc1b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -104,7 +128,9 @@ Material:
     - Vector1_e8c5f017c7ad4ef89b62b6424ad32f4c: -0.02
     - _Agitation: 0
     - _AlphaClip: 0
+    - _AlphaCutoff: 0.5
     - _Blend: 0
+    - _Brightness: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -112,31 +138,66 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Direction: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _Frequency: 20
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _IndexofRefraction: 1
+    - _InvertDirection: 1
     - _LiquidHeight: 0
     - _Metallic: 0
+    - _NormalScale: 0.169
     - _OcclusionStrength: 1
+    - _Opacity: 0
     - _Parallax: 0.005
     - _QueueOffset: 0
+    - _Range: 0
     - _ReceiveShadows: 1
+    - _ScreenContribution: 0.2
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
+    - _SpakleSpeed: 0
+    - _SparklesBrightness: 2
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _TailHeadFalloff: 0.5
+    - _Threshold: 0.5
+    - _TransAmbient: 0.1
+    - _TransDirect: 0.9
+    - _TransNormal: 0.5
+    - _TransScattering: 2
+    - _TransShadow: 0.5
+    - _TransStrength: 2
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - _bias: 11.65
+    - _brightness: 2.8
+    - _occ: 4.23
+    - _power: -7.1
+    - _scale: -0.76
+    - _smth: 2.68
+    - _spec: 0.2
     m_Colors:
     - Color_a8e63974392f40beb2eaa30fb766a3a6: {r: 0, g: 0, b: 0, a: 0}
     - Vector3_d540e2fe5cdd40deaedc9e50ab297691: {r: 0, g: 0, b: 0, a: 0}
+    - _Albedo: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BodyGlow: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color0: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GlintColor: {r: 0, g: 0, b: 0, a: 0}
+    - _GlintFresnel: {r: 0, g: 0, b: 0, a: 0}
+    - _MainGlowFresnel: {r: 0, g: 0, b: 0, a: 0}
+    - _SizeSpeedInterval: {r: 1, g: 1, b: 1, a: 0}
+    - _SparkleColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SparkleFresnel: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _cloudcolor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8610657337166633881
 MonoBehaviour:

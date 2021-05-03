@@ -642,9 +642,17 @@ namespace AmplifyShaderEditor
 
 
 			string value = GenerateVertexScreenPositionForValue( customVertexPosition, outputId, ref dataCollector, uniqueId, precision );
+
+			if( !dataCollector.IsFragmentCategory )
+			{
+				return value;
+			}
+
 			string screenPosVarName = "screenPosition" + outputId;
 			dataCollector.AddToInput( uniqueId, screenPosVarName, WirePortDataType.FLOAT4, precision );
 			dataCollector.AddToVertexLocalVariables( uniqueId, Constants.VertexShaderOutputStr + "." + screenPosVarName + " = " + value + ";" );
+
+			
 
 			string screenPosVarNameOnFrag = ScreenPositionStr + outputId;
 			string globalResult = Constants.InputVarStr + "." + screenPosVarName;

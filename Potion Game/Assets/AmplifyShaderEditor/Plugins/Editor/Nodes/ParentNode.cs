@@ -2598,8 +2598,12 @@ namespace AmplifyShaderEditor
 		public string GenerateInputInVertex( ref MasterNodeDataCollector dataCollector , int inputPortUniqueId , string varName , bool createInterpolator , bool noInterpolationFlag = false , bool sampleFlag = false )
 		{
 			InputPort inputPort = GetInputPortByUniqueId( inputPortUniqueId );
-			if( !dataCollector.IsFragmentCategory)
-				return inputPort.GeneratePortInstructions( ref dataCollector );
+			if( !dataCollector.IsFragmentCategory )
+			{
+				string value = inputPort.GeneratePortInstructions( ref dataCollector );
+				dataCollector.AddLocalVariable( -1 , CurrentPrecisionType , inputPort.DataType , varName , value );
+				return varName;
+			}
 
 			//TEMPLATES
 			if( dataCollector.IsTemplate )
@@ -2721,7 +2725,7 @@ namespace AmplifyShaderEditor
 			}
 			else
 			{
-				dataCollector.AddToLocalVariables( m_uniqueId, localVar );
+				dataCollector.AddToFragmentLocalVariables( m_uniqueId, localVar );
 			}
 		}
 
