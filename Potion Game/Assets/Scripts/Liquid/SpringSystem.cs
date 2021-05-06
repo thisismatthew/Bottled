@@ -152,7 +152,8 @@ public class SpringSystem : MonoBehaviour
                 vscale = -0.1f;
                 neg = 1;
             }
-            Debug.Log("veloc " + wobx+ " " + wobz);
+            //turned debug off while I needed the console
+            //Debug.Log("veloc " + wobx+ " " + wobz);
             extForce[0 + x * SPRING_COUNT] = Mathf.Clamp(vscale, -verticalLimit, verticalLimit);
             extForce[1 + x * SPRING_COUNT] = Mathf.Clamp(vscale, -verticalLimit, verticalLimit);
             extForce[2 + x * SPRING_COUNT] = Mathf.Clamp(vscale, -verticalLimit, verticalLimit);
