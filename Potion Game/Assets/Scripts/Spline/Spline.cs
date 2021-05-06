@@ -85,6 +85,7 @@ public class Spline : MonoBehaviour
         }
         else
         {
+            Debug.Log("Reached end of spline");
             return Vector3.zero;
         }
     }
@@ -105,5 +106,21 @@ public class Spline : MonoBehaviour
         }
         return closestPoint;
 
+    }
+
+    public float SplinePosToIndex(Vector3 pos)
+    {
+        Vector3[] points = GetPoints(_pieces);
+        float count = 0;
+        foreach (Vector3 p in points)
+        {
+            count++;
+            if (p == pos)
+            {
+                return count;
+            }
+        }
+        Debug.Log("WARNING: No Position on the Spline matches given Position");
+        return 0f;
     }
 }

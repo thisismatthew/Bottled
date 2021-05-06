@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using KinematicCharacterController;
-using System;
 
 
 namespace KinematicCharacterController.Examples
@@ -10,6 +7,7 @@ namespace KinematicCharacterController.Examples
     public enum CharacterState
     {
         Default,
+        Climbing,
     }
 
     public enum OrientationMethod
@@ -73,6 +71,10 @@ namespace KinematicCharacterController.Examples
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
 
+        [Header("Climbing")]
+        public float ClimbingSpeed = 5f;
+        public Spline CurrentClimbSpline;
+
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
         public BonusOrientationMethod BonusOrientationMethod = BonusOrientationMethod.None;
@@ -105,6 +107,7 @@ namespace KinematicCharacterController.Examples
         private bool _isCrouching = false;
         private Potion _potion;
         private bool _isHolding = false;
+        private float _currentSplinePosition = 0f;
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
@@ -154,6 +157,11 @@ namespace KinematicCharacterController.Examples
                     {
                         break;
                     }
+                case CharacterState.Climbing:
+                    {
+                        _currentSplinePosition = 0f;
+                        break;
+                    }
             }
         }
 
@@ -188,22 +196,26 @@ namespace KinematicCharacterController.Examples
             }
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
+
+            switch (OrientationMethod)
+            {
+                case OrientationMethod.TowardsCamera:
+                    _lookInputVector = cameraPlanarDirection;
+                    break;
+                case OrientationMethod.TowardsMovement:
+                    _lookInputVector = _moveInputVector.normalized;
+                    break;
+            }
+
+            // Move and look inputs
+            _moveInputVector = cameraPlanarRotation * moveInputVector;
+
             switch (CurrentCharacterState)
             {
                 case CharacterState.Default:
                     {
-                        // Move and look inputs
-                        _moveInputVector = cameraPlanarRotation * moveInputVector;
+                        
 
-                        switch (OrientationMethod)
-                        {
-                            case OrientationMethod.TowardsCamera:
-                                _lookInputVector = cameraPlanarDirection;
-                                break;
-                            case OrientationMethod.TowardsMovement:
-                                _lookInputVector = _moveInputVector.normalized;
-                                break;
-                        }
 
                         // Jumping input
                         if (inputs.JumpDown)
@@ -267,9 +279,9 @@ namespace KinematicCharacterController.Examples
                             }
 
                         }
-
                         break;
                     }
+
             }
         }
 
@@ -497,6 +509,24 @@ namespace KinematicCharacterController.Examples
                             currentVelocity += _internalVelocityAdd;
                             _internalVelocityAdd = Vector3.zero;
                         }
+                        break;
+                    }
+                case CharacterState.Climbing:
+                    {
+                        //TODO update climbing to use physics
+                        //for this iteration set the characters velocity to 0
+                        currentVelocity = Vector3.zero;
+                        Debug.Log(_moveInputVector);
+                        //for the moment lets just look at the moveInputVector to set which where along the spline we should be 
+                        if (_moveInputVector.x > 0)
+                        {
+                            _currentSplinePosition++;
+                        }else if ( _moveInputVector.x < 0)
+                        {
+                            _currentSplinePosition--;
+                        }
+                        Debug.Log(_currentSplinePosition);
+                        transform.position = CurrentClimbSpline.GetSplinePosition(_currentSplinePosition);
                         break;
                     }
             }

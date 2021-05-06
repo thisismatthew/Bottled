@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController;
+using KinematicCharacterController.Examples;
 
 [RequireComponent(typeof(Spline))]
 public class Ledge : MonoBehaviour
 {
     private Spline _spline;
     private Transform _player;
-    public float LedgeGrabDistance = 0.5f;
+    private bool _playerIsCimbing = false;
+    public float LedgeGrabDistance = 2f;
     private Vector3 _closestPos = new Vector3();
     void Start()
     {
@@ -18,14 +21,22 @@ public class Ledge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //not sure if this will be too taxing on the cpu when there are a bunch of ledges around...
-        _closestPos  = _spline.GetClosestSplinePosition(_player.position);
-        
-        if (Vector3.Distance(_closestPos, _player.position)< LedgeGrabDistance)
+        if (_playerIsCimbing == false)
         {
-            _player.position = _closestPos;
+            //not sure if this will be too taxing on the cpu when there are a bunch of ledges around...
+            _closestPos = _spline.GetClosestSplinePosition(_player.position);
 
+            //if the player is close enough to the closest point on the spline and isn't already climbing this spline...
+            //then set the player as climbing this spline
+            if (Vector3.Distance(_closestPos, _player.position) < LedgeGrabDistance)
+            {
 
+                Debug.Log("climbing started");
+                _player.GetComponent<MainCharacterController>().TransitionToState(CharacterState.Climbing);
+                
+                _player.GetComponent<MainCharacterController>().CurrentClimbSpline = _spline;
+                _playerIsCimbing = true;
+            }
         }
     }
 }
