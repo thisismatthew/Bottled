@@ -90,7 +90,7 @@ public class Spline : MonoBehaviour
         }
     }
 
-    public Vector3 GetClosestSplinePosition(Vector3 pos)
+    public Vector3 GetClosestVertexPosition(Vector3 pos)
     {
         
         Vector3[] points = GetPoints(_pieces);
@@ -108,19 +108,18 @@ public class Spline : MonoBehaviour
 
     }
 
-    public float SplinePosToIndex(Vector3 pos)
+    public float GetClosestVertexIndex(Vector3 pos)
     {
-        Vector3[] points = GetPoints(_pieces);
-        float count = 0;
-        foreach (Vector3 p in points)
+        float currentDistance = 1000000f;
+        float closestVertexIndex = 0;
+        for (float f = 0; f > 1.0f; f += 0.1f)
         {
-            count++;
-            if (p == pos)
+            if(Vector3.Distance(GetSplinePosition(f), pos) < currentDistance)
             {
-                return count;
+                currentDistance = Vector3.Distance(GetSplinePosition(f), pos);
+                closestVertexIndex = f;
             }
         }
-        Debug.Log("WARNING: No Position on the Spline matches given Position");
-        return 0f;
+        return closestVertexIndex;
     }
 }

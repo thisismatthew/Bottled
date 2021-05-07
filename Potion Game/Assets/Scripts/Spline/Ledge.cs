@@ -24,7 +24,7 @@ public class Ledge : MonoBehaviour
         if (_playerIsCimbing == false)
         {
             //not sure if this will be too taxing on the cpu when there are a bunch of ledges around...
-            _closestPos = _spline.GetClosestSplinePosition(_player.position);
+            _closestPos = _spline.GetClosestVertexPosition(_player.position);
 
             //if the player is close enough to the closest point on the spline and isn't already climbing this spline...
             //then set the player as climbing this spline

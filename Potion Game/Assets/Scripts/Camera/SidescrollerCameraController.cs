@@ -10,7 +10,7 @@ public class SidescrollerCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = spline.GetClosestSplinePosition(target.transform.position);
+        transform.position = spline.GetClosestVertexPosition(target.transform.position);
     }
 
     

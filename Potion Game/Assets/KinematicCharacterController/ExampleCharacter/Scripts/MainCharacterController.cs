@@ -74,6 +74,12 @@ namespace KinematicCharacterController.Examples
         [Header("Climbing")]
         public float ClimbingSpeed = 5f;
         public Spline CurrentClimbSpline;
+        public float ClimbingSharpness = 0.1f;
+        private float _currentSplineIndex;
+        private Vector3 _splineStart;
+        private Vector3 _splineEnd;
+        private bool _climbingBegun = false;
+
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -107,7 +113,6 @@ namespace KinematicCharacterController.Examples
         private bool _isCrouching = false;
         private Potion _potion;
         private bool _isHolding = false;
-        private float _currentSplinePosition = 0f;
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
@@ -159,7 +164,6 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        _currentSplinePosition = 0f;
                         break;
                     }
             }
@@ -214,8 +218,6 @@ namespace KinematicCharacterController.Examples
             {
                 case CharacterState.Default:
                     {
-                        
-
 
                         // Jumping input
                         if (inputs.JumpDown)
@@ -272,17 +274,29 @@ namespace KinematicCharacterController.Examples
                                     Interactable.transform.parent = this.transform;
                                     IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
                                     Destroy(Interactable.GetComponent<Rigidbody>());
-                                    
+
 
                                 }
-                                
+
                             }
 
                         }
                         break;
-                    }
 
+                    }
+                case CharacterState.Climbing:
+                    {
+                        //if a jump is requested just drop the player off the ledge
+                        if (inputs.JumpDown)
+                        {
+                            CurrentCharacterState = CharacterState.Default;
+                            _climbingBegun = false;
+                        }
+
+                        break;
+                    }
             }
+                 
         }
 
         /// <summary>
@@ -295,7 +309,7 @@ namespace KinematicCharacterController.Examples
         }
 
         private Quaternion _tmpTransientRot;
-        
+
 
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
@@ -513,20 +527,52 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        //TODO update climbing to use physics
-                        //for this iteration set the characters velocity to 0
-                        currentVelocity = Vector3.zero;
-                        Debug.Log(_moveInputVector);
-                        //for the moment lets just look at the moveInputVector to set which where along the spline we should be 
-                        if (_moveInputVector.x > 0)
+                        
+                        //if this is the first update where we are climbing set velocity to 0
+                        if (_climbingBegun == false)
                         {
-                            _currentSplinePosition++;
-                        }else if ( _moveInputVector.x < 0)
-                        {
-                            _currentSplinePosition--;
+                            _currentSplineIndex = CurrentClimbSpline.GetClosestVertexIndex(transform.position);
+                            _splineStart = CurrentClimbSpline.GetSplinePosition(0f);
+                            Debug.Log(_splineStart);
+                            _splineEnd = CurrentClimbSpline.GetSplinePosition(1f);
+                            Debug.Log(_splineEnd);
+                            //all we need are the two end points of the spline 
+                            Debug.Log("set velocity to 0");
+                            currentVelocity = Vector3.zero;
+                            _climbingBegun = true;
                         }
-                        Debug.Log(_currentSplinePosition);
-                        transform.position = CurrentClimbSpline.GetSplinePosition(_currentSplinePosition);
+
+                        Vector3 target = Vector3.zero;
+
+                        Debug.Log(_moveInputVector);
+                        if (_moveInputVector.x > 0 && _currentSplineIndex <= 1)
+                        {
+                            _currentSplineIndex += 0.01f;
+                        }
+                        if (_moveInputVector.x < 0 && _currentSplineIndex >= 0)
+                        {
+                            _currentSplineIndex -= 0.01f;  
+                        }
+
+                        
+                        target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
+                        //this is to account for the players height
+                        target.y += 1;
+
+
+                        if (_moveInputVector.x != 0)
+                        {
+                            Debug.Log(_currentSplineIndex);
+                            Debug.DrawLine(target, transform.position);
+                            //move the target towards the end you want to go towards
+                            currentVelocity += ((CurrentClimbSpline.GetClosestVertexPosition(transform.position) - transform.position).normalized);
+                            currentVelocity += (target - transform.position).normalized;
+                        }
+                        else
+                        {
+                            currentVelocity = Vector3.zero;
+                        }
+                        
                         break;
                     }
             }
