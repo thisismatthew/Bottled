@@ -8,14 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Limbs
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: cc33252abf1279748953f5815eaea1b4, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -77,7 +76,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_0daeedd2c47d46d49eb6358cdf8a64f4: 7.03
+    - Vector1_18f729c40d0743cebeef43d405092d94: 0.617
+    - Vector1_2d55954ef9604b428c201af89791eedd: 40.13
+    - Vector1_39795a6114544481afb92e261f91df1b: 0.4
+    - Vector1_465f242230474f30bb6ff969093a2c90: 0
+    - Vector1_b4654250233b4d3991a307e47301e664: 6.2
+    - Vector1_fa8bd9c7e9b0469fba7245ef15398986: 0.6
     - _AlphaClip: 0
+    - _AlphaCutoff: 0.5
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -88,26 +95,41 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _Float0: 0.37
+    - _Float1: 0.6117647
+    - _Float2: 5.88
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _Pan: 0.517
     - _Parallax: 0.005
+    - _Power: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed1: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Width: 7.81
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - __dirty: 0
+    - _distance: 0.4
+    - _frequency: 10
+    - _power: 1
+    - _speed: 0.058
     m_Colors:
+    - Vector3_7b7b0b2daf6a46a88069b9da4ea3abe7: {r: 0.04, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color0: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Vector0: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2987015631564922885
 MonoBehaviour:
