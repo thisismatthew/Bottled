@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace KinematicCharacterController.Examples
 {
+    [System.Serializable]
     public enum CharacterState
     {
         Default,
@@ -45,8 +46,8 @@ namespace KinematicCharacterController.Examples
     public class MainCharacterController : MonoBehaviour, ICharacterController
     {
         public KinematicCharacterMotor Motor;
-
         public Animator anim;
+        public CharacterState CurrentCharacterState { get; private set; }
 
         [Header("Stable Movement")]
         public float DefaultStableMoveSpeed = 10f;
@@ -72,13 +73,10 @@ namespace KinematicCharacterController.Examples
         public float JumpPostGroundingGraceTime = 0f;
 
         [Header("Climbing")]
-        public float ClimbingSpeed = 5f;
+        public float ClimbingSpeed = 0.01f;
         public Spline CurrentClimbSpline;
-        public float ClimbingSharpness = 0.1f;
         private float _currentSplineIndex;
-        private Vector3 _splineStart;
-        private Vector3 _splineEnd;
-        private bool _climbingBegun = false;
+        private bool _isClimbing = false;
 
 
         [Header("Misc")]
@@ -92,9 +90,9 @@ namespace KinematicCharacterController.Examples
 
         [Header("Interaction")]
         public GameObject Interactable;
-        
 
-        public CharacterState CurrentCharacterState { get; private set; }
+        
+        
 
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
@@ -156,6 +154,7 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void OnStateEnter(CharacterState state, CharacterState fromState)
         {
+            Debug.Log("entering state: " + state.ToString());
             switch (state)
             {
                 case CharacterState.Default:
@@ -174,10 +173,17 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void OnStateExit(CharacterState state, CharacterState toState)
         {
+            Debug.Log("leaving state: " + state.ToString());
             switch (state)
             {
                 case CharacterState.Default:
                     {
+                        break;
+                    }
+                case CharacterState.Climbing:
+                    {
+                        _isClimbing = false;
+                        CurrentClimbSpline = null;
                         break;
                     }
             }
@@ -290,7 +296,7 @@ namespace KinematicCharacterController.Examples
                         if (inputs.JumpDown)
                         {
                             CurrentCharacterState = CharacterState.Default;
-                            _climbingBegun = false;
+                            _isClimbing = false;
                         }
 
                         break;
@@ -529,50 +535,31 @@ namespace KinematicCharacterController.Examples
                     {
                         
                         //if this is the first update where we are climbing set velocity to 0
-                        if (_climbingBegun == false)
+                        if (_isClimbing == false)
                         {
                             _currentSplineIndex = CurrentClimbSpline.GetClosestVertexIndex(transform.position);
-                            _splineStart = CurrentClimbSpline.GetSplinePosition(0f);
-                            Debug.Log(_splineStart);
-                            _splineEnd = CurrentClimbSpline.GetSplinePosition(1f);
-                            Debug.Log(_splineEnd);
+
+
                             //all we need are the two end points of the spline 
                             Debug.Log("set velocity to 0");
                             currentVelocity = Vector3.zero;
-                            _climbingBegun = true;
+
+                            _isClimbing = true;
                         }
 
                         Vector3 target = Vector3.zero;
 
-                        Debug.Log(_moveInputVector);
-                        if (_moveInputVector.x > 0 && _currentSplineIndex <= 1)
+                        if (_moveInputVector.x < 0 && _currentSplineIndex <= 1)
                         {
-                            _currentSplineIndex += 0.01f;
+                            _currentSplineIndex += ClimbingSpeed;
                         }
-                        if (_moveInputVector.x < 0 && _currentSplineIndex >= 0)
+                        if (_moveInputVector.x > 0 && _currentSplineIndex >= 0)
                         {
-                            _currentSplineIndex -= 0.01f;  
+                            _currentSplineIndex -= ClimbingSpeed;  
                         }
-
-                        
+               
                         target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
-                        //this is to account for the players height
-                        target.y += 1;
-
-
-                        if (_moveInputVector.x != 0)
-                        {
-                            Debug.Log(_currentSplineIndex);
-                            Debug.DrawLine(target, transform.position);
-                            //move the target towards the end you want to go towards
-                            currentVelocity += ((CurrentClimbSpline.GetClosestVertexPosition(transform.position) - transform.position).normalized);
-                            currentVelocity += (target - transform.position).normalized;
-                        }
-                        else
-                        {
-                            currentVelocity = Vector3.zero;
-                        }
-                        
+                        Motor.MoveCharacter(target);
                         break;
                     }
             }
