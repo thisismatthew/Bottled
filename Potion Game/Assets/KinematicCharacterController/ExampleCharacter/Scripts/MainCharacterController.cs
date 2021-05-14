@@ -77,6 +77,7 @@ namespace KinematicCharacterController.Examples
         public Spline CurrentClimbSpline;
         private float _currentSplineIndex;
         private bool _isClimbing = false;
+        private bool _startedClimbing = false;
 
 
         [Header("Misc")]
@@ -163,6 +164,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
+                        _startedClimbing = true;
                         break;
                     }
             }
@@ -182,7 +184,6 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        _isClimbing = false;
                         CurrentClimbSpline = null;
                         break;
                     }
@@ -292,11 +293,25 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
+                        _isClimbing = true;
                         //if a jump is requested just drop the player off the ledge
+                        if (inputs.CrouchDown)
+                        {
+                            TransitionToState(CharacterState.Default);
+                            _isClimbing = false;
+                        }
+                        
+
                         if (inputs.JumpDown)
                         {
-                            CurrentCharacterState = CharacterState.Default;
                             _isClimbing = false;
+                            _jumpFromClimbingRequested = true;
+                        }
+
+                        if (inputs.JumpUp)
+                        {
+                            _isClimbing = true;
+                            _jumpFromClimbingRequested = false;
                         }
 
                         break;
@@ -315,6 +330,7 @@ namespace KinematicCharacterController.Examples
         }
 
         private Quaternion _tmpTransientRot;
+        private bool _jumpFromClimbingRequested;
 
 
         /// <summary>
@@ -535,31 +551,52 @@ namespace KinematicCharacterController.Examples
                     {
                         
                         //if this is the first update where we are climbing set velocity to 0
-                        if (_isClimbing == false)
+                        if (_startedClimbing == true)
                         {
                             _currentSplineIndex = CurrentClimbSpline.GetClosestVertexIndex(transform.position);
-
+                            Debug.Log("Spline Index: "+_currentSplineIndex);
 
                             //all we need are the two end points of the spline 
                             Debug.Log("set velocity to 0");
                             currentVelocity = Vector3.zero;
 
-                            _isClimbing = true;
+                            _startedClimbing = false;
                         }
 
-                        Vector3 target = Vector3.zero;
+                        if (_isClimbing)
+                        {
+                            Vector3 target = Vector3.zero;
 
-                        if (_moveInputVector.x < 0 && _currentSplineIndex <= 1)
-                        {
-                            _currentSplineIndex += ClimbingSpeed;
+                            if (_moveInputVector.x < 0 && _currentSplineIndex <= 1)
+                            {
+                                _currentSplineIndex += ClimbingSpeed;
+                            }
+                            if (_moveInputVector.x > 0 && _currentSplineIndex >= 0)
+                            {
+                                _currentSplineIndex -= ClimbingSpeed;
+                            }
+
+                            target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
+                            Motor.MoveCharacter(target);
                         }
-                        if (_moveInputVector.x > 0 && _currentSplineIndex >= 0)
+                        
+
+                        // Handle jumping from climbing
+                        
+                        Vector3 jumpDirection = Motor.CharacterUp;
+                        if (_jumpFromClimbingRequested)
                         {
-                            _currentSplineIndex -= ClimbingSpeed;  
+                            TransitionToState(CharacterState.Default);
+                            // Add to the return velocity and reset jump state
+                            currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                            currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
+                            _jumpFromClimbingRequested = false;
+                            _isClimbing = false;
                         }
-               
-                        target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
-                        Motor.MoveCharacter(target);
+
+                        
+
+                        
                         break;
                     }
             }

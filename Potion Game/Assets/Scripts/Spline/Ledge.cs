@@ -11,6 +11,7 @@ public class Ledge : MonoBehaviour
     private Transform _player;
     private bool _playerIsCimbing = false;
     public float LedgeGrabDistance = 2f;
+    public float LedgeLetGoDistance = 3f;
     private Vector3 _closestPos = new Vector3();
     void Start()
     {
@@ -36,6 +37,16 @@ public class Ledge : MonoBehaviour
                 
                 _player.GetComponent<MainCharacterController>().CurrentClimbSpline = _spline;
                 _playerIsCimbing = true;
+            }
+        }
+
+        if (_playerIsCimbing)
+        {
+            //if the player moves outside of the LetGoDistance set climbing back to false
+            if (Vector3.Distance(_closestPos, _player.position) > LedgeLetGoDistance)
+            {
+                Debug.Log("climbing finished");
+                _playerIsCimbing = false;
             }
         }
     }

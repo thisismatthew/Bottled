@@ -111,8 +111,8 @@ public class Spline : MonoBehaviour
     public float GetClosestVertexIndex(Vector3 pos)
     {
         float currentDistance = 1000000f;
-        float closestVertexIndex = 0;
-        for (float f = 0; f > 1.0f; f += 0.1f)
+        float closestVertexIndex = 1;
+        for (float f = 0; f < 1.0f; f += 0.1f)
         {
             if(Vector3.Distance(GetSplinePosition(f), pos) < currentDistance)
             {
