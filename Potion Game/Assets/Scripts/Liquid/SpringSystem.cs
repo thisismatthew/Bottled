@@ -8,27 +8,27 @@ public class SpringSystem : MonoBehaviour
 
     [Range(0.1f, 0.999f)] public float Damping = 0.1f;
     [Range(0.1f, 100.0f)] public float SpringStiffness = 5.0f;
-    [Range(0.01f, 1f)] public float WobbleSpeed = 0.3f; 
     [Range(0.1f, 0.999f)] public float verticalLimit = 0.2f;
-    public float Recovery = 2f;
+
     public Transform target;
-    public SpringJoint targetSpring;
-    public Rigidbody springWeight;
 
     public ComputeShader calculationEngine;
+    public ParticleSystem bubbles;
     private RenderTexture texture;
     private Renderer m_renderer;
-
     private int physicsSimID;
-
     private ComputeBuffer propertiesBuffer;
-
     private ComputeBuffer _springHeightBuffer;
     private ComputeBuffer _spring1DVelocityBuffer;
-
     private ComputeBuffer deltaTimeBuffer;
     private ComputeBuffer externalForcesBuffer;
 
+
+    private Vector3 lastPos;
+    private Vector3 lastUp;
+
+    private float[] extForce = new float[SPRING_COUNT * SPRING_COUNT];
+    private float[] delta = new float[1];
 
 
 
@@ -37,17 +37,6 @@ public class SpringSystem : MonoBehaviour
         get { return texture; }
     }
 
-
-    private Vector3 lastPos;
-
-    private Vector3 lastUp;
-    private Vector3 wobbleAcm;
-    public float rotCoef = 0.2f;
-    public float inertness = 200;
-
-    public float MaxWobble = 0.003f;
-    float[] extForce = new float[SPRING_COUNT * SPRING_COUNT];
-    float[] delta= new float[1];
 
     void Start()
     {
@@ -74,19 +63,6 @@ public class SpringSystem : MonoBehaviour
         SetGridProperties();
 
         lastPos = transform.position;
-        float waterLevel = m_renderer.material.GetFloat("_Height");
-        if (waterLevel>0.5)
-        {
-            targetSpring.connectedAnchor = new Vector3(targetSpring.connectedAnchor.x, 0.34f, targetSpring.connectedAnchor.z);
-        }
-        else if (waterLevel<0.2)
-        {
-            targetSpring.connectedAnchor = new Vector3(targetSpring.connectedAnchor.x, 1.6f, targetSpring.connectedAnchor.z);
-        }
-        else
-        {
-            targetSpring.connectedAnchor = new Vector3(targetSpring.connectedAnchor.x, 1.85f, targetSpring.connectedAnchor.z);
-        }
   
 
     }
@@ -125,34 +101,29 @@ public class SpringSystem : MonoBehaviour
     private void Update()
     {
         delta[0] = Time.deltaTime;
-
         Vector3 velocity = (transform.position - lastPos) / Time.fixedDeltaTime;
         Vector3 rotVelocity = (transform.up - lastUp) / Time.fixedDeltaTime;
 
         lastPos = transform.position;
         lastUp = transform.up;
-        Vector3 pointAtVec = transform.position - target.position;
-        pointAtVec = -pointAtVec;
+        Vector3 pointAtVec = transform.parent.position - target.position;
+        //pointAtVec = -pointAtVec;
+        //Debug.Log("pointAtVec " + pointAtVec.x + " " + pointAtVec.y + " " + pointAtVec.z);
+        Vector3 hh = pointAtVec.normalized;
+        //bubbles.transform.up = pointAtVec;
+
+        //Debug.Log("hh " + hh.x + " " + hh.y + " " + hh.z);
         m_renderer.material.SetVector("_planeNormal", pointAtVec);
 
         
         for (int x = 0; x < SPRING_COUNT; x++)
         {
-            float anglemod = Mathf.Sign((7 * SPRING_COUNT- x * SPRING_COUNT ));
-            if (anglemod == 0)
-            {
-                anglemod = 1;
-            }
             float wobx = velocity.x+rotVelocity.z;
             float wobz = velocity.z + rotVelocity.x;
             float vscale = Mathf.Sqrt(wobx * wobx + wobz * wobz);
             float neg = -1;
-            if (wobx+wobz<1)
-            {
-                vscale = -0.1f;
-                neg = 1;
-            }
-            Debug.Log("veloc " + wobx+ " " + wobz);
+ 
+
             extForce[0 + x * SPRING_COUNT] = Mathf.Clamp(vscale, -verticalLimit, verticalLimit);
             extForce[1 + x * SPRING_COUNT] = Mathf.Clamp(vscale, -verticalLimit, verticalLimit);
             extForce[2 + x * SPRING_COUNT] = Mathf.Clamp(vscale, -verticalLimit, verticalLimit);
@@ -171,7 +142,7 @@ public class SpringSystem : MonoBehaviour
             extForce[15 + x * SPRING_COUNT] = Mathf.Clamp(neg * vscale, -verticalLimit, verticalLimit);
         }
 
-        m_renderer.sharedMaterial.SetTexture("_TextureSample2", texture);
+        m_renderer.sharedMaterial.SetTexture("_WaveDeformTex", texture);
     }
 
     private void OnDestroy()

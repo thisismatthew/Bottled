@@ -27,10 +27,7 @@ int Id2dTo1d(uint2 idxy, int length)
 float findAdd(float ext, uint2 idxy)
 {   
     float output = 10*sin((idxy.x)/2)*ext;
-    if (idxy.x <=1 && idxy.x>=7 && idxy.y <=1 && idxy.y>=7)
-    {
-        output = 0;
-    }
+
     return output;
 }
 
