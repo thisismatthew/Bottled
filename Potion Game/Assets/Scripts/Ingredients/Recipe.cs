@@ -2,19 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Recipe : MonoBehaviour
+[CreateAssetMenu(fileName = "New Recipe", menuName ="Recipe")]
+public class Recipe : ScriptableObject
 {
-    public GameObject[] Ingredients;
+    public List<Ingredient> Ingredients = new List<Ingredient>(3);
+    //public variable for attributes assoicated with recipe
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
