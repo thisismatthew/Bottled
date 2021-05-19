@@ -9,6 +9,7 @@ namespace KinematicCharacterController.Examples
     {
         Default,
         Climbing,
+        Dead,
     }
 
     public enum OrientationMethod
@@ -80,8 +81,6 @@ namespace KinematicCharacterController.Examples
         private bool _startedClimbing = false;
         public bool JumpingFromClimbing = false;
 
-
-
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
         public BonusOrientationMethod BonusOrientationMethod = BonusOrientationMethod.None;
@@ -94,9 +93,7 @@ namespace KinematicCharacterController.Examples
         [Header("Interaction")]
         public GameObject Interactable;
 
-        
-        
-
+       
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
@@ -634,10 +631,11 @@ namespace KinematicCharacterController.Examples
                             _jumpRequested = false;
                             _isClimbing = false;
                         }
-
-                        
-
-                        
+                        break;
+                    }
+                case CharacterState.Dead:
+                    {
+                        currentVelocity = Vector3.zero;
                         break;
                     }
             }
