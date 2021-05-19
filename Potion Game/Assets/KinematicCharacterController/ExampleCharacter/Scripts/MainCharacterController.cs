@@ -186,7 +186,6 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                       
                         CurrentClimbSpline = null;
                         break;
                     }
@@ -297,6 +296,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
+
                         _isClimbing = true;
                         //if a jump is requested just drop the player off the ledge
                         if (inputs.CrouchDown)
@@ -402,14 +402,19 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        /*
+                        //TODO the current climbing rotation is bugged and needs to be fixed. 
+                        Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
+                        target.y -= Motor.Capsule.height;
+                        
                         // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, CurrentClimbSpline.GetSplinePosition(_currentSplineIndex), 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-                        Debug.DrawLine(transform.position, CurrentClimbSpline.GetSplinePosition(_currentSplineIndex), Color.red);
+                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+                        Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
+                        Debug.DrawLine(transform.position, target, Color.red);
+                        
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-
-                        */
+                        
+                        
                         break;
                     }
             }
