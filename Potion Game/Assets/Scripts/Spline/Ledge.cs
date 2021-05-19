@@ -8,45 +8,54 @@ using KinematicCharacterController.Examples;
 public class Ledge : MonoBehaviour
 {
     private Spline _spline;
-    private Transform _player;
-    private bool _playerIsCimbing = false;
+    public Transform PlayerLedgeGrabTarget;
+    private MainCharacterController playerController;
+    private bool _playerIsClimbing = false;
     public float LedgeGrabDistance = 2f;
     public float LedgeLetGoDistance = 3f;
+    private bool _playerIsJumpingFromLedge = false;
     private Vector3 _closestPos = new Vector3();
     void Start()
     {
         _spline = GetComponent<Spline>();
-        _player = GameObject.FindWithTag("Player").transform;
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<MainCharacterController>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_playerIsCimbing == false)
+        //if the player is in its default movement state (not climbing) this ledge will be aware of the player. 
+        if (playerController.CurrentCharacterState == CharacterState.Default && !playerController.JumpingFromClimbing)
         {
+            
             //not sure if this will be too taxing on the cpu when there are a bunch of ledges around...
-            _closestPos = _spline.GetClosestVertexPosition(_player.position);
+            _closestPos = _spline.GetClosestVertexPosition(PlayerLedgeGrabTarget.position);
 
+            Debug.DrawLine(_closestPos, PlayerLedgeGrabTarget.position, Color.green);
+
+           
+            
             //if the player is close enough to the closest point on the spline and isn't already climbing this spline...
             //then set the player as climbing this spline
-            if (Vector3.Distance(_closestPos, _player.position) < LedgeGrabDistance)
+            if (Vector3.Distance(_closestPos, PlayerLedgeGrabTarget.position) < LedgeGrabDistance)
             {
-
                 Debug.Log("climbing started");
-                _player.GetComponent<MainCharacterController>().TransitionToState(CharacterState.Climbing);
+                playerController.TransitionToState(CharacterState.Climbing);
+                _playerIsClimbing = true;
+                playerController.CurrentClimbSpline = _spline;
                 
-                _player.GetComponent<MainCharacterController>().CurrentClimbSpline = _spline;
-                _playerIsCimbing = true;
             }
+            
         }
 
-        if (_playerIsCimbing)
+        if (_playerIsClimbing)
         {
             //if the player moves outside of the LetGoDistance set climbing back to false
-            if (Vector3.Distance(_closestPos, _player.position) > LedgeLetGoDistance)
+            if (Vector3.Distance(_closestPos, PlayerLedgeGrabTarget.position) > LedgeLetGoDistance)
             {
                 Debug.Log("climbing finished");
-                _playerIsCimbing = false;
+                _playerIsClimbing = false;
             }
         }
     }

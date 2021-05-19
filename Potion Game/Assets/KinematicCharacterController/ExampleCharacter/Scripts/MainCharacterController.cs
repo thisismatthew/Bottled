@@ -78,6 +78,8 @@ namespace KinematicCharacterController.Examples
         private float _currentSplineIndex;
         private bool _isClimbing = false;
         private bool _startedClimbing = false;
+        public bool JumpingFromClimbing = false;
+
 
 
         [Header("Misc")]
@@ -184,6 +186,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
+                       
                         CurrentClimbSpline = null;
                         break;
                     }
@@ -231,11 +234,12 @@ namespace KinematicCharacterController.Examples
                         {
                             _timeSinceJumpRequested = 0f;
                             _jumpRequested = true;
-
+                            
                         }
 
                         if (inputs.JumpUp && !Motor.GroundingStatus.IsStableOnGround)
                         {
+                            JumpingFromClimbing = false;
                             _jumpEndRequested = true;
                         }
 
@@ -299,19 +303,23 @@ namespace KinematicCharacterController.Examples
                         {
                             TransitionToState(CharacterState.Default);
                             _isClimbing = false;
+                            JumpingFromClimbing = true;
+
                         }
                         
 
                         if (inputs.JumpDown)
                         {
-                            _isClimbing = false;
-                            _jumpFromClimbingRequested = true;
+                            _timeSinceJumpRequested = 0f;
+                            _jumpRequested = true;
+                            JumpingFromClimbing = true;
                         }
 
                         if (inputs.JumpUp)
                         {
                             _isClimbing = true;
-                            _jumpFromClimbingRequested = false;
+                            _jumpRequested = false;
+                            JumpingFromClimbing = false;
                         }
 
                         break;
@@ -330,7 +338,6 @@ namespace KinematicCharacterController.Examples
         }
 
         private Quaternion _tmpTransientRot;
-        private bool _jumpFromClimbingRequested;
 
 
         /// <summary>
@@ -393,6 +400,18 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
+                case CharacterState.Climbing:
+                    {
+                        /*
+                        // Smoothly interpolate from current to target look direction
+                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, CurrentClimbSpline.GetSplinePosition(_currentSplineIndex), 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+                        Debug.DrawLine(transform.position, CurrentClimbSpline.GetSplinePosition(_currentSplineIndex), Color.red);
+                        // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
+
+                        */
+                        break;
+                    }
             }
         }
 
@@ -410,7 +429,8 @@ namespace KinematicCharacterController.Examples
                         // Ground movement
                         if (Motor.GroundingStatus.IsStableOnGround)
                         {
-
+                            //make sure we have landed from a ledge jump
+                            JumpingFromClimbing = false;
                             float currentVelocityMagnitude = currentVelocity.magnitude;
 
                             Vector3 effectiveGroundNormal = Motor.GroundingStatus.GroundNormal;
@@ -565,8 +585,10 @@ namespace KinematicCharacterController.Examples
 
                         if (_isClimbing)
                         {
+                            
                             Vector3 target = Vector3.zero;
 
+                            //move the target spline point along, and snap the character to it. 
                             if (_moveInputVector.x < 0 && _currentSplineIndex <= 1)
                             {
                                 _currentSplineIndex += ClimbingSpeed;
@@ -577,20 +599,34 @@ namespace KinematicCharacterController.Examples
                             }
 
                             target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
+                            //now lets make sure that the character is oriented and positioned right fo animations
+                            //offset the snapped position by the hieght of the player to make it hang below the spline
+                            target.y -= Motor.Capsule.height;
+                            //now move the character backwards by its width
+                            target += -(Motor.CharacterForward * (Motor.Capsule.radius*2));
+
+
+
                             Motor.MoveCharacter(target);
+
+                            //if we moved to the end of the spline take us off
+                            if (_currentSplineIndex == 1 || _currentSplineIndex == 0)
+                            {
+                                TransitionToState(CharacterState.Default);
+                            }
                         }
-                        
+
 
                         // Handle jumping from climbing
-                        
+                        _timeSinceJumpRequested += deltaTime;
                         Vector3 jumpDirection = Motor.CharacterUp;
-                        if (_jumpFromClimbingRequested)
+                        if (_jumpRequested)
                         {
                             TransitionToState(CharacterState.Default);
                             // Add to the return velocity and reset jump state
                             currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
                             currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
-                            _jumpFromClimbingRequested = false;
+                            _jumpRequested = false;
                             _isClimbing = false;
                         }
 
@@ -657,6 +693,15 @@ namespace KinematicCharacterController.Examples
                                 MeshRoot.localScale = new Vector3(1f, 1f, 1f);
                                 _isCrouching = false;
                             }
+                        }
+                        break;
+                    }
+                case CharacterState.Climbing:
+                    {
+                        // Handle jumping pre-ground grace period
+                        if (_jumpRequested && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
+                        {
+                            _jumpRequested = false;
                         }
                         break;
                     }
