@@ -9,8 +9,8 @@ namespace KinematicCharacterController.Examples
     {
         public float DeadlyFallDistance = 10;
         public float LengthOfTimeDead = 3f;
+        public Animator RespawnAnimator;
         public Transform RespawnPoint;
-
         private KinematicCharacterMotor Motor;
         private MainCharacterController Controller;
         private float _currentHeight;
@@ -20,6 +20,7 @@ namespace KinematicCharacterController.Examples
         private float _timeSlice = 0.1f;
         private float _fallTimer = 0f;
         private float _deadTimer = 0f;
+        
 
         private void Start()
         {
@@ -27,11 +28,13 @@ namespace KinematicCharacterController.Examples
             Motor = GetComponent<KinematicCharacterMotor>();
             _currentHeight = transform.position.y;
             _previousHeight = _currentHeight;
+
+
         }
         // Update is called once per frame
         void Update()
         {
-            
+            Debug.DrawLine(RespawnPoint.position, Motor.transform.position, Color.red);
            
             _fallTimer += Time.deltaTime;
             if (_fallTimer > _timeSlice)
@@ -52,7 +55,7 @@ namespace KinematicCharacterController.Examples
            if ((_heightFallen< -DeadlyFallDistance)&& Motor.GroundingStatus.IsStableOnGround)
             {
                 Controller.TransitionToState(CharacterState.Dead);
-                
+                RespawnAnimator.Play("crossfade_start");
                 _heightFallen = 0;
             }
 
@@ -61,7 +64,9 @@ namespace KinematicCharacterController.Examples
                 _deadTimer += Time.deltaTime;
                 if (_deadTimer > LengthOfTimeDead)
                 {
-                    Motor.MoveCharacter(RespawnPoint.position);
+                    Debug.Log("Moved ");
+                    Motor.SetPosition(RespawnPoint.position);
+                    RespawnAnimator.Play("crossfade_end");
                     Controller.TransitionToState(CharacterState.Default);
                     _deadTimer = 0;
                 }

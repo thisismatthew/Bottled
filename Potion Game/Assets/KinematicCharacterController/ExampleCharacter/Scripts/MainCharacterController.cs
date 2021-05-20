@@ -154,7 +154,7 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void OnStateEnter(CharacterState state, CharacterState fromState)
         {
-            Debug.Log("entering state: " + state.ToString());
+            //Debug.Log("entering state: " + state.ToString());
             switch (state)
             {
                 case CharacterState.Default:
@@ -174,7 +174,7 @@ namespace KinematicCharacterController.Examples
         /// </summary>
         public void OnStateExit(CharacterState state, CharacterState toState)
         {
-            Debug.Log("leaving state: " + state.ToString());
+            //Debug.Log("leaving state: " + state.ToString());
             switch (state)
             {
                 case CharacterState.Default:
@@ -405,13 +405,13 @@ namespace KinematicCharacterController.Examples
                         
                         // Smoothly interpolate from current to target look direction
                         Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-                        Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
-                        Debug.DrawLine(transform.position, target, Color.red);
+                        
+                        //These Debug Lines help to show the climbing rotation bug. 
+                        //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
+                        //Debug.DrawLine(transform.position, target, Color.red);
                         
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                        
-                        
                         break;
                     }
             }
@@ -576,12 +576,8 @@ namespace KinematicCharacterController.Examples
                         if (_startedClimbing == true)
                         {
                             _currentSplineIndex = CurrentClimbSpline.GetClosestVertexIndex(transform.position);
-                            Debug.Log("Spline Index: "+_currentSplineIndex);
-
                             //all we need are the two end points of the spline 
-                            Debug.Log("set velocity to 0");
                             currentVelocity = Vector3.zero;
-
                             _startedClimbing = false;
                         }
 
@@ -635,6 +631,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Dead:
                     {
+                        Debug.Log("Velocity Stopped ");
                         currentVelocity = Vector3.zero;
                         break;
                     }
