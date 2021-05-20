@@ -94,7 +94,7 @@ public class Spline : MonoBehaviour
     {
         
         Vector3[] points = GetPoints(_pieces);
-        Vector3 closestPoint = points[0];
+        Vector3 closestPoint = Vector3.positiveInfinity;
         float currentDistance = Vector3.Distance(pos, closestPoint);
         foreach (Vector3 p in points)
         {

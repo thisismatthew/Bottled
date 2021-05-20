@@ -13,7 +13,6 @@ public class Ledge : MonoBehaviour
     private bool _playerIsClimbing = false;
     public float LedgeGrabDistance = 2f;
     public float LedgeLetGoDistance = 3f;
-    private bool _playerIsJumpingFromLedge = false;
     private Vector3 _closestPos = new Vector3();
     void Start()
     {
@@ -31,9 +30,6 @@ public class Ledge : MonoBehaviour
             
             //not sure if this will be too taxing on the cpu when there are a bunch of ledges around...
             _closestPos = _spline.GetClosestVertexPosition(PlayerLedgeGrabTarget.position);
-
-            Debug.DrawLine(_closestPos, PlayerLedgeGrabTarget.position, Color.green);
-
            
             
             //if the player is close enough to the closest point on the spline and isn't already climbing this spline...
