@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PotionLiquid
-  m_Shader: {fileID: 4800000, guid: 3489754c89d720743b404a48323eb736, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 098b6f93fd6e0154ca911c9e4029f872, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AnimatedTex:
+        m_Texture: {fileID: 2800000, guid: 1f303a101fc8dc0439fc5ea515d6ce0c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -43,6 +47,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FoamTexture:
+        m_Texture: {fileID: 2800000, guid: bb4b08b8b2c37084db91499ce178fee2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -59,8 +67,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_a4a4025f0ca64f7790bf28e6ceb1865d_Texture_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_7754b834c88f4a1b9c114d6da801bf47_Texture_1:
+        m_Texture: {fileID: 2800000, guid: bb4b08b8b2c37084db91499ce178fee2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b8e67db6f68a469f995f7c33232e2d77_Texture_1:
+        m_Texture: {fileID: 2800000, guid: bd06414be18bf014da933be497bdcae7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample:
+        m_Texture: {fileID: 2800000, guid: b0be1d75880d6074ebee043ff305e86c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
@@ -68,6 +92,26 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample2:
+        m_Texture: {fileID: 2800000, guid: b0be1d75880d6074ebee043ff305e86c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample22:
+        m_Texture: {fileID: 2800000, guid: b0be1d75880d6074ebee043ff305e86c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSamplsse2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_82eb80d5ccec4b6589a9a32fb92eff5c_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 750b1bd7ba8bd28489650de6d0a95cc5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaveDeformTex:
+        m_Texture: {fileID: 2800000, guid: b0be1d75880d6074ebee043ff305e86c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WaveDeformTexx:
         m_Texture: {fileID: 2800000, guid: b0be1d75880d6074ebee043ff305e86c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -84,9 +128,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_16daf75d787243a89d5f81f88731183b: 8.41
+    - Vector1_70adbb5f1a3445d5b1f44502e75df337: 0.69
+    - Vector1_8f8579ae7658406c9bb6b1558586bbb9: 0.93
+    - Vector1_ef77b2e74de44426963f9baa167a2a09: -0.47
+    - _Alpha: 0.88
     - _AlphaClip: 0
     - _AlphaCutoff: 0.5
     - _Blend: 0
+    - _BlendShTop: 1.08
+    - _BlendSharpness: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -97,24 +148,32 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _Float0: 1.29
+    - _FoamBlend: -0.16
+    - _FoamCoverage: 7.07
+    - _FoamHeight: -0.04
+    - _FoamHeight2: 0
+    - _FoamSpeed: -0.05
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Height: -0.37
+    - _Height: 0.065
     - _IndexofRefraction: 1
     - _Metallic: 0
     - _NormalContrast: 0.06
+    - _Occlusion: 0.05
     - _OcclusionStrength: 1
     - _Opacity: 0
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _Smoothness: 0.85
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SphereRadius: 0.39
+    - _SphereRadius: 0.385
     - _SrcBlend: 1
     - _Surface: 0
+    - _TextureBrightness: 1
+    - _TextureSpeed: 0.1
     - _TransAmbient: 0.1
     - _TransDirect: 0.9
     - _TransNormal: 0.5
@@ -122,19 +181,25 @@ Material:
     - _TransShadow: 0.5
     - _TransStrength: 1
     - _TransmissionShadow: 0.5
-    - _WaveDensity: 0.25
+    - _WaveDensity: 0.385
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _occ: -0.16
     - _smth: 0
     - _spec: 0
     m_Colors:
+    - Vector2_179f46e2d57047968d7b80f245f465e5: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 0.24056602, g: 0.25843513, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LiquidColour: {r: 0.024234774, g: 0.01201493, b: 0.8490566, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _planeNormal: {r: 0, g: 1, b: 0, a: 0}
+    - _SpecularColour: {r: 0.2520915, g: 0.36880618, b: 0.5188679, a: 0}
+    - _SpherePosition: {r: 0, g: -0.1, b: 0, a: 0}
+    - _TextureAdjust: {r: 0, g: 0, b: 0, a: 0}
+    - _TextureColour: {r: 1, g: 1, b: 1, a: 0}
+    - _planeNormal: {r: 0, g: -1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4707666552324497120
 MonoBehaviour:

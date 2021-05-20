@@ -24,14 +24,9 @@ int Id2dTo1d(uint2 idxy, int length)
     return output;
 }
 
-float findAdd(float ext, uint2 idxy)
+float findAdd(float ext)
 {   
-    float output = 10*sin((idxy.x)/2)*ext;
-    if (idxy.x <=1 && idxy.x>=7 && idxy.y <=1 && idxy.y>=7)
-    {
-        output = 0;
-    }
-    return output;
+    return ext;
 }
 
 [numthreads (SPRING_COUNT, SPRING_COUNT, 1)]
@@ -93,12 +88,11 @@ void CSMainPos (uint3 id : SV_DispatchThreadID)
     int id1d = Id2dTo1d(id.xy, SPRING_COUNT);
 
     float velocity = spring1DVelocityArray[id1d];
-    float ex = externalForcesBuffer[id1d];
 
-    float exadd = findAdd(ex, id.xy);
+    float exadd = findAdd(externalForcesBuffer[id1d]);
 
     velocity += exadd; // Scale by external forces...
-
+    velocity = clamp (velocity, -2,2);
 
     springPositionsArray[id1d] = saturate(springPositionsArray[id1d] + velocity * timestep);
 
