@@ -5,6 +5,8 @@ using KinematicCharacterController.Examples;
 
 public class Pickupable : MonoBehaviour
 {
+    public bool Flamable;
+    public bool Burning;
     public Ingredient IngredientName;
     //just let the player know that this object can be picked up.
     //this will need refactoring if there are multiple interactables in range of the player. 
