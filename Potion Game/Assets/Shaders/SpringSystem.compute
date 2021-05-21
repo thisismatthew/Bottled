@@ -93,9 +93,8 @@ void CSMainPos (uint3 id : SV_DispatchThreadID)
 
     velocity += exadd; // Scale by external forces...
     velocity = clamp (velocity, -2,2);
-
-    springPositionsArray[id1d] = saturate(springPositionsArray[id1d] + velocity * timestep);
-
+    float pos = saturate(springPositionsArray[id1d] + velocity * timestep);
+    springPositionsArray[id1d] = clamp (pos, 0, 0.6);
     // Normalise our values before packing into texture
     float outPosPct = saturate(springPositionsArray[id1d]);
 
