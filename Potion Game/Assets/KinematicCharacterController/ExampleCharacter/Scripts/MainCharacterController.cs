@@ -89,6 +89,8 @@ namespace KinematicCharacterController.Examples
         public Transform MeshRoot;
         public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
+        public GameObject SmashedCharacterPrefab;
+        public GameObject Body;
 
         [Header("Interaction")]
         public GameObject Interactable;
@@ -159,11 +161,18 @@ namespace KinematicCharacterController.Examples
             {
                 case CharacterState.Default:
                     {
+                        Body.active = true;
                         break;
                     }
                 case CharacterState.Climbing:
                     {
                         _startedClimbing = true;
+                        break;
+                    }
+                case CharacterState.Dead:
+                    {
+                        Body.active = false;
+                        Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
                         break;
                     }
             }
@@ -397,23 +406,25 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
-                case CharacterState.Climbing:
-                    {
-                        //TODO the current climbing rotation is bugged and needs to be fixed. 
-                        Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
-                        target.y -= Motor.Capsule.height;
-                        
-                        // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-                        
-                        //These Debug Lines help to show the climbing rotation bug. 
-                        //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
-                        //Debug.DrawLine(transform.position, target, Color.red);
-                        
-                        // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                        break;
-                    }
+
+                    //TODO the current climbing rotation is bugged and needs to be fixed. 
+                    /*case CharacterState.Climbing:
+                        {
+
+                            Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
+                            target.y -= Motor.Capsule.height;
+
+                            // Smoothly interpolate from current to target look direction
+                            Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+
+                            //These Debug Lines help to show the climbing rotation bug. 
+                            //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
+                            //Debug.DrawLine(transform.position, target, Color.red);
+
+                            // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                            currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
+                            break;
+                        }*/
             }
         }
 

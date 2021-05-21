@@ -7,6 +7,7 @@ namespace KinematicCharacterController.Examples
     [RequireComponent(typeof(KinematicCharacterMotor))]
     public class PlayerDeathTrigger : MonoBehaviour
     {
+        
         public float DeadlyFallDistance = 10;
         public float LengthOfTimeDead = 3f;
         public Animator RespawnAnimator;
