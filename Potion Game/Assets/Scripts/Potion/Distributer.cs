@@ -19,6 +19,10 @@ public class Distributer : MonoBehaviour
             SetAttributesToDistribute.Add(a);
         }
     }
+    public void FillDistributor(List<IPotionAttribute> PotionFill)
+    {
+        SetAttributesToDistribute = PotionFill;
+    }
     private void OnTriggerEnter(Collider player)
     {
         //the player must have the tag Player for the collider to detect them 

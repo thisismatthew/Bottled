@@ -54,6 +54,7 @@ public class Cauldron : MonoBehaviour
                     RecipeMade = CompareRecipes(Cauldronrecipe.Ingredients, recipe.Ingredients);
                     if (RecipeMade)
                     {
+                        //FillDistributor(recipe.RecipeAttributes);
                         //do what is needed to be done with curent recipe
                         //fill dispenser
                         RecipeMade = false;
