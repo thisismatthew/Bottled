@@ -80,6 +80,7 @@ namespace KinematicCharacterController.Examples
         private bool _isClimbing = false;
         private bool _startedClimbing = false;
         public bool JumpingFromClimbing = false;
+        private float _upDownInput = 0f;
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -304,6 +305,12 @@ namespace KinematicCharacterController.Examples
                     {
 
                         _isClimbing = true;
+
+                        _upDownInput = inputs.MoveAxisForward;
+
+
+
+
                         //if a jump is requested just drop the player off the ledge
                         if (inputs.CrouchDown)
                         {
@@ -596,13 +603,13 @@ namespace KinematicCharacterController.Examples
                         {
                             
                             Vector3 target = Vector3.zero;
-
+                            Debug.Log(_upDownInput);
                             //move the target spline point along, and snap the character to it. 
-                            if (_moveInputVector.x < 0 && _currentSplineIndex <= 1)
+                            if (_upDownInput < 0 && _currentSplineIndex <= 1)
                             {
                                 _currentSplineIndex += ClimbingSpeed;
                             }
-                            if (_moveInputVector.x > 0 && _currentSplineIndex >= 0)
+                            if (_upDownInput > 0 && _currentSplineIndex >= 0)
                             {
                                 _currentSplineIndex -= ClimbingSpeed;
                             }
