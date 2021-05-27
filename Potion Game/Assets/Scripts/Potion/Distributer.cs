@@ -28,11 +28,13 @@ public class Distributer : MonoBehaviour
         //the player must have the tag Player for the collider to detect them 
         if (player.gameObject.tag == "Player")
         {
+            Debug.Log("fire broken");
             //assign it our attributes
             player.GetComponent<Potion>().EquipPotion(SetAttributesToDistribute);
             player.GetComponent<Potion>().Charges = SetChargesToDeliver;
             //TODO probably don't need to search for the component twice but im too lazy to check if I can get a ref rather than a copy. 
             player.GetComponent<Potion>().DebugAttributes();
+            Debug.Log("fire broken");
         }
     }
 }

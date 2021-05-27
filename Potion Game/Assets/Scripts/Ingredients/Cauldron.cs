@@ -5,15 +5,25 @@ using System.Linq;
 
 public class Cauldron : MonoBehaviour
 {
+    public GameObject MyDistributerCollider;
+    private Distributer MyDistributer;
     public List<Recipe> Recipes = new List<Recipe>();
     public Recipe Cauldronrecipe;
     public bool RecipeMade = false;
-
+    public Dictionary<PotionAttributeName, IPotionAttribute> PotionAttributeDict = new Dictionary<PotionAttributeName, IPotionAttribute>();
+    
+    public List<IPotionAttribute> ListOfAttributes = new List<IPotionAttribute>();
     private int count = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        //linking script with enum PotionAttributeName value
+        PotionAttributeDict.Add(PotionAttributeName.Fire, GetComponent<FireAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.Water, GetComponent<WaterAttribute>());
+
+        //linking cauldron with distributer
+        MyDistributer = MyDistributerCollider.GetComponent<Distributer>();
         //Starting ingredients in Cauldran
         Cauldronrecipe.Ingredients[0] = Ingredient.apple;
         Cauldronrecipe.Ingredients[1] = Ingredient.Object;
@@ -47,17 +57,26 @@ public class Cauldron : MonoBehaviour
             Destroy(collider.gameObject);
             Cauldronrecipe.Ingredients[count] = ingredientAdded;
             count++;
-            if (count == 3)
+            if (count == 3) 
+                
             {
                 foreach (Recipe recipe in Recipes)
                 {
                     RecipeMade = CompareRecipes(Cauldronrecipe.Ingredients, recipe.Ingredients);
                     if (RecipeMade)
                     {
-                        //FillDistributor(recipe.RecipeAttributes);
-                        //do what is needed to be done with curent recipe
-                        //fill dispenser
-                        RecipeMade = false;
+                        Debug.Log("fire match");
+                        
+                        foreach (PotionAttributeName attribute in recipe.RecipeAttributes)
+                        {
+                            Debug.Log("add fire attribute");
+                            ListOfAttributes.Add(PotionAttributeDict[attribute]);
+                        }
+                        
+                MyDistributer.FillDistributor(ListOfAttributes);
+                //do what is needed to be done with curent recipe
+                //fill dispenser
+                RecipeMade = false;
                     }
                 }
             }
