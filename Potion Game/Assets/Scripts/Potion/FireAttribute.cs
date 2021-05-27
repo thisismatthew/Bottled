@@ -9,7 +9,7 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     public void Equip()
     {
         Debug.Log("Equiped fire!!!!");
-        //set colour
+        //TODO set colour
     }
 
     public void Unequip()
@@ -19,6 +19,10 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
 
     public bool Use()
     {
+        //Flamable.equip
+        //TODO sprout fire particle affect
+        gameObject.AddComponent<Flamable>();
+        gameObject.GetComponent<Flamable>().Burning = true;
         Debug.Log("Used A fire");
         return true;
     }
