@@ -5,9 +5,14 @@ using KinematicCharacterController.Examples;
 
 public class Pickupable : MonoBehaviour
 {
+
+    public Ingredient IngredientName;
     //just let the player know that this object can be picked up.
     //this will need refactoring if there are multiple interactables in range of the player. 
-
+    void Start()
+    {
+        gameObject.tag = "PickUpable";
+    }
     private void OnTriggerEnter(Collider player)
     {
         if (player.gameObject.tag == "Player")

@@ -28,6 +28,7 @@ namespace KinematicCharacterController.Examples
         public bool CrouchDown;
         public bool CrouchUp;
         public bool UsePotion;
+        public bool Interact;
     }
 
     public struct AICharacterInputs

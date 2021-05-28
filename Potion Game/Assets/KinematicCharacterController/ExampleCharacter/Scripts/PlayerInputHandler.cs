@@ -95,9 +95,10 @@ namespace KinematicCharacterController.Examples
             characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
             characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.C);
             characterInputs.UsePotion = Input.GetKeyDown(KeyCode.E);
+            characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
 
             // Apply inputs to character
-                Character.SetInputs(ref characterInputs);
+            Character.SetInputs(ref characterInputs);
         }
     }
 }
