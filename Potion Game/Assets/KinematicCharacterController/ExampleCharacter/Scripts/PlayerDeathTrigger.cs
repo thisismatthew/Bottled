@@ -57,6 +57,7 @@ namespace KinematicCharacterController.Examples
             //and they have landed on stable ground. Smash em. 
            if ((_heightFallen< -DeadlyFallDistance)&& Motor.GroundingStatus.IsStableOnGround)
             {
+                FindObjectOfType<AudioManager>().Play("Glass_Smash");
                 SpringWeight.parent = this.transform;
                 Controller.TransitionToState(CharacterState.Dead);
                 RespawnAnimator.Play("crossfade_start");
