@@ -92,6 +92,8 @@ namespace KinematicCharacterController.Examples
         public float CrouchedCapsuleHeight = 0.5f;
         public GameObject SmashedCharacterPrefab;
         public GameObject Body;
+        public GameObject RightArm;
+        public GameObject LeftArm;
 
         [Header("Interaction")]
         public GameObject Interactable;
@@ -118,6 +120,12 @@ namespace KinematicCharacterController.Examples
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
 
+        //Arm wiggle
+        private Renderer R_ArmRend;
+        private Renderer L_ArmRend;
+        private float _armPower;
+        private float _armSpeed;
+
         private void Awake()
         {
             //get Potion Component;
@@ -126,6 +134,10 @@ namespace KinematicCharacterController.Examples
             TransitionToState(CharacterState.Default);
             // Assign the characterController to the motor
             Motor.CharacterController = this;
+
+            //Get Arms Renderer
+            R_ArmRend = RightArm.GetComponent<Renderer>();
+            L_ArmRend = LeftArm.GetComponent<Renderer>();
         }
 
         private void Update()
@@ -798,13 +810,15 @@ namespace KinematicCharacterController.Examples
         {
             Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
             Vector3 localVel = transform.InverseTransformDirection(vel);
-            //Debug.Log(localVel.z + " " +localVel.x);
             if(localVel.x <= 0.1f && localVel.x > -0.1f)
             {
                 if (localVel.z > 0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
                     anim.SetBool("RunBackwards", false);
                     anim.SetBool("Run", true);
+                    _armPower = Mathf.SmoothStep(0.5f, 0.85f , -0.02f);
+                    _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
+
                 }
                 else if (localVel.z < -0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
@@ -816,29 +830,16 @@ namespace KinematicCharacterController.Examples
                 {
                     anim.SetBool("Run", false);
                     anim.SetBool("RunBackwards", false);
-                }
-                anim.SetBool("RunRight", false);
-                anim.SetBool("RunLeft", false);
-            }
-            else
-            {
-                if (localVel.x > 0.2 && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", false);
-                    anim.SetBool("RunRight", true);
-                }
-
-                if (localVel.x < -0.2 && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", false);
-                    anim.SetBool("RunLeft", true);
+                    _armPower = Mathf.SmoothStep(0.85f, 0.5f, 0.02f);
+                    _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
                 }
             }
 
-            
 
+            R_ArmRend.material.SetFloat("_Power", _armPower);
+            R_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
+            L_ArmRend.material.SetFloat("_Power", _armPower);
+            L_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
         }
     }
 }
