@@ -84,7 +84,7 @@ public class SpringSystem : MonoBehaviour
         m_renderer.material.SetVector("_SpherePosition", relativeSpherePosition);
 
         Vector2 externalVector = new Vector2(pointAtVec.x, pointAtVec.z).normalized;
-        Debug.Log(externalVector);
+        //Debug.Log(externalVector);
 
         Vector3 velocity = (transform.position - lastPos) / Time.fixedDeltaTime;
         Vector3 rotVelocity = (transform.up - lastUp) / Time.fixedDeltaTime;
@@ -150,9 +150,9 @@ public class SpringSystem : MonoBehaviour
         
         float[] test = new float[16 * 16];
         _springHeightBuffer.GetData(test);
-        Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] +","+ test[4] + "," + test[5] + "," + test[6] + "," + test[7] +","+ test[8] + "," + test[9] + "," + test[10] + "," + test[11] +","+ test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
-        Debug.Log("line2 " + test[8 + 0] + "," + test[8 + 1] + "," + test[8 + 2] + "," + test[8 + 3] + ","+test[8 + 4] + "," + test[8 + 5] + "," + test[8 + 6] + "," + test[8 + 7] +","+ test[8 + 8] + "," + test[8 + 9] + "," + test[8 + 10] + "," + test[8 + 11] +","+ test[8 + 12] + "," + test[8 + 13] + "," + test[8 + 14] + "," + test[8 + 15]);
-        Debug.Log("line3 " + test[16 + 0] + "," + test[16 + 1] + "," + test[16 + 2] + "," + test[16 + 3] +","+ test[16 + 4] + "," + test[16 + 5] + "," + test[16 + 6] + "," + test[16 + 7] +","+ test[16 + 8] + "," + test[16 + 9] + "," + test[16 + 10] + "," + test[16 + 11] + test[16 + 12] + "," + test[16 + 13] + "," + test[16 + 14] + "," + test[16 + 15]);
+        //Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] +","+ test[4] + "," + test[5] + "," + test[6] + "," + test[7] +","+ test[8] + "," + test[9] + "," + test[10] + "," + test[11] +","+ test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
+        //Debug.Log("line2 " + test[8 + 0] + "," + test[8 + 1] + "," + test[8 + 2] + "," + test[8 + 3] + ","+test[8 + 4] + "," + test[8 + 5] + "," + test[8 + 6] + "," + test[8 + 7] +","+ test[8 + 8] + "," + test[8 + 9] + "," + test[8 + 10] + "," + test[8 + 11] +","+ test[8 + 12] + "," + test[8 + 13] + "," + test[8 + 14] + "," + test[8 + 15]);
+        //Debug.Log("line3 " + test[16 + 0] + "," + test[16 + 1] + "," + test[16 + 2] + "," + test[16 + 3] +","+ test[16 + 4] + "," + test[16 + 5] + "," + test[16 + 6] + "," + test[16 + 7] +","+ test[16 + 8] + "," + test[16 + 9] + "," + test[16 + 10] + "," + test[16 + 11] + test[16 + 12] + "," + test[16 + 13] + "," + test[16 + 14] + "," + test[16 + 15]);
         
     }
     private void Update()
