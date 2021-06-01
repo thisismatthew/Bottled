@@ -71,25 +71,35 @@ public class SpringSystem : MonoBehaviour
 
         delta[0] = Time.fixedDeltaTime;
 
-        Vector3 bottleCenter = new Vector3(transform.position.x, transform.position.y + 0.385f, transform.position.z);
-        Vector3 bottleTop = new Vector3(transform.position.x, transform.position.y + 0.3f + 2 * 0.385f, transform.position.z);
+        Vector3 bottleCenter = m_renderer.bounds.center;
+        Vector3 bottleTop = new Vector3(bottleCenter.x, bottleCenter.y + 0.385f, bottleCenter.z);
+        
         target.position = new Vector3(target.position.x, targetRoot.position.y, target.position.z);
+        targetRoot.position = new Vector3(bottleCenter.x, targetRoot.position.y, bottleCenter.z);
+
         Vector3 pointAtVec = bottleCenter - target.position;
+
         Vector3 pointNormal = pointAtVec.normalized;
-        Vector3 relativeSpherePosition = bottleTop - target.position;
+        Vector3 relativeSpherePosition = targetRoot.position- bottleTop;
+
         //bubbles.transform.up = pointAtVec;
-
+        Vector3 pointNormalFace = new Vector3(pointAtVec.x, -pointAtVec.y, pointAtVec.z);
+        Ray ray = new Ray(bottleCenter, pointNormal);
+        Vector3 testtop = bottleTop-target.position;
+        Debug.DrawRay(bottleCenter, testtop.normalized);
+        Debug.DrawRay(bottleCenter, pointNormalFace, Color.green);
+        //Vector3 projectedTarget = ray.GetPoint(1);
         m_renderer.material.SetVector("_planeNormal", pointNormal);
-        //Debug.Log(pointNormal);
-        m_renderer.material.SetVector("_SpherePosition", relativeSpherePosition);
-
+        Debug.Log("parentrotate " + transform.parent.rotation.eulerAngles.y);
+        m_renderer.material.SetFloat("_SpherePosition", relativeSpherePosition.y);
+        m_renderer.material.SetFloat("_Rotate", 180-transform.parent.rotation.eulerAngles.y);
         Vector2 externalVector = new Vector2(pointAtVec.x, pointAtVec.z).normalized;
         //Debug.Log(externalVector);
 
         Vector3 velocity = (transform.position - lastPos) / Time.fixedDeltaTime;
         Vector3 rotVelocity = (transform.up - lastUp) / Time.fixedDeltaTime;
 
-        float vscale = velocity.magnitude;
+        float vscale = velocity.magnitude+rotVelocity.magnitude;
         float neg1 = 1;
         if (externalVector.x<0)
         {
@@ -120,7 +130,7 @@ public class SpringSystem : MonoBehaviour
                 }
             }
         }
-        m_renderer.sharedMaterial.SetTexture("_WaveDeformTex", texture);
+        //m_renderer.sharedMaterial.SetTexture("_WaveDeformTex", texture);
 
 
         lastPos = transform.position;
