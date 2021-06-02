@@ -56,7 +56,7 @@ public class Ladel : MonoBehaviour
         if (_returnToCauldron)
         {
             _target = _startPosition;
-            _target.y += LiftHeight + + 2;
+            _target.y += LiftHeight + 2;
             if (Vector3.Distance(transform.position, _target) < 0.5)
             {
                 _returnToCauldron = false;
