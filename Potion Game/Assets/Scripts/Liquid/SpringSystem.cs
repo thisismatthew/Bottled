@@ -86,11 +86,11 @@ public class SpringSystem : MonoBehaviour
         Vector3 pointNormalFace = new Vector3(pointAtVec.x, -pointAtVec.y, pointAtVec.z);
         Ray ray = new Ray(bottleCenter, pointNormal);
         Vector3 testtop = bottleTop-target.position;
-        Debug.DrawRay(bottleCenter, testtop.normalized);
-        Debug.DrawRay(bottleCenter, pointNormalFace, Color.green);
+        //Debug.DrawRay(bottleCenter, testtop.normalized);
+        //Debug.DrawRay(bottleCenter, pointNormalFace, Color.green);
         //Vector3 projectedTarget = ray.GetPoint(1);
         m_renderer.material.SetVector("_planeNormal", pointNormal);
-        Debug.Log("parentrotate " + transform.parent.rotation.eulerAngles.y);
+        //Debug.Log("parentrotate " + transform.parent.rotation.eulerAngles.y);
         m_renderer.material.SetFloat("_SpherePosition", relativeSpherePosition.y);
         m_renderer.material.SetFloat("_Rotate", 180-transform.parent.rotation.eulerAngles.y);
         Vector2 externalVector = new Vector2(pointAtVec.x, pointAtVec.z).normalized;
