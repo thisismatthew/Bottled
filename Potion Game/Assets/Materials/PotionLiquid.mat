@@ -83,6 +83,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_db9b48930f6146cd8fc5545eaef61186_Out_0:
+        m_Texture: {fileID: 2800000, guid: 43dc354359b61e845ada529058caba2a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TextureSample:
         m_Texture: {fileID: 2800000, guid: b0be1d75880d6074ebee043ff305e86c, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -115,6 +119,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: b0be1d75880d6074ebee043ff305e86c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _firepotionsub_dedac79e545e40f5bedebae00f8dbf36_Texture2D22e58a5c24d5496b993c7a585f2d2255_1271027633:
+        m_Texture: {fileID: 2800000, guid: e4e40a89d87bdd543824c64866b0fc21, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -129,9 +137,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_16daf75d787243a89d5f81f88731183b: 8.41
+    - Vector1_2049fa9e73f14cd7b279653ab93937bc: 28.1
     - Vector1_70adbb5f1a3445d5b1f44502e75df337: 0.69
     - Vector1_8f8579ae7658406c9bb6b1558586bbb9: 0.93
+    - Vector1_da1171ec41be4559aa2d33b0ca8a33ae: 0.358
     - Vector1_ef77b2e74de44426963f9baa167a2a09: -0.47
+    - Vector1_f45e6b9c624d4ecb87dac63bc43d98b5: 1
     - _Alpha: 1
     - _AlphaClip: 0
     - _AlphaCutoff: 0.5
@@ -148,9 +159,9 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _Float0: 1.29
-    - _FoamBlend: -0.16
+    - _FoamBlend: 2
     - _FoamCoverage: 7.07
-    - _FoamHeight: -0.11
+    - _FoamHeight: -0.12
     - _FoamHeight2: 0
     - _FoamSpeed: -0.05
     - _GlossMapScale: 0
@@ -167,6 +178,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rotate: 0
+    - _Rotate2: 0
     - _Smoothness: 0.85
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -176,7 +188,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _TextureBrightness: 1
-    - _TextureSpeed: 0.1
+    - _TextureSpeed: 0.27
     - _TransAmbient: 0.1
     - _TransDirect: 0.9
     - _TransNormal: 0.5
@@ -184,7 +196,7 @@ Material:
     - _TransShadow: 0.5
     - _TransStrength: 1
     - _TransmissionShadow: 0.5
-    - _WaveDensity: 0.385
+    - _WaveDensity: 0.45
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _occ: -0.16
@@ -196,9 +208,10 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 0.24056602, g: 0.25843513, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LiquidColour: {r: 1, g: 0.2060418, b: 0, a: 0}
+    - _FoamColour: {r: 1, g: 0.9128469, b: 0, a: 0}
+    - _LiquidColour: {r: 0.5566038, g: 0.26058513, b: 0.21791562, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpecularColour: {r: 0.2520915, g: 0.36880618, b: 0.5188679, a: 0}
+    - _SpecularColour: {r: 0, g: 0, b: 0, a: 0}
     - _SpherePosition: {r: 0, g: -0.1, b: 0, a: 0}
     - _TextureAdjust: {r: 0, g: 0, b: 0, a: 0}
     - _TextureColour: {r: 1, g: 1, b: 1, a: 0}
