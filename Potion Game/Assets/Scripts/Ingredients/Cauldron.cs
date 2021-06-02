@@ -6,6 +6,7 @@ using System.Linq;
 public class Cauldron : MonoBehaviour
 {
     public GameObject MyDistributerCollider;
+    public Ladel ladel;
     private Distributer MyDistributer;
     public List<Recipe> Recipes = new List<Recipe>();
     public Recipe Cauldronrecipe;
@@ -73,10 +74,11 @@ public class Cauldron : MonoBehaviour
                             ListOfAttributes.Add(PotionAttributeDict[attribute]);
                         }
                         
-                MyDistributer.FillDistributor(ListOfAttributes);
-                //do what is needed to be done with curent recipe
-                //fill dispenser
-                RecipeMade = false;
+                        MyDistributer.FillDistributor(ListOfAttributes);
+                        ladel.StartChase();
+                        //do what is needed to be done with curent recipe
+                        //fill dispenser
+                        RecipeMade = false;
                     }
                 }
             }

@@ -28,6 +28,7 @@ public class Distributer : MonoBehaviour
         //the player must have the tag Player for the collider to detect them 
         if (player.gameObject.tag == "Player")
         {
+            
             //assign it our attributes
             player.GetComponent<Potion>().EquipPotion(SetAttributesToDistribute);
             player.GetComponent<Potion>().Charges = SetChargesToDeliver;
