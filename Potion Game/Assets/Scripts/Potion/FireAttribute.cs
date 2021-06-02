@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class FireAttribute : MonoBehaviour, IPotionAttribute
 {
+    public Renderer Potion;
+    public Color NewPotionColor;
     private string _name = "fireAttribute";
 
     public void Equip()
     {
         Debug.Log("Equiped fire!!!!");
-        //TODO set colour
+        Potion.material.SetColor("_LiquidColour", NewPotionColor);
     }
 
     public void Unequip()
@@ -19,6 +21,7 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
 
     public bool Use()
     {
+        
         //Flamable.equip
         //TODO sprout fire particle affect
         gameObject.AddComponent<Flamable>();
