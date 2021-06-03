@@ -69,6 +69,8 @@ namespace KinematicCharacterController.Examples
                 _deadTimer += Time.deltaTime;
                 if (_deadTimer > LengthOfTimeDead)
                 {
+                    //TODO after the demo we'll fix the respawn bugs, at the moment we could just call the main menu again 
+
                     Motor.SetPosition(RespawnPoint.position);
                     SpringWeight.parent = null;
                     RespawnAnimator.Play("crossfade_end");
