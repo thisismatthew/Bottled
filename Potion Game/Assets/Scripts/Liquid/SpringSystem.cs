@@ -7,7 +7,7 @@ public class SpringSystem : MonoBehaviour
     const int SPRING_COUNT = 16;
 
     [Range(0.1f, 0.999f)] public float Damping = 0.1f;
-    [Range(0.1f, 100.0f)] public float SpringStiffness = 5.0f;
+    [Range(0.1f, 300.0f)] public float SpringStiffness = 5.0f;
 
     public Transform target;
     public Transform targetRoot;
@@ -28,8 +28,6 @@ public class SpringSystem : MonoBehaviour
     private Vector3 lastUp;
     private float[] extForce = new float[SPRING_COUNT * SPRING_COUNT];
     private float[] delta = new float[1];
-
-
 
     public RenderTexture getSimulatedTexture
     {
@@ -56,7 +54,13 @@ public class SpringSystem : MonoBehaviour
 
         float[] velArray = new float[SPRING_COUNT*SPRING_COUNT];
         float[] posArray = new float[SPRING_COUNT*SPRING_COUNT];
-
+        for (int y = 0; y < SPRING_COUNT; y++)
+        {
+            for (int x = 0; x < SPRING_COUNT; x++)
+            {
+                posArray[y + x * SPRING_COUNT] = 0.5f;
+            }
+        }
         _springHeightBuffer.SetData(posArray);
         _spring1DVelocityBuffer.SetData(velArray);
         SetGridProperties();
@@ -71,74 +75,45 @@ public class SpringSystem : MonoBehaviour
 
         delta[0] = Time.fixedDeltaTime;
 
+        //finding the liquid mesh parameters and liquid levels
         Vector3 bottleCenter = m_renderer.bounds.center;
-        Vector3 bottleTop = new Vector3(bottleCenter.x, bottleCenter.y + 0.385f, bottleCenter.z);
-        
-        target.position = new Vector3(target.position.x, targetRoot.position.y, target.position.z);
-        targetRoot.position = new Vector3(bottleCenter.x, targetRoot.position.y, bottleCenter.z);
-
         Vector3 pointAtVec = bottleCenter - target.position;
-
         Vector3 pointNormal = pointAtVec.normalized;
-        Vector3 relativeSpherePosition = targetRoot.position- bottleTop;
 
-        //bubbles.transform.up = pointAtVec;
-        Vector3 pointNormalFace = new Vector3(pointAtVec.x, -pointAtVec.y, pointAtVec.z);
+        //Getting angles to reorientate the liquid
         Ray ray = new Ray(bottleCenter, pointNormal);
-        Vector3 testtop = bottleTop-target.position;
-        //Debug.DrawRay(bottleCenter, testtop.normalized);
-        //Debug.DrawRay(bottleCenter, pointNormalFace, Color.green);
-        //Vector3 projectedTarget = ray.GetPoint(1);
-        m_renderer.material.SetVector("_planeNormal", pointNormal);
-        //Debug.Log("parentrotate " + transform.parent.rotation.eulerAngles.y);
-        m_renderer.material.SetFloat("_SpherePosition", relativeSpherePosition.y);
-        m_renderer.material.SetFloat("_Rotate", 180-transform.parent.rotation.eulerAngles.y);
-        Vector2 externalVector = new Vector2(pointAtVec.x, pointAtVec.z).normalized;
-        //Debug.Log(externalVector);
+        float waveangle = Vector3.Angle(ray.direction.normalized, transform.parent.forward);
+        float sphereangle = 180 - transform.parent.rotation.eulerAngles.y;
 
+        //sending data to shader
+        m_renderer.material.SetVector("_planeNormal", pointNormal);
+        m_renderer.material.SetFloat("_Rotate", sphereangle);
+        m_renderer.material.SetFloat("_Rotate2", sphereangle- waveangle);
+
+        //velocity to scale the waves
         Vector3 velocity = (transform.position - lastPos) / Time.fixedDeltaTime;
         Vector3 rotVelocity = (transform.up - lastUp) / Time.fixedDeltaTime;
 
-        float vscale = velocity.magnitude+rotVelocity.magnitude;
-        float neg1 = 1;
-        if (externalVector.x<0)
-        {
-            neg1 = -1;
-        }
-        float neg2 = -neg1;
-        for (int x = 0; x < SPRING_COUNT; x++)
-        {
-            for (int y = 0; y < SPRING_COUNT; y++)
-            {
-                if (y < SPRING_COUNT / 2)
-                {
-                    extForce[x + y * SPRING_COUNT] = vscale*neg1 * Mathf.Cos(x*Mathf.PI/15);
-                }
-                else
-                {
-                    extForce[x + y * SPRING_COUNT] = vscale*neg2 * Mathf.Cos(x * Mathf.PI / 15);
-                }
-            }    
-        }
-        if (vscale<0.4)
+        //combines the velocities into a value for scaling
+        float vscale = 0.1f*Mathf.SmoothStep(0,20,velocity.magnitude + rotVelocity.magnitude);
+
+        //sin wave to send to the compute shader
+        for (int y = 0; y < SPRING_COUNT; y++)
         {
             for (int x = 0; x < SPRING_COUNT; x++)
             {
-                for (int y = 0; y < SPRING_COUNT; y++)
-                {
-                    extForce[x + y * SPRING_COUNT] = -1f;
-                }
+                extForce[y + x * SPRING_COUNT] = vscale * Mathf.Sin((x + 7.5f) / 4.75f);
             }
         }
-        //m_renderer.sharedMaterial.SetTexture("_WaveDeformTex", texture);
 
-
+        //for the veloctites
         lastPos = transform.position;
         lastUp = transform.up;
 
-        // Spring Velocity Kernel
-        deltaTimeBuffer.SetData(delta);
 
+        // Spring Velocity Kernel
+        //values to be sent to the compute shader
+        deltaTimeBuffer.SetData(delta);
         physicsSimID = calculationEngine.FindKernel("CSMainVel");
         calculationEngine.SetBuffer(physicsSimID, "springPositionsArray", _springHeightBuffer);
         calculationEngine.SetBuffer(physicsSimID, "spring1DVelocityArray", _spring1DVelocityBuffer);
@@ -149,6 +124,7 @@ public class SpringSystem : MonoBehaviour
 
 
         // Spring Position Kernel
+        //values to be sent to the compute shader
         physicsSimID = calculationEngine.FindKernel("CSMainPos");
         calculationEngine.SetBuffer(physicsSimID, "springPositionsArray", _springHeightBuffer);
         calculationEngine.SetBuffer(physicsSimID, "spring1DVelocityArray", _spring1DVelocityBuffer);
@@ -157,16 +133,25 @@ public class SpringSystem : MonoBehaviour
         calculationEngine.SetBuffer(physicsSimID, "deltaTimeBuffer", deltaTimeBuffer);
         calculationEngine.SetTexture(physicsSimID, "Result", texture);
         calculationEngine.Dispatch(physicsSimID, SPRING_COUNT, SPRING_COUNT, 1);
-        
+
+        /*
         float[] test = new float[16 * 16];
         _springHeightBuffer.GetData(test);
-        //Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] +","+ test[4] + "," + test[5] + "," + test[6] + "," + test[7] +","+ test[8] + "," + test[9] + "," + test[10] + "," + test[11] +","+ test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
-        //Debug.Log("line2 " + test[8 + 0] + "," + test[8 + 1] + "," + test[8 + 2] + "," + test[8 + 3] + ","+test[8 + 4] + "," + test[8 + 5] + "," + test[8 + 6] + "," + test[8 + 7] +","+ test[8 + 8] + "," + test[8 + 9] + "," + test[8 + 10] + "," + test[8 + 11] +","+ test[8 + 12] + "," + test[8 + 13] + "," + test[8 + 14] + "," + test[8 + 15]);
-        //Debug.Log("line3 " + test[16 + 0] + "," + test[16 + 1] + "," + test[16 + 2] + "," + test[16 + 3] +","+ test[16 + 4] + "," + test[16 + 5] + "," + test[16 + 6] + "," + test[16 + 7] +","+ test[16 + 8] + "," + test[16 + 9] + "," + test[16 + 10] + "," + test[16 + 11] + test[16 + 12] + "," + test[16 + 13] + "," + test[16 + 14] + "," + test[16 + 15]);
-        
+        Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] +","+ test[4] + "," + test[5] + "," + test[6] + "," + test[7] +","+ test[8] + "," + test[9] + "," + test[10] + "," + test[11] +","+ test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
+        Debug.Log("line2 " + test[14*15 + 0] + "," + test[14 * 15 + 1] + "," + test[14 * 15 + 2] + "," + test[14 * 15 + 3] +","+ test[14 * 15 + 4] + "," + test[14 * 15 + 5] + "," + test[14 * 15 + 6] + "," + test[14 * 15 + 7] +","+ test[14 * 15 + 8] + "," + test[14 * 15 + 9] + "," + test[14 * 15 + 10] + "," + test[14 * 15 + 11] + test[14 * 15 + 12] + "," + test[14 * 15 + 13] + "," + test[14 * 15 + 14] + "," + test[14 * 15 + 15]);
+        */
+
+        //sends the compute shader generated texture to the main shader
+        m_renderer.sharedMaterial.SetTexture("_WaveDeformTex", texture);
+
     }
     private void Update()
-    {   
+    {
+        //updates the position of the swing root, and height of the swing weight by framerate for no jerky movement o
+        //loopty loops when jumping. Does not affect the phycics otherwise
+        Vector3 bottleCenter = m_renderer.bounds.center;
+        targetRoot.position = new Vector3(bottleCenter.x, targetRoot.position.y, bottleCenter.z);
+        target.position = new Vector3(target.position.x, targetRoot.position.y, target.position.z);
     }
 
     private void OnDestroy()
