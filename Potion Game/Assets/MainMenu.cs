@@ -7,9 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        //SceneManager.LoadScene("Game");
-        //switch cameras
-        gameObject.SetActive(false);
+        SceneManager.LoadScene("Latest_Build_V2");
     }
 
     public void QuitGame()
