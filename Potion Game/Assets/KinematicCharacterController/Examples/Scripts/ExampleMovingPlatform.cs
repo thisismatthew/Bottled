@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace KinematicCharacterController.Examples
 {
@@ -19,7 +17,7 @@ namespace KinematicCharacterController.Examples
 
         private Vector3 _originalPosition;
         private Quaternion _originalRotation;
-        
+
         private void Start()
         {
             _originalPosition = Mover.Rigidbody.position;
