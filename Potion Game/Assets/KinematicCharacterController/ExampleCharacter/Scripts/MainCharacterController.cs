@@ -94,6 +94,8 @@ namespace KinematicCharacterController.Examples
         public GameObject Body;
         public GameObject RightArm;
         public GameObject LeftArm;
+        public SpringJoint SpringWeightObject;
+        public Rigidbody SpringRoot;
 
         [Header("Interaction")]
         public GameObject Interactable;
@@ -175,6 +177,8 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Default:
                     {
                         Body.active = true;
+                        SpringWeightObject.transform.position = transform.position;
+                        SpringWeightObject.connectedBody = SpringRoot;
                         break;
                     }
                 case CharacterState.Climbing:
@@ -186,6 +190,7 @@ namespace KinematicCharacterController.Examples
                     {
                         Body.active = false;
                         Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
+                        SpringWeightObject.connectedBody = null;
                         break;
                     }
             }
