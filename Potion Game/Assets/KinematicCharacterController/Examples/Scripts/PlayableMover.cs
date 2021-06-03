@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using KinematicCharacterController;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
 using UnityEngine.Playables;
 
 namespace KinematicCharacterController.Examples

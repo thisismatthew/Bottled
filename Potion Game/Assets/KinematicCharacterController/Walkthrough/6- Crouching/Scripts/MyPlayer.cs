@@ -1,5 +1,8 @@
-using KinematicCharacterController.Examples;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController;
+using KinematicCharacterController.Examples;
 
 namespace KinematicCharacterController.Walkthrough.Crouching
 {

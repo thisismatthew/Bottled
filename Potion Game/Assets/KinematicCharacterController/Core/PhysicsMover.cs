@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace KinematicCharacterController
@@ -242,7 +244,7 @@ namespace KinematicCharacterController
             if (deltaTime > 0f)
             {
                 Rigidbody.velocity = (TransientPosition - InitialSimulationPosition) / deltaTime;
-
+                                
                 Quaternion rotationFromCurrentToGoal = TransientRotation * (Quaternion.Inverse(InitialSimulationRotation));
                 Rigidbody.angularVelocity = (Mathf.Deg2Rad * rotationFromCurrentToGoal.eulerAngles) / deltaTime;
             }

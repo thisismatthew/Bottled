@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 #if UNITY_EDITOR
@@ -77,7 +79,7 @@ namespace KinematicCharacterController.Examples
                 AvgFPSMax.text = GetNumberString(Mathf.RoundToInt(1f / _minDeltaTimeForAvg));
                 PhysicsFPS.text = GetNumberString(Mathf.RoundToInt(physicsFPS));
 
-                if (OnPhysicsFPSReady != null)
+                if(OnPhysicsFPSReady != null)
                 {
                     OnPhysicsFPSReady(physicsFPS);
                 }
@@ -142,7 +144,7 @@ namespace KinematicCharacterController.Examples
                 }
                 else
                 {
-                    fp.FramerateStrings[i] = i.ToString() + " (" + (1000f / (float)i).ToString("F") + "ms)";
+                    fp.FramerateStrings[i] = i.ToString() + " (" + (1000f/(float)i).ToString("F") + "ms)" ;
                 }
             }
         }

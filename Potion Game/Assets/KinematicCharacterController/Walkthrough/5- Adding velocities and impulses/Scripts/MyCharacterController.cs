@@ -1,4 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController;
+using System;
 
 namespace KinematicCharacterController.Walkthrough.AddingImpulses
 {

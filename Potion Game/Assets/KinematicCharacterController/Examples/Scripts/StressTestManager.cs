@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace KinematicCharacterController.Examples
@@ -50,7 +52,7 @@ namespace KinematicCharacterController.Examples
 
         public void ToggleRendering()
         {
-            if (Camera.cullingMask == -1)
+            if(Camera.cullingMask == -1)
             {
                 Camera.cullingMask = UIMask;
             }

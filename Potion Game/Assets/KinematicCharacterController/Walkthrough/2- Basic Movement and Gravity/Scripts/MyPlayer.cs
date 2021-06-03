@@ -1,5 +1,9 @@
-using KinematicCharacterController.Examples;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController;
+using KinematicCharacterController.Examples;
+using System.Linq;
 
 namespace KinematicCharacterController.Walkthrough.BasicMovement
 {
