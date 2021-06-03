@@ -7,6 +7,7 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     public Renderer Potion;
     public Color NewPotionColor;
     private string _name = "fireAttribute";
+    public GameObject FirePrefab;
 
     public void Equip()
     {
@@ -21,7 +22,9 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
 
     public bool Use()
     {
-        
+        GameObject childobject = Instantiate(FirePrefab) as GameObject;
+        childobject.transform.parent = gameObject.transform;
+        //FirePrefab.transform.parent = this.transform;
         //Flamable.equip
         //TODO sprout fire particle affect
         gameObject.AddComponent<Flamable>();
