@@ -27,6 +27,7 @@ namespace KinematicCharacterController.Examples
         public bool JumpUp;
         public bool CrouchDown;
         public bool CrouchUp;
+        public bool SelfDestruct;
         public bool UsePotion;
         public bool Interact;
     }
@@ -247,6 +248,12 @@ namespace KinematicCharacterController.Examples
 
             // Move and look inputs
             _moveInputVector = cameraPlanarRotation * moveInputVector;
+
+            //let the character self destruct at any stage
+            if (inputs.SelfDestruct)
+            {
+                GetComponent<PlayerDeathTrigger>().SmashCharacter();
+            }
 
             switch (CurrentCharacterState)
             {
