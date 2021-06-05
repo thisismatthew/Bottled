@@ -100,6 +100,7 @@ namespace KinematicCharacterController.Examples
             characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.C);
             characterInputs.UsePotion = Input.GetKeyDown(KeyCode.E);
             characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
+            characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
 
             // Apply inputs to character
             Character.SetInputs(ref characterInputs);

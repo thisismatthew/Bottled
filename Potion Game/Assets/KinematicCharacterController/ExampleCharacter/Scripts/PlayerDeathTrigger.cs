@@ -57,11 +57,7 @@ namespace KinematicCharacterController.Examples
             //and they have landed on stable ground. Smash em. 
            if ((_heightFallen< -DeadlyFallDistance)&& Motor.GroundingStatus.IsStableOnGround)
             {
-                FindObjectOfType<AudioManager>().Play("Glass_Smash");
-                SpringWeight.parent = this.transform;
-                Controller.TransitionToState(CharacterState.Dead);
-                RespawnAnimator.Play("crossfade_start");
-                _heightFallen = 0;
+                SmashCharacter();
             }
 
            if (Controller.CurrentCharacterState == CharacterState.Dead)
@@ -69,8 +65,6 @@ namespace KinematicCharacterController.Examples
                 _deadTimer += Time.deltaTime;
                 if (_deadTimer > LengthOfTimeDead)
                 {
-                    //TODO after the demo we'll fix the respawn bugs, at the moment we could just call the main menu again 
-
                     Motor.SetPosition(RespawnPoint.position);
                     SpringWeight.parent = null;
                     RespawnAnimator.Play("crossfade_end");
@@ -79,6 +73,15 @@ namespace KinematicCharacterController.Examples
                 }
             }
             
+        }
+
+        public void SmashCharacter()
+        {
+            FindObjectOfType<AudioManager>().Play("Glass_Smash");
+            SpringWeight.parent = this.transform;
+            Controller.TransitionToState(CharacterState.Dead);
+            RespawnAnimator.Play("crossfade_start");
+            _heightFallen = 0;
         }
     }
 }
