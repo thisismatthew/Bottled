@@ -1,6 +1,7 @@
 #pragma kernel CSMainVel
 #pragma kernel CSMainPos
 
+//The following compute shader is based on the work by Andy Green.
 //#pragma target 4.0
 #define SPRING_COUNT 16
 struct Properties

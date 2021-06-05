@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class SpringSystem : MonoBehaviour
 {
-    const int SPRING_COUNT = 16;
 
+    //The following code and compute shader is based on the work by Andy Green.
+    //http://andytech.art/container-water-00
+    //The connected shaders also use his code.
+
+    const int SPRING_COUNT = 16;
+    [Header("Waves")]
     [Range(0.1f, 0.999f)] public float Damping = 0.1f;
     [Range(0.1f, 300.0f)] public float SpringStiffness = 5.0f;
 

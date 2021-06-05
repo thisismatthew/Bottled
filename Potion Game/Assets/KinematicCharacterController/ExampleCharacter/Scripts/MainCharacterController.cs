@@ -252,7 +252,7 @@ namespace KinematicCharacterController.Examples
             {
                 case CharacterState.Default:
                     {
-
+                        anim.SetBool("Climbing", false);
                         // Jumping input
                         if (inputs.JumpDown)
                         {
@@ -321,7 +321,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-
+                        anim.SetBool("Climbing", true);
                         _isClimbing = true;
 
                         _upDownInput = inputs.MoveAxisForward;
@@ -626,10 +626,19 @@ namespace KinematicCharacterController.Examples
                             if (_upDownInput < 0 && _currentSplineIndex <= 1)
                             {
                                 _currentSplineIndex += ClimbingSpeed;
+                                anim.SetFloat("ClimbState", 1);
+                                anim.SetBool("ClimbUp", false);
                             }
-                            if (_upDownInput > 0 && _currentSplineIndex >= 0)
+
+                            else if (_upDownInput > 0 && _currentSplineIndex >= 0)
                             {
                                 _currentSplineIndex -= ClimbingSpeed;
+                                anim.SetFloat("ClimbState", 1);
+                                anim.SetBool("ClimbUp", true);
+                            }
+                            else
+                            {
+                                anim.SetFloat("ClimbState", 0);
                             }
 
                             target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
