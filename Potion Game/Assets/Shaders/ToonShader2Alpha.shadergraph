@@ -16,6 +16,9 @@
             "m_Id": "7d5595e73e5748b8a263c7985511beb6"
         },
         {
+            "m_Id": "497d734377ce497290c4ce6e48533b6b"
+        },
+        {
             "m_Id": "77fecc8331d9492ca9c4159d75b602e1"
         },
         {
@@ -392,6 +395,12 @@
         },
         {
             "m_Id": "c456438f7aea43ae809644e12a5afa22"
+        },
+        {
+            "m_Id": "51b71dc664a54de5b5213638f5c24b9e"
+        },
+        {
+            "m_Id": "63a34e9214ce45fa9cd5ee5afb286ac2"
         }
     ],
     "m_GroupDatas": [
@@ -746,6 +755,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "51b71dc664a54de5b5213638f5c24b9e"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "63a34e9214ce45fa9cd5ee5afb286ac2"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "51c0d73d6b9a461683a3c19c9a4eee38"
                 },
                 "m_SlotId": 3
@@ -895,6 +918,20 @@
                     "m_Id": "ab6f091b08e5454ea55c3fa64645f06e"
                 },
                 "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "63a34e9214ce45fa9cd5ee5afb286ac2"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "50e99c6d5fb54d7f87b10d5b60c27f33"
+                },
+                "m_SlotId": 0
             }
         },
         {
@@ -1807,7 +1844,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "006a4d7357dd40c5a0e07dceaa551db5",
     "m_Id": 0,
-    "m_DisplayName": "RimGradient",
+    "m_DisplayName": "Rim Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1858,7 +1895,7 @@
     "m_Guid": {
         "m_GuidSerialized": "5becde97-a9b6-4b8c-8c04-95dfcfbd12ae"
     },
-    "m_Name": "ShadingGradient",
+    "m_Name": "Shading Gradient",
     "m_DefaultReferenceName": "Texture2D_00c7395bee5a4c21a8d9f10472d39eaf",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -1980,7 +2017,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "094d1972f9844ab6be32139b76b1c499",
     "m_Id": 0,
-    "m_DisplayName": "GlossGradient",
+    "m_DisplayName": "Gloss Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1995,7 +2032,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "0a09011bd3e842e0bce25c5894f65430",
     "m_Id": 0,
-    "m_DisplayName": "GlossGradient",
+    "m_DisplayName": "Gloss Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2126,7 +2163,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "0cc4bc74306c4257a44ad87664e1c4c4",
     "m_Id": 0,
-    "m_DisplayName": "RimThreshhold",
+    "m_DisplayName": "Rim Threshhold",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2141,7 +2178,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "0d613c7d64dd48ca9c5c8610738230fd",
     "m_Id": 0,
-    "m_DisplayName": "RGB Map",
+    "m_DisplayName": "Occlusion Roughness Metallic",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2155,7 +2192,7 @@
     "m_Guid": {
         "m_GuidSerialized": "9e0a26bd-1958-4147-b77f-4078ba447654"
     },
-    "m_Name": "GlossGradient",
+    "m_Name": "Gloss Gradient",
     "m_DefaultReferenceName": "Vector1_0e5d50eb28ae4663b7dac7a6ff79bfbe",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -2176,7 +2213,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "0ed1bf5c43564f8abe3d9e9f2165f4a5",
     "m_Id": 0,
-    "m_DisplayName": "GlossGradient",
+    "m_DisplayName": "Gloss Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2317,7 +2354,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "14d6ee3c504b45fb9899fa9a7696753b",
     "m_Id": 0,
-    "m_DisplayName": "GlossGradient",
+    "m_DisplayName": "Gloss Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2437,10 +2474,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 419.9999694824219,
-            "y": -28.9999942779541,
+            "x": 630.0,
+            "y": 117.0,
             "width": 184.0,
-            "height": 253.0
+            "height": 252.99998474121095
         }
     },
     "m_Slots": [
@@ -2484,7 +2521,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "1c8c68714a18403f91716f4e283cf861",
     "m_Id": 0,
-    "m_DisplayName": "GlossColor",
+    "m_DisplayName": "Gloss Color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2725,7 +2762,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "226f7d53912240eeaa20f2a2ecaacd50",
     "m_Id": 0,
-    "m_DisplayName": "RimColour",
+    "m_DisplayName": "Rim Colour",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2760,6 +2797,23 @@
         "m_Guid": ""
     },
     "m_DefaultType": 3
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DInputMaterialSlot",
+    "m_ObjectId": "23278e98b9224ccd90e990a2e9686c57",
+    "m_Id": 1,
+    "m_DisplayName": "Texture",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Texture",
+    "m_StageCapability": 3,
+    "m_Texture": {
+        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_Guid": ""
+    },
+    "m_DefaultType": 0
 }
 
 {
@@ -3157,7 +3211,7 @@
     "m_Guid": {
         "m_GuidSerialized": "fa8b42fc-8272-42dd-a719-83327ce6f680"
     },
-    "m_Name": "RimThreshhold",
+    "m_Name": "Rim Threshhold",
     "m_DefaultReferenceName": "Vector1_2f31dd05d1754ca5b3396791513c2483",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -3212,7 +3266,7 @@
     "m_Guid": {
         "m_GuidSerialized": "608ecfb3-cf68-48af-bd14-64b73582ed49"
     },
-    "m_Name": "RimColour",
+    "m_Name": "Rim Colour",
     "m_DefaultReferenceName": "Color_2fe5c49384544690a6b1aec8b4392e6c",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -3322,7 +3376,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "3112a8f80b4a4dc89271f1b9059497b7",
     "m_Id": 0,
-    "m_DisplayName": "ShadingGradient",
+    "m_DisplayName": "Shading Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -3420,7 +3474,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "32fd5750a5294694a211af8b987de423",
     "m_Id": 0,
-    "m_DisplayName": "Diffuse",
+    "m_DisplayName": "Base Color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -3751,7 +3805,7 @@
     "m_Guid": {
         "m_GuidSerialized": "0d791e2f-9645-4e5f-b4c8-c44c18fec8a0"
     },
-    "m_Name": "RimAmount",
+    "m_Name": "Rim Amount",
     "m_DefaultReferenceName": "Vector1_408dd7b581b54f0db5d6f3c8bb205cdd",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -3821,7 +3875,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "41f01d42af854b868f2da09a29e49399",
     "m_Id": 0,
-    "m_DisplayName": "RimAmount",
+    "m_DisplayName": "Rim Amount",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -3836,7 +3890,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "42a5df9ce72d4ed1bcd6a6b4979dc274",
     "m_Id": 0,
-    "m_DisplayName": "RimGradient",
+    "m_DisplayName": "Rim Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -4111,6 +4165,29 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "497d734377ce497290c4ce6e48533b6b",
+    "m_Guid": {
+        "m_GuidSerialized": "dfd0e896-89a8-49e1-a0d0-85ad7cfab714"
+    },
+    "m_Name": "Emissive",
+    "m_DefaultReferenceName": "Texture2D_497d734377ce497290c4ce6e48533b6b",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_Guid": ""
+    },
+    "m_Modifiable": true,
+    "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot",
     "m_ObjectId": "4a025f34ddc441229850dcd92b7ed215",
     "m_Id": 1,
@@ -4271,6 +4348,21 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "4c1d95f64a7f40059bb4103194f2025a",
+    "m_Id": 6,
+    "m_DisplayName": "B",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "B",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -4457,7 +4549,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "51a0bf90e28046bdbb3182c177fdf896",
     "m_Id": 0,
-    "m_DisplayName": "RimThreshhold",
+    "m_DisplayName": "Rim Threshhold",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -4465,6 +4557,40 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "51b71dc664a54de5b5213638f5c24b9e",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 358.9999694824219,
+            "y": -348.9999694824219,
+            "width": 131.99998474121095,
+            "height": 33.999996185302737
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "90d1c6b532254d9f941528e392855edc"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "497d734377ce497290c4ce6e48533b6b"
+    }
 }
 
 {
@@ -4512,7 +4638,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "51d87d4a90934cdcb96a676188930b6e",
     "m_Id": 0,
-    "m_DisplayName": "Color",
+    "m_DisplayName": "Tint",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -4622,7 +4748,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "541cb509c34c49bb9606ee18618d3eb4",
     "m_Id": 0,
-    "m_DisplayName": "RimColour",
+    "m_DisplayName": "Rim Colour",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -4756,7 +4882,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "57f1bd3d6a494fb284dcdedf9e6e3ae9",
     "m_Id": 0,
-    "m_DisplayName": "RimColour",
+    "m_DisplayName": "Rim Colour",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5012,7 +5138,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "5bd0e04d650e420cb0952f47462e4218",
     "m_Id": 0,
-    "m_DisplayName": "RimThreshhold",
+    "m_DisplayName": "Rim Threshhold",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5243,7 +5369,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "62593bf7136f4df5814c597a9b9cdfef",
     "m_Id": 0,
-    "m_DisplayName": "GlossColor",
+    "m_DisplayName": "Gloss Color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5293,7 +5419,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "63a190a602a84a24b894e5b1220da0c0",
     "m_Id": 0,
-    "m_DisplayName": "GlossColor",
+    "m_DisplayName": "Gloss Color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5311,6 +5437,60 @@
         "w": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SampleTexture2DNode",
+    "m_ObjectId": "63a34e9214ce45fa9cd5ee5afb286ac2",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Sample Texture 2D",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 527.0,
+            "y": -367.9999694824219,
+            "width": 184.0,
+            "height": 252.99998474121095
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "a704e175365d49119a1b3e26c2b7b5e9"
+        },
+        {
+            "m_Id": "fd7ac559cfeb4037a6664f77daf8e442"
+        },
+        {
+            "m_Id": "80dbc5d656dd462486d45c7773d2351b"
+        },
+        {
+            "m_Id": "4c1d95f64a7f40059bb4103194f2025a"
+        },
+        {
+            "m_Id": "9ab6817994c045299366a20e98c50c08"
+        },
+        {
+            "m_Id": "23278e98b9224ccd90e990a2e9686c57"
+        },
+        {
+            "m_Id": "c2d61794fb5c42c9a47b1e70b4052119"
+        },
+        {
+            "m_Id": "72f527a9067b4a73b18b3566291e1960"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": false,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_TextureType": 0,
+    "m_NormalMapSpace": 0
 }
 
 {
@@ -5409,7 +5589,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "66cb9dfea64849089d86f4ce8f24cbe2",
     "m_Id": 0,
-    "m_DisplayName": "RimColour",
+    "m_DisplayName": "Rim Colour",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5710,6 +5890,18 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.SamplerStateMaterialSlot",
+    "m_ObjectId": "72f527a9067b4a73b18b3566291e1960",
+    "m_Id": 3,
+    "m_DisplayName": "Sampler",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Sampler",
+    "m_StageCapability": 3
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "730158031a6a4fc58f5fffc66c3a8ff0",
     "m_Group": {
@@ -5786,7 +5978,7 @@
     "m_Guid": {
         "m_GuidSerialized": "16dbe7aa-2880-4272-bb14-26bfadaa9f1e"
     },
-    "m_Name": "GlossColor",
+    "m_Name": "Gloss Color",
     "m_DefaultReferenceName": "Color_7520863afcb642249cf88bd17075518b",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -6036,7 +6228,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "7aaf2825342a4a33ba2fbd3b4633b5d3",
     "m_Id": 0,
-    "m_DisplayName": "RimThreshhold",
+    "m_DisplayName": "Rim Threshhold",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6125,7 +6317,7 @@
     "m_Guid": {
         "m_GuidSerialized": "b756174f-b2f2-4436-adb8-dc57cfaedb5c"
     },
-    "m_Name": "RGB Map",
+    "m_Name": "Occlusion Roughness Metallic",
     "m_DefaultReferenceName": "Texture2D_7d5595e73e5748b8a263c7985511beb6",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -6170,7 +6362,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "7f8ce3ad1d504194b543f1753213163c",
     "m_Id": 0,
-    "m_DisplayName": "GlossGradient",
+    "m_DisplayName": "Gloss Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6255,6 +6447,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "80dbc5d656dd462486d45c7773d2351b",
+    "m_Id": 5,
+    "m_DisplayName": "G",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "G",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "814767471a8d416fb1a8247557c6c008",
     "m_Group": {
@@ -6265,10 +6472,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 554.0,
-            "y": -340.0,
+            "x": 590.0,
+            "y": -46.999996185302737,
             "width": 123.0,
-            "height": 34.0
+            "height": 33.999996185302737
         }
     },
     "m_Slots": [
@@ -6445,7 +6652,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "88086a883d5546bfb5573a8a8ea2957e",
     "m_Id": 0,
-    "m_DisplayName": "RimThreshhold",
+    "m_DisplayName": "Rim Threshhold",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6529,7 +6736,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "8a7565bb23194ee78ae5ff8477e5ddd9",
     "m_Id": 0,
-    "m_DisplayName": "GlossColor",
+    "m_DisplayName": "Gloss Color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6695,7 +6902,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "8f3b240aa9d24715b44506b2a73d6efc",
     "m_Id": 0,
-    "m_DisplayName": "RimGradient",
+    "m_DisplayName": "Rim Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6703,6 +6910,18 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
+    "m_ObjectId": "90d1c6b532254d9f941528e392855edc",
+    "m_Id": 0,
+    "m_DisplayName": "Emissive",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3
 }
 
 {
@@ -6940,9 +7159,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 719.0,
-            "y": 67.99999237060547,
-            "width": 126.0,
+            "x": 928.9999389648438,
+            "y": 213.99998474121095,
+            "width": 125.99999237060547,
             "height": 117.99999237060547
         }
     },
@@ -6970,7 +7189,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "968c0c8f391b46a98fa78c62705259b1",
     "m_Id": 0,
-    "m_DisplayName": "ShadingGradient",
+    "m_DisplayName": "Shading Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -7042,11 +7261,26 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "99157a5b64374947a9d024c70c233532",
     "m_Id": 0,
-    "m_DisplayName": "RimAmount",
+    "m_DisplayName": "Rim Amount",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "9ab6817994c045299366a20e98c50c08",
+    "m_Id": 7,
+    "m_DisplayName": "A",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "A",
+    "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
@@ -7204,7 +7438,7 @@
     "m_Guid": {
         "m_GuidSerialized": "b45d7b55-05b8-486f-acb5-16b2f6f2e7cb"
     },
-    "m_Name": "Color",
+    "m_Name": "Tint",
     "m_DefaultReferenceName": "Color_9f32effa2ca341fe9791db746ffc461c",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -7248,10 +7482,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 700.0,
-            "y": -340.0,
-            "width": 183.99998474121095,
-            "height": 253.0
+            "x": 735.9999389648438,
+            "y": -174.99996948242188,
+            "width": 184.0,
+            "height": 252.99998474121095
         }
     },
     "m_Slots": [
@@ -7393,7 +7627,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "a34032b1af5241498738f2e2715725c7",
     "m_Id": 0,
-    "m_DisplayName": "GlossGradient",
+    "m_DisplayName": "Gloss Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -7576,13 +7810,38 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "a6a2d678793f4232b45a964a7ce04569",
     "m_Id": 0,
-    "m_DisplayName": "RimAmount",
+    "m_DisplayName": "Rim Amount",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "a704e175365d49119a1b3e26c2b7b5e9",
+    "m_Id": 0,
+    "m_DisplayName": "RGBA",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "RGBA",
+    "m_StageCapability": 2,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
     "m_Labels": []
 }
 
@@ -7654,7 +7913,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "a9de26ddc4f5488fbe884d951cadb72c",
     "m_Id": 0,
-    "m_DisplayName": "ShadingGradient",
+    "m_DisplayName": "Shading Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -8403,7 +8662,7 @@
     "m_Guid": {
         "m_GuidSerialized": "69b5d7d3-5650-4ff9-a0ae-28c2a4006375"
     },
-    "m_Name": "RimGradient",
+    "m_Name": "Rim Gradient",
     "m_DefaultReferenceName": "Vector1_bab12212572241cb9d21585c41b3a421",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -8527,7 +8786,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "be03c87c0d784d848101274cbd4e40be",
     "m_Id": 0,
-    "m_DisplayName": "RimAmount",
+    "m_DisplayName": "Rim Amount",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -8542,7 +8801,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "be42a3032b1045fe9695907d8d2c9f15",
     "m_Id": 0,
-    "m_DisplayName": "RimThreshhold",
+    "m_DisplayName": "Rim Threshhold",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -8573,10 +8832,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 914.0,
-            "y": 117.00000762939453,
-            "width": 106.0,
-            "height": 34.0
+            "x": 949.0,
+            "y": 369.9999694824219,
+            "width": 105.99999237060547,
+            "height": 33.999996185302737
         }
     },
     "m_Slots": [
@@ -8668,7 +8927,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "bfe49ff4f3574b3ab027e06739ef99f6",
     "m_Id": 0,
-    "m_DisplayName": "ShadingGradient",
+    "m_DisplayName": "Shading Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -8829,6 +9088,28 @@
     "m_Property": {
         "m_Id": "87d2e1c6abdc4d2b91cf61652f9d3c3e"
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.UVMaterialSlot",
+    "m_ObjectId": "c2d61794fb5c42c9a47b1e70b4052119",
+    "m_Id": 2,
+    "m_DisplayName": "UV",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "UV",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "m_Labels": [],
+    "m_Channel": 0
 }
 
 {
@@ -9383,7 +9664,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "cf2134ce216a4f69849cd3be0fe615c6",
     "m_Id": 0,
-    "m_DisplayName": "RimGradient",
+    "m_DisplayName": "Rim Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -9677,10 +9958,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 245.0,
-            "y": -28.9999942779541,
-            "width": 133.0,
-            "height": 34.0
+            "x": 358.9999694824219,
+            "y": 117.0,
+            "width": 240.99998474121095,
+            "height": 33.999996185302737
         }
     },
     "m_Slots": [
@@ -9768,7 +10049,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "d87402d12f124a0c87578dbb560c604f",
     "m_Id": 0,
-    "m_DisplayName": "GlossColor",
+    "m_DisplayName": "Gloss Color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10115,7 +10396,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "e3fa3e35edf0441284a2004e36087da9",
     "m_Id": 0,
-    "m_DisplayName": "RimAmount",
+    "m_DisplayName": "Rim Amount",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10145,7 +10426,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "e47ad7b7937a4141aa50d41460fcb4c0",
     "m_Id": 0,
-    "m_DisplayName": "ShadingGradient",
+    "m_DisplayName": "Shading Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10196,7 +10477,7 @@
     "m_Guid": {
         "m_GuidSerialized": "ed94b31b-4fac-47e5-a9c0-a76257597d6d"
     },
-    "m_Name": "Diffuse",
+    "m_Name": "Base Color",
     "m_DefaultReferenceName": "Texture2D_e5aadde84d6f485ab235b562d0bb8d7f",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -10290,7 +10571,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "e92ff271de0949938115675c3a00e9d9",
     "m_Id": 0,
-    "m_DisplayName": "RimGradient",
+    "m_DisplayName": "Rim Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10508,7 +10789,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "f0e971c859c44a6e830adf0df2dfd4d8",
     "m_Id": 0,
-    "m_DisplayName": "RimColour",
+    "m_DisplayName": "Rim Colour",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10577,7 +10858,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "f15f827733054ba8af71caa4f8d3f926",
     "m_Id": 0,
-    "m_DisplayName": "GlossColor",
+    "m_DisplayName": "Gloss Color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10650,7 +10931,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "f28776a3303041d982c78890f510a7d4",
     "m_Id": 0,
-    "m_DisplayName": "ShadingGradient",
+    "m_DisplayName": "Shading Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10687,7 +10968,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "f551e057b781481c9120fb4d87f67fb4",
     "m_Id": 0,
-    "m_DisplayName": "RimColour",
+    "m_DisplayName": "Rim Colour",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10736,7 +11017,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "f89b4727b039471793057f942add4814",
     "m_Id": 0,
-    "m_DisplayName": "RimAmount",
+    "m_DisplayName": "Rim Amount",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -10887,11 +11168,26 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "fd51df2746674dc79de36999d158b223",
     "m_Id": 0,
-    "m_DisplayName": "RimGradient",
+    "m_DisplayName": "Rim Gradient",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "fd7ac559cfeb4037a6664f77daf8e442",
+    "m_Id": 4,
+    "m_DisplayName": "R",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "R",
+    "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
