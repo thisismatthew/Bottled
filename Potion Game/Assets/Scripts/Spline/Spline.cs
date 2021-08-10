@@ -5,6 +5,7 @@ using UnityEngine;
 public class Spline : MonoBehaviour
 {
     public List<GameObject> Vertices;
+    public bool SplineVisible = false;
     private List<PiecewiseCubic> _pieces = new List<PiecewiseCubic>();
     private int _POINT_MULTIPLIER = 50;
     public LineRenderer renderer;
@@ -39,6 +40,12 @@ public class Spline : MonoBehaviour
         renderer.SetColors(Color.red, Color.red);
         Material whiteDiffuseMat = new Material(Shader.Find("Unlit/Texture"));
         renderer.material = whiteDiffuseMat;
+
+        if (!SplineVisible)
+        {
+            renderer.enabled = false;
+        }
+        
     }
 
     // Update is called once per frame

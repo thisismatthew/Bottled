@@ -27,7 +27,9 @@ namespace KinematicCharacterController.Examples
         public bool JumpUp;
         public bool CrouchDown;
         public bool CrouchUp;
+        public bool SelfDestruct;
         public bool UsePotion;
+        public bool Interact;
     }
 
     public struct AICharacterInputs
@@ -80,6 +82,7 @@ namespace KinematicCharacterController.Examples
         private bool _isClimbing = false;
         private bool _startedClimbing = false;
         public bool JumpingFromClimbing = false;
+        private float _upDownInput = 0f;
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -89,6 +92,12 @@ namespace KinematicCharacterController.Examples
         public Transform MeshRoot;
         public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
+        public GameObject SmashedCharacterPrefab;
+        public GameObject Body;
+        public GameObject RightArm;
+        public GameObject LeftArm;
+        public SpringJoint SpringWeightObject;
+        public Rigidbody SpringRoot;
 
         [Header("Interaction")]
         public GameObject Interactable;
@@ -115,6 +124,12 @@ namespace KinematicCharacterController.Examples
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
 
+        //Arm wiggle
+        private Renderer R_ArmRend;
+        private Renderer L_ArmRend;
+        private float _armPower;
+        private float _armSpeed;
+
         private void Awake()
         {
             //get Potion Component;
@@ -123,6 +138,10 @@ namespace KinematicCharacterController.Examples
             TransitionToState(CharacterState.Default);
             // Assign the characterController to the motor
             Motor.CharacterController = this;
+
+            //Get Arms Renderer
+            R_ArmRend = RightArm.GetComponent<Renderer>();
+            L_ArmRend = LeftArm.GetComponent<Renderer>();
         }
 
         private void Update()
@@ -159,11 +178,21 @@ namespace KinematicCharacterController.Examples
             {
                 case CharacterState.Default:
                     {
+                        Body.active = true;
+                        SpringWeightObject.transform.position = transform.position;
+                        SpringWeightObject.connectedBody = SpringRoot;
                         break;
                     }
                 case CharacterState.Climbing:
                     {
                         _startedClimbing = true;
+                        break;
+                    }
+                case CharacterState.Dead:
+                    {
+                        Body.active = false;
+                        Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
+                        SpringWeightObject.connectedBody = null;
                         break;
                     }
             }
@@ -220,11 +249,17 @@ namespace KinematicCharacterController.Examples
             // Move and look inputs
             _moveInputVector = cameraPlanarRotation * moveInputVector;
 
+            //let the character self destruct at any stage
+            if (inputs.SelfDestruct)
+            {
+                GetComponent<PlayerDeathTrigger>().SmashCharacter();
+            }
+
             switch (CurrentCharacterState)
             {
                 case CharacterState.Default:
                     {
-
+                        anim.SetBool("Climbing", false);
                         // Jumping input
                         if (inputs.JumpDown)
                         {
@@ -293,8 +328,14 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-
+                        anim.SetBool("Climbing", true);
                         _isClimbing = true;
+
+                        _upDownInput = inputs.MoveAxisForward;
+
+
+
+
                         //if a jump is requested just drop the player off the ledge
                         if (inputs.CrouchDown)
                         {
@@ -397,23 +438,25 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
-                case CharacterState.Climbing:
-                    {
-                        //TODO the current climbing rotation is bugged and needs to be fixed. 
-                        Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
-                        target.y -= Motor.Capsule.height;
-                        
-                        // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-                        
-                        //These Debug Lines help to show the climbing rotation bug. 
-                        //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
-                        //Debug.DrawLine(transform.position, target, Color.red);
-                        
-                        // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                        break;
-                    }
+
+                    //TODO the current climbing rotation is bugged and needs to be fixed. 
+                    /*case CharacterState.Climbing:
+                        {
+
+                            Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
+                            target.y -= Motor.Capsule.height;
+
+                            // Smoothly interpolate from current to target look direction
+                            Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+
+                            //These Debug Lines help to show the climbing rotation bug. 
+                            //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
+                            //Debug.DrawLine(transform.position, target, Color.red);
+
+                            // Set the current rotation (which will be used by the KinematicCharacterMotor)
+                            currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
+                            break;
+                        }*/
             }
         }
 
@@ -585,15 +628,24 @@ namespace KinematicCharacterController.Examples
                         {
                             
                             Vector3 target = Vector3.zero;
-
+                            Debug.Log(_upDownInput);
                             //move the target spline point along, and snap the character to it. 
-                            if (_moveInputVector.x < 0 && _currentSplineIndex <= 1)
+                            if (_upDownInput < 0 && _currentSplineIndex <= 1)
                             {
                                 _currentSplineIndex += ClimbingSpeed;
+                                anim.SetFloat("ClimbState", 1);
+                                anim.SetBool("ClimbUp", false);
                             }
-                            if (_moveInputVector.x > 0 && _currentSplineIndex >= 0)
+
+                            else if (_upDownInput > 0 && _currentSplineIndex >= 0)
                             {
                                 _currentSplineIndex -= ClimbingSpeed;
+                                anim.SetFloat("ClimbState", 1);
+                                anim.SetBool("ClimbUp", true);
+                            }
+                            else
+                            {
+                                anim.SetFloat("ClimbState", 0);
                             }
 
                             target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
@@ -780,13 +832,15 @@ namespace KinematicCharacterController.Examples
         {
             Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
             Vector3 localVel = transform.InverseTransformDirection(vel);
-            //Debug.Log(localVel.z + " " +localVel.x);
             if(localVel.x <= 0.1f && localVel.x > -0.1f)
             {
                 if (localVel.z > 0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
                     anim.SetBool("RunBackwards", false);
                     anim.SetBool("Run", true);
+                    _armPower = Mathf.SmoothStep(0.5f, 0.85f , -0.02f);
+                    _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
+
                 }
                 else if (localVel.z < -0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
@@ -798,29 +852,16 @@ namespace KinematicCharacterController.Examples
                 {
                     anim.SetBool("Run", false);
                     anim.SetBool("RunBackwards", false);
-                }
-                anim.SetBool("RunRight", false);
-                anim.SetBool("RunLeft", false);
-            }
-            else
-            {
-                if (localVel.x > 0.2 && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", false);
-                    anim.SetBool("RunRight", true);
-                }
-
-                if (localVel.x < -0.2 && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", false);
-                    anim.SetBool("RunLeft", true);
+                    _armPower = Mathf.SmoothStep(0.85f, 0.5f, 0.02f);
+                    _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
                 }
             }
 
-            
 
+            R_ArmRend.material.SetFloat("_Power", _armPower);
+            R_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
+            L_ArmRend.material.SetFloat("_Power", _armPower);
+            L_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
         }
     }
 }

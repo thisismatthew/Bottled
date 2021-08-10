@@ -32,6 +32,10 @@ namespace KinematicCharacterController.Examples
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -95,9 +99,11 @@ namespace KinematicCharacterController.Examples
             characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
             characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.C);
             characterInputs.UsePotion = Input.GetKeyDown(KeyCode.E);
+            characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
+            characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
 
             // Apply inputs to character
-                Character.SetInputs(ref characterInputs);
+            Character.SetInputs(ref characterInputs);
         }
     }
 }

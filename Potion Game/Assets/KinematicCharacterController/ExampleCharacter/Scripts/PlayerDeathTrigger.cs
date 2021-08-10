@@ -7,10 +7,13 @@ namespace KinematicCharacterController.Examples
     [RequireComponent(typeof(KinematicCharacterMotor))]
     public class PlayerDeathTrigger : MonoBehaviour
     {
+        
         public float DeadlyFallDistance = 10;
         public float LengthOfTimeDead = 3f;
         public Animator RespawnAnimator;
         public Transform RespawnPoint;
+        public Transform SpringWeight;
+
         private KinematicCharacterMotor Motor;
         private MainCharacterController Controller;
         private float _currentHeight;
@@ -54,9 +57,7 @@ namespace KinematicCharacterController.Examples
             //and they have landed on stable ground. Smash em. 
            if ((_heightFallen< -DeadlyFallDistance)&& Motor.GroundingStatus.IsStableOnGround)
             {
-                Controller.TransitionToState(CharacterState.Dead);
-                RespawnAnimator.Play("crossfade_start");
-                _heightFallen = 0;
+                SmashCharacter();
             }
 
            if (Controller.CurrentCharacterState == CharacterState.Dead)
@@ -64,14 +65,23 @@ namespace KinematicCharacterController.Examples
                 _deadTimer += Time.deltaTime;
                 if (_deadTimer > LengthOfTimeDead)
                 {
-                    Debug.Log("Moved ");
                     Motor.SetPosition(RespawnPoint.position);
+                    SpringWeight.parent = null;
                     RespawnAnimator.Play("crossfade_end");
                     Controller.TransitionToState(CharacterState.Default);
                     _deadTimer = 0;
                 }
             }
             
+        }
+
+        public void SmashCharacter()
+        {
+            FindObjectOfType<AudioManager>().Play("Glass_Smash");
+            SpringWeight.parent = this.transform;
+            Controller.TransitionToState(CharacterState.Dead);
+            RespawnAnimator.Play("crossfade_start");
+            _heightFallen = 0;
         }
     }
 }

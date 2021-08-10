@@ -1,6 +1,7 @@
 #pragma kernel CSMainVel
 #pragma kernel CSMainPos
 
+//The following compute shader is based on the work by Andy Green.
 //#pragma target 4.0
 #define SPRING_COUNT 16
 struct Properties
@@ -16,17 +17,17 @@ RWStructuredBuffer<float> spring1DVelocityArray;
 RWStructuredBuffer<float> externalForcesBuffer;
 RWStructuredBuffer<float> deltaTimeBuffer;
 RWStructuredBuffer<Properties> propertiesBuffer;
-
+//2d array to 1d
 int Id2dTo1d(uint2 idxy, int length)
 {
-    int output = length * idxy.y +idxy.x;
+    int output = length * idxy.x +idxy.y;
 
     return output;
 }
-
+//external force
 float findAdd(float ext)
 {   
-    return ext;
+     return 3*ext;
 }
 
 [numthreads (SPRING_COUNT, SPRING_COUNT, 1)]
@@ -44,7 +45,7 @@ void CSMainVel (uint3 id : SV_DispatchThreadID)
    float velocity = spring1DVelocityArray[id1d];
    float acceleration = 0;
 
-   
+   //boundaries
    int minX = (int)id.x - 1;
    int minY = (int)id.y - 1;
    int maxX = (int)id.x + 1;
@@ -73,11 +74,11 @@ void CSMainVel (uint3 id : SV_DispatchThreadID)
            }
           
            float dampingForce = (nVel - velocity) * damp;
-           acceleration += ((nHeight - springHeight) * stiffness) + dampingForce;
+           acceleration += ((nHeight - springHeight) * stiffness)+dampingForce;
        }
    }
     
-   spring1DVelocityArray[id1d] += acceleration * timestep;
+   spring1DVelocityArray[id1d] = lerp(spring1DVelocityArray[id1d], 0, 0.01) +acceleration * timestep;
 
 }
 
@@ -87,21 +88,19 @@ void CSMainPos (uint3 id : SV_DispatchThreadID)
     float timestep = deltaTimeBuffer[0];
     int id1d = Id2dTo1d(id.xy, SPRING_COUNT);
 
+    //adding external forces while trying to reign in the chain reaction
     float velocity = spring1DVelocityArray[id1d];
-
     float exadd = findAdd(externalForcesBuffer[id1d]);
+    velocity = clamp(velocity + exadd, -3, 3);
 
-    velocity += exadd; // Scale by external forces...
-    velocity = clamp (velocity, -2,2);
+    float pos = springPositionsArray[id1d] + velocity * timestep;
+    float heightclamp = clamp(pos, -1, 1);
 
-    springPositionsArray[id1d] = saturate(springPositionsArray[id1d] + velocity * timestep);
+    float newpos = smoothstep(-4, 4, heightclamp);
 
-    // Normalise our values before packing into texture
-    float outPosPct = saturate(springPositionsArray[id1d]);
+    springPositionsArray[id1d] = heightclamp;
 
     // Pack into texture
-    //springOutTex[id.xy] = outPosPct;
-       //float4 newVector = lerp(Result[int2(id.x, id.y)], float4(0, 1, 0, 1), 0.01);
-    Result[id.xy] = outPosPct;
+    Result[id.xy] = newpos;
 
 }
