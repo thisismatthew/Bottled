@@ -12,11 +12,6 @@ namespace KinematicCharacterController.Examples
         Dead,
     }
 
-    public enum OrientationMethod
-    {
-        TowardsCamera,
-        TowardsMovement,
-    }
 
     public struct PlayerCharacterInputs
     {
@@ -59,7 +54,7 @@ namespace KinematicCharacterController.Examples
         public float Acceleration = 0.5f;
         public float StableMovementSharpness = 15f;
         public float OrientationSharpness = 10f;
-        public OrientationMethod OrientationMethod = OrientationMethod.TowardsCamera;
+
 
         [Header("Air Movement")]
         public float MaxAirMoveSpeed = 15f;
@@ -90,7 +85,7 @@ namespace KinematicCharacterController.Examples
         public float BonusOrientationSharpness = 10f;
         public Vector3 Gravity = new Vector3(0, -30f, 0);
         public Transform MeshRoot;
-        public Transform CameraFollowPoint;
+        //public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
         public GameObject SmashedCharacterPrefab;
         public GameObject Body;
@@ -235,19 +230,11 @@ namespace KinematicCharacterController.Examples
             }
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
-
-            switch (OrientationMethod)
-            {
-                case OrientationMethod.TowardsCamera:
-                    _lookInputVector = cameraPlanarDirection;
-                    break;
-                case OrientationMethod.TowardsMovement:
-                    _lookInputVector = _moveInputVector.normalized;
-                    break;
-            }
+            _lookInputVector = _moveInputVector.normalized;
+    
 
             // Move and look inputs
-            _moveInputVector = cameraPlanarRotation * moveInputVector;
+            _moveInputVector = moveInputVector;
 
             //let the character self destruct at any stage
             if (inputs.SelfDestruct)
