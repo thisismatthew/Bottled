@@ -231,10 +231,11 @@ namespace KinematicCharacterController.Examples
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
             _lookInputVector = _moveInputVector.normalized;
-    
 
             // Move and look inputs
-            _moveInputVector = moveInputVector;
+            _moveInputVector = cameraPlanarRotation * moveInputVector;
+/*            Debug.DrawLine(_moveInputVector, _moveInputVector * 2, Color.green);
+            Debug.Log(cameraPlanarDirection);*/
 
             //let the character self destruct at any stage
             if (inputs.SelfDestruct)
