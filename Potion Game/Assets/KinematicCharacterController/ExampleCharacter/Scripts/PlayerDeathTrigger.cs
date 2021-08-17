@@ -37,7 +37,7 @@ namespace KinematicCharacterController.Examples
         // Update is called once per frame
         void Update()
         {
-            Debug.DrawLine(RespawnPoint.position, Motor.transform.position, Color.red);
+           // Debug.DrawLine(RespawnPoint.position, Motor.transform.position, Color.red);
            
             _fallTimer += Time.deltaTime;
             if (_fallTimer > _timeSlice)

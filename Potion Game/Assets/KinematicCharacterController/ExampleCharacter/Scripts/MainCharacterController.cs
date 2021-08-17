@@ -66,6 +66,8 @@ namespace KinematicCharacterController.Examples
         public float TimeToMaxJumpApex = 0.3f;
         public float MaxJumpHeight = 4f;
         public float MinJumpHeight = 1f;
+        public float HangTime = 0.3f;
+        public float HangtimeGravityDampness = 0.3f;
         //public float JumpScalableForwardSpeed = 10f;
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
@@ -108,6 +110,9 @@ namespace KinematicCharacterController.Examples
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
+        private bool _jumpApexReached = false;
+        private bool _hangtimeConsumed = false;
+        private float _hangtimeInitial;
         private float _timeSinceJumpRequested = Mathf.Infinity;
         private float _timeSinceLastAbleToJump = 0f;
         private Vector3 _internalVelocityAdd = Vector3.zero;
@@ -137,6 +142,7 @@ namespace KinematicCharacterController.Examples
             //Get Arms Renderer
             R_ArmRend = RightArm.GetComponent<Renderer>();
             L_ArmRend = LeftArm.GetComponent<Renderer>();
+            _hangtimeInitial = HangTime;
         }
 
         private void Update()
@@ -574,6 +580,7 @@ namespace KinematicCharacterController.Examples
 
                                 // Add to the return velocity and reset jump state
                                 currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                                
                                 //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
@@ -583,13 +590,55 @@ namespace KinematicCharacterController.Examples
 
                         if (_jumpEndRequested)
                         {
+                           
                             //check we are traveling up
                             if (currentVelocity.y > _minJumpVelocity)
                             {
                                 //TODO also reduce the forward velocity of the jump. 
                                 currentVelocity += (jumpDirection * _minJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                                
                             }
                             _jumpEndRequested = false;
+                        }
+                        
+                        //we've hit the apex and we're on our way down
+                        if (_jumpConsumed)
+                        {
+                            Debug.Log("current vel: " + currentVelocity);
+                            Vector3 down = transform.position;
+                            down.y = 0;
+
+                            if (currentVelocity.y < -0.01f & _hangtimeConsumed == false)
+                            {
+                                Debug.DrawLine(transform.position, down, Color.green);
+                                Debug.Log("current vel: " + currentVelocity);
+                                _jumpApexReached = true;
+                                Debug.Log("Apex reached");
+                            }
+
+                            if (_jumpApexReached)
+                            {
+                                if (HangTime >= 0)
+                                {
+                                    Debug.Log("hanging");
+                                    HangTime -= Time.deltaTime;
+                                    currentVelocity.y = currentVelocity.y * HangtimeGravityDampness;
+                                }
+                                else
+                                {
+                                    Debug.Log("hanging done");
+                                    _jumpApexReached = false;
+                                    _hangtimeConsumed = true;
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            //Debug.Log("hanging restored");
+                            _jumpApexReached = false;
+                            _hangtimeConsumed = false;
+                            HangTime = _hangtimeInitial;
                         }
 
                         // Take into account additive velocity
