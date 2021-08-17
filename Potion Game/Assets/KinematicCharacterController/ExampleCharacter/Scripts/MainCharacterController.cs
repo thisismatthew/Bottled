@@ -301,6 +301,38 @@ namespace KinematicCharacterController.Examples
                                 {
 
                                     _isHolding = true;
+                                    //Interactable.transform.parent = this.transform;
+                                    //FixedJoint HoldingJoint = Interactable.AddComponent<FixedJoint>();
+                                    //var jointToAdd : FixedJoint;
+                                    //var player = GameObject.FindGameObjectWithTag("Player");
+                                    ///GameObject.FindGameObjectWithTag("Player").AddComponent<FixedJoint2D>();
+                                    ///var rope = Interactable;
+                                    //var hinge = player.GetComponent<HingeJoint2D>();
+                                    ///var rb = rope.GetComponent<Rigidbody2D>();
+                                    //hinge.connectedBody = rb;
+                                    //hinge.connectedAnchor = new Vector2(0, -2.5f);
+
+
+                                    //Rigidbody Rigid = this.gameObject.GetComponent(Rigidbody);
+                                    //if (GameObject.FindWithTag("player") != null)
+                                    //  {
+                                    // GameObject Player = GameObject.FindWithTag("player");
+                                    //     HoldingJoint.connectedBody = this.gameObject.GetComponent(Rigidbody);
+                                    // }
+                                    //var jointToAdd : FixedJoint;
+                                    //jointToAdd = gameObject.AddComponent(FixedJoint);
+                                    //jointToAdd.connectedBody = collision.gameObject.rigidbody;
+                                    //Interactable.gameObject.AddComponent(FixedJoint);
+                                    //gameObject.GetComponent(FixedJoint).connectedBody = collision.rigidbody;
+                                    //Interactable.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                                    //Interactable.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                                    //IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
+                                    //Destroy(Interactable.GetComponent<Rigidbody>());
+                                    //Interactable.GetComponent<Rigidbody>().useGravity = false;
+                                    //Interactable.GetComponent<BoxCollider>().enabled = false;
+
+
+
                                     Interactable.transform.parent = this.transform;
                                     IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
                                     Destroy(Interactable.GetComponent<Rigidbody>());

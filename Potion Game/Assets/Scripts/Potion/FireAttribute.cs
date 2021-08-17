@@ -22,13 +22,13 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
 
     public bool Use()
     {
-        GameObject childobject = Instantiate(FirePrefab) as GameObject;
-        childobject.transform.parent = gameObject.transform;
-        //FirePrefab.transform.parent = this.transform;
         //Flamable.equip
         //TODO sprout fire particle affect
-        gameObject.AddComponent<Flamable>();
-        gameObject.GetComponent<Flamable>().Burning = true;
+        var player = GameObject.FindGameObjectWithTag("Player");
+        GameObject childobject = Instantiate(FirePrefab, player.transform);//= Instantiate(FirePrefab) as GameObject;
+        childobject.transform.localPosition = new Vector3(0, 3, 0);
+        player.AddComponent<Flamable>();
+        player.GetComponent<Flamable>().Burning = true;
         Debug.Log("Used A fire");
         return true;
     }
