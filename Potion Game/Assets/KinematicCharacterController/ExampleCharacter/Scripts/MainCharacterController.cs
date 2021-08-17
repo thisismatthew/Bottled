@@ -66,7 +66,7 @@ namespace KinematicCharacterController.Examples
         public float TimeToMaxJumpApex = 0.3f;
         public float MaxJumpHeight = 4f;
         public float MinJumpHeight = 1f;
-        public float JumpScalableForwardSpeed = 10f;
+        //public float JumpScalableForwardSpeed = 10f;
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
 
@@ -569,12 +569,12 @@ namespace KinematicCharacterController.Examples
                                 }
 
                                 // Makes the character skip ground probing/snapping on its next update. 
-                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. 
                                 Motor.ForceUnground();
 
                                 // Add to the return velocity and reset jump state
                                 currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
-                                currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
+                                //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
                                 _jumpedThisFrame = true;
@@ -663,7 +663,7 @@ namespace KinematicCharacterController.Examples
                             TransitionToState(CharacterState.Default);
                             // Add to the return velocity and reset jump state
                             currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
-                            currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
+                            //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                             _jumpRequested = false;
                             _isClimbing = false;
                         }
