@@ -2,26 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController.Examples;
+using Cinemachine;
 
 public class SidescrollerCameraZone : MonoBehaviour
 {
-    public Camera SideScrollerCamera;
-    public Camera MainCamera;
-
+    public CinemachineVirtualCamera ZoneCamera;
+    
     private void Start()
     {
-        SideScrollerCamera.enabled = false;
+        ZoneCamera.Priority = 0;
     }
 
     private void OnTriggerEnter(Collider player)
     {
-
         if (player.gameObject.tag == "Player")
         {
-            SideScrollerCamera.enabled = true;
-            MainCamera.enabled = false;
-            //TODO change user input so that left and right are correct
-            
+            ZoneCamera.Priority = 11;
+           
         }
     }
 
@@ -29,10 +26,7 @@ public class SidescrollerCameraZone : MonoBehaviour
     {
         if (player.gameObject.tag == "Player")
         {
-            MainCamera.enabled = true;
-            SideScrollerCamera.enabled = false;
-            //TODO change user input so that left and right are back to normal
-
+            ZoneCamera.Priority = 0;
         }
     }
 }

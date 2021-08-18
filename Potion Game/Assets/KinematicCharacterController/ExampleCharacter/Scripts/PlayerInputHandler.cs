@@ -6,6 +6,7 @@ using KinematicCharacterController.Examples;
 
 namespace KinematicCharacterController.Examples
 {
+
     public class PlayerInputHandler : MonoBehaviour
     {
         public MainCharacterController Character;
@@ -44,7 +45,6 @@ namespace KinematicCharacterController.Examples
             // Build the CharacterInputs struct
             characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
             characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
-            characterInputs.CameraRotation = CharacterCamera.transform.rotation;
             characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Space);
             characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Space);
             characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
@@ -52,7 +52,8 @@ namespace KinematicCharacterController.Examples
             characterInputs.UsePotion = Input.GetKeyDown(KeyCode.E);
             characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
             characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
-
+    
+            characterInputs.CameraRotation = CharacterCamera.transform.rotation;
             // Apply inputs to character
             Character.SetInputs(ref characterInputs);
         }
