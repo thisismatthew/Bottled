@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace KinematicCharacterController.Examples
 {
     [System.Serializable]
@@ -101,7 +100,6 @@ namespace KinematicCharacterController.Examples
         [Header("Interaction")]
         public GameObject Interactable;
 
-       
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
@@ -814,7 +812,7 @@ namespace KinematicCharacterController.Examples
         protected void OnLeaveStableGround()
         {
             anim.SetTrigger("Jump");
-            anim.SetBool("Airborne", true);
+            anim.SetBool("Airborne", true);        
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
@@ -825,7 +823,8 @@ namespace KinematicCharacterController.Examples
         {
             Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
             Vector3 localVel = transform.InverseTransformDirection(vel);
-            if(localVel.x <= 0.1f && localVel.x > -0.1f)
+
+            if (localVel.x <= 0.1f && localVel.x > -0.1f)
             {
                 if (localVel.z > 0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
@@ -833,7 +832,6 @@ namespace KinematicCharacterController.Examples
                     anim.SetBool("Run", true);
                     _armPower = Mathf.SmoothStep(0.5f, 0.85f , -0.02f);
                     _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
-
                 }
                 else if (localVel.z < -0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
