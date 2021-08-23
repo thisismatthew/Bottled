@@ -325,9 +325,7 @@ namespace KinematicCharacterController.Examples
                                     //Interactable.gameObject.AddComponent(FixedJoint);
                                     //gameObject.GetComponent(FixedJoint).connectedBody = collision.rigidbody;
                                     //Interactable.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                                    //Interactable.GetComponent<Rigidbody>().velocity = Vector3.zero;
                                     //IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
-                                    //Destroy(Interactable.GetComponent<Rigidbody>());
                                     //Interactable.GetComponent<Rigidbody>().useGravity = false;
                                     //Interactable.GetComponent<BoxCollider>().enabled = false;
 

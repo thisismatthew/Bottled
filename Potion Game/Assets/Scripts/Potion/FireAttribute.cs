@@ -8,6 +8,7 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     public Color NewPotionColor;
     private string _name = "fireAttribute";
     public GameObject FirePrefab;
+    public bool FireLit = false;
 
     public void Equip()
     {
@@ -25,10 +26,14 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
         //Flamable.equip
         //TODO sprout fire particle affect
         var player = GameObject.FindGameObjectWithTag("Player");
-        GameObject childobject = Instantiate(FirePrefab, player.transform);//= Instantiate(FirePrefab) as GameObject;
-        childobject.transform.localPosition = new Vector3(0, 3, 0);
-        player.AddComponent<Flamable>();
-        player.GetComponent<Flamable>().Burning = true;
+        if (FireLit == false)
+        {
+            GameObject childobject = Instantiate(FirePrefab, player.transform);//= Instantiate(FirePrefab) as GameObject;
+            childobject.transform.localPosition = new Vector3(0, 3, 0);
+            player.AddComponent<Flamable>();
+            player.GetComponent<Flamable>().Burning = true;
+            FireLit = true;
+        }   
         Debug.Log("Used A fire");
         return true;
     }
