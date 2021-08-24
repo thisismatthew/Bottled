@@ -22,6 +22,7 @@ public class Cauldron : MonoBehaviour
         //linking script with enum PotionAttributeName value
         PotionAttributeDict.Add(PotionAttributeName.Fire, GetComponent<FireAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.Water, GetComponent<WaterAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.Float, GetComponent<FloatyAttribute>());
 
         //linking cauldron with distributer
         MyDistributer = MyDistributerCollider.GetComponent<Distributer>();
@@ -40,12 +41,14 @@ public class Cauldron : MonoBehaviour
     {
         IEnumerable<Ingredient> matchingIngredients = from ingredient in IngredientSet.Intersect(RecipeCheck)
         select ingredient;
-        if (matchingIngredients.Count() == 3)
+        if (matchingIngredients.Count() == 3)         
         {
+            Debug.Log("match");
             return true;
         }
         else
         {
+            Debug.Log("no match");
             return false;
         }
     }
