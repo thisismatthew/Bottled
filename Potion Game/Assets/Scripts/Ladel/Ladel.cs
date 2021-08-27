@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Ladel : MonoBehaviour
 {
@@ -13,12 +14,16 @@ public class Ladel : MonoBehaviour
     private bool _returnToStart;
     public float Speed = 7;
     private Vector3 _target;
- 
 
+    public Renderer _ladle;
+    public VisualEffect _sparkle;
+    public VisualEffect _dip;
+    public VisualEffect _handle;
     private void Start()
     {
         _startPosition = transform.position;
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        EffectsOff();
     }
 
     public void StartChase()
@@ -26,6 +31,24 @@ public class Ladel : MonoBehaviour
         _chaseStart = true;
         _target = _startPosition;
         _target.y += LiftHeight;
+    }
+    private void EffectsOn()
+    {
+        _ladle.materials[1].SetFloat("_OnOff", 1);
+        _sparkle.enabled = true;
+        _sparkle.Play();
+        _dip.enabled = true; ;
+        _dip.Play();
+        _handle.enabled = true;
+        _handle.Play();
+    }
+
+    private void EffectsOff()
+    {
+        _ladle.materials[1].SetFloat("_OnOff", 0);
+        _sparkle.enabled = false;
+        _dip.enabled = false;
+        _handle.enabled = false;
     }
 
     void Update()
@@ -35,6 +58,7 @@ public class Ladel : MonoBehaviour
 
         if (_chaseStart)
         {
+            EffectsOn();
             if (Vector3.Distance(transform.position, _target) < 0.5)
             {
                 _chaseStart = false;
@@ -69,6 +93,7 @@ public class Ladel : MonoBehaviour
             _target = _startPosition;
             if (Vector3.Distance(transform.position, _target) < 0.5)
             {
+                EffectsOff();
                 _returnToStart = false;
             }
         }

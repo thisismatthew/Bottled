@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PotionLiquid
-  m_Shader: {fileID: -6465566751694194690, guid: 098b6f93fd6e0154ca911c9e4029f872, type: 3}
+  m_Name: FireLiquidMat
+  m_Shader: {fileID: -6465566751694194690, guid: 00b5240fd2385c146b6601d218d29421, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -67,6 +67,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_020a4db4527749a1b1a7f2105cd03eb7_Texture_1:
+        m_Texture: {fileID: 2800000, guid: bb4b08b8b2c37084db91499ce178fee2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_3336957d4e9144b993588bcc2473b630_Texture_1:
+        m_Texture: {fileID: 2800000, guid: bb4b08b8b2c37084db91499ce178fee2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2DLOD_a4a4025f0ca64f7790bf28e6ceb1865d_Texture_1:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -96,7 +104,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_7754b834c88f4a1b9c114d6da801bf47_Texture_1:
-        m_Texture: {fileID: 2800000, guid: bb4b08b8b2c37084db91499ce178fee2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1f303a101fc8dc0439fc5ea515d6ce0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_93c5118b979848e8b53007c41ec9bb20_Texture_1:
@@ -193,6 +201,7 @@ Material:
     - Vector1_1bff0a1b0ed5412dbe0465c7727ea045: 9.5
     - Vector1_2049fa9e73f14cd7b279653ab93937bc: 0.39
     - Vector1_3255b2fc1fe54c46b391c5e07d262078: 0.16
+    - Vector1_6c9b088a5e58457c817b069661455fa4: 0.05
     - Vector1_6e919d24ee6d49f59fcc6c603d635f8b: 3
     - Vector1_70adbb5f1a3445d5b1f44502e75df337: 0.69
     - Vector1_8f8579ae7658406c9bb6b1558586bbb9: 0.93
@@ -200,6 +209,7 @@ Material:
     - Vector1_da1171ec41be4559aa2d33b0ca8a33ae: 0.7
     - Vector1_eb6b6da20ef3487ebcc9b77f99667656: 1.23
     - Vector1_ef77b2e74de44426963f9baa167a2a09: -0.47
+    - Vector1_f3a4dd2e4725410a812d9e4a4122c44d: 0.38
     - Vector1_f45e6b9c624d4ecb87dac63bc43d98b5: -0.39
     - _Alpha: 1
     - _AlphaClip: 0
@@ -224,7 +234,7 @@ Material:
     - _FoamCoverage: 7.07
     - _FoamHeight: -0.12
     - _FoamHeight2: 0
-    - _FoamSpeed: -0.05
+    - _FoamSpeed: 0.1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0

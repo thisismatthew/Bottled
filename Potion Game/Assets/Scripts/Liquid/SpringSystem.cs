@@ -14,6 +14,9 @@ public class SpringSystem : MonoBehaviour
     [Range(0.1f, 0.999f)] public float Damping = 0.1f;
     [Range(0.1f, 300.0f)] public float SpringStiffness = 5.0f;
 
+    [Range(0.001f, 0.1f)] public float perpMotionMagnitude = 0.015f;
+    [Range(0f, 200f)] public float perpMotionSpeed = 113f;
+
     public Transform target;
     public Transform targetRoot;
 
@@ -28,7 +31,7 @@ public class SpringSystem : MonoBehaviour
     private ComputeBuffer deltaTimeBuffer;
     private ComputeBuffer externalForcesBuffer;
 
-
+    private float perpetualMotionCount;
     private Vector3 lastPos;
     private Vector3 lastUp;
     private float[] extForce = new float[SPRING_COUNT * SPRING_COUNT];
@@ -79,21 +82,6 @@ public class SpringSystem : MonoBehaviour
     {
 
         delta[0] = Time.fixedDeltaTime;
-
-        //finding the liquid mesh parameters and liquid levels
-        Vector3 bottleCenter = m_renderer.bounds.center;
-        Vector3 pointAtVec = bottleCenter - target.position;
-        Vector3 pointNormal = pointAtVec.normalized;
-
-        //Getting angles to reorientate the liquid
-        Ray ray = new Ray(bottleCenter, pointNormal);
-        float waveangle = Vector3.Angle(ray.direction.normalized, transform.parent.forward);
-        float sphereangle = 180 - transform.parent.rotation.eulerAngles.y;
-
-        //sending data to shader
-        m_renderer.material.SetVector("_planeNormal", pointNormal);
-        m_renderer.material.SetFloat("_Rotate", sphereangle);
-        m_renderer.material.SetFloat("_Rotate2", sphereangle- waveangle);
 
         //velocity to scale the waves
         Vector3 velocity = (transform.position - lastPos) / Time.fixedDeltaTime;
@@ -152,11 +140,34 @@ public class SpringSystem : MonoBehaviour
     }
     private void Update()
     {
-        //updates the position of the swing root, and height of the swing weight by framerate for no jerky movement o
-        //loopty loops when jumping. Does not affect the phycics otherwise
+        //updates the position of the swing root, and height of the swing weight by framerate for no jerky movement or
+        //loopty loops when jumping. Does not affect the physics otherwise
         Vector3 bottleCenter = m_renderer.bounds.center;
-        targetRoot.position = new Vector3(bottleCenter.x, targetRoot.position.y, bottleCenter.z);
+        if (perpetualMotionCount>2*perpMotionSpeed)
+        {
+            perpetualMotionCount = 1;
+        }    
+        float spinModX = Mathf.Sin(perpetualMotionCount * Mathf.PI / perpMotionSpeed);
+        float spinModZ = Mathf.Cos(perpetualMotionCount * Mathf.PI / perpMotionSpeed);
+        perpetualMotionCount += 1;
+
+        targetRoot.position = new Vector3(bottleCenter.x+ spinModX* perpMotionMagnitude, targetRoot.position.y, bottleCenter.z+ spinModZ* perpMotionMagnitude);
+
         target.position = new Vector3(target.position.x, targetRoot.position.y, target.position.z);
+
+        //finding the liquid mesh parameters and liquid levels
+        Vector3 pointAtVec = bottleCenter - target.position;
+        Vector3 pointNormal = pointAtVec.normalized;
+
+        //Getting angles to reorientate the liquid
+        Ray ray = new Ray(bottleCenter, pointNormal);
+        float waveangle = Vector3.Angle(ray.direction.normalized, transform.parent.forward);
+        float sphereangle = 180 - transform.parent.rotation.eulerAngles.y;
+
+        //sending data to shader
+        m_renderer.material.SetVector("_planeNormal", pointNormal);
+        m_renderer.material.SetFloat("_Rotate", sphereangle);
+        m_renderer.material.SetFloat("_Rotate2", sphereangle - waveangle);
     }
 
     private void OnDestroy()
