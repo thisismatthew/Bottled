@@ -42,7 +42,7 @@ public class DropShadow : MonoBehaviour
             {
                 if (cardinals[i].y < tallest-0.05f)
                 {
-                    Debug.Log("testerino "+ cardinals[i]);
+                    //Debug.Log("testerino "+ cardinals[i]);
                     tallest = cardinals[i].y;
                 }
 

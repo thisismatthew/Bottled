@@ -602,29 +602,29 @@ namespace KinematicCharacterController.Examples
                         //we've hit the apex and we're on our way down
                         if (_jumpConsumed)
                         {
-                            Debug.Log("current vel: " + currentVelocity);
+                            //Debug.Log("current vel: " + currentVelocity);
                             Vector3 down = transform.position;
                             down.y = 0;
 
                             if (currentVelocity.y < -0.01f & _hangtimeConsumed == false)
                             {
                                 Debug.DrawLine(transform.position, down, Color.green);
-                                Debug.Log("current vel: " + currentVelocity);
+                                //Debug.Log("current vel: " + currentVelocity);
                                 _jumpApexReached = true;
-                                Debug.Log("Apex reached");
+                                //Debug.Log("Apex reached");
                             }
 
                             if (_jumpApexReached)
                             {
                                 if (HangTime >= 0)
                                 {
-                                    Debug.Log("hanging");
+                                    //Debug.Log("hanging");
                                     HangTime -= Time.deltaTime;
                                     currentVelocity.y = currentVelocity.y * HangtimeGravityDampness;
                                 }
                                 else
                                 {
-                                    Debug.Log("hanging done");
+                                    //Debug.Log("hanging done");
                                     _jumpApexReached = false;
                                     _hangtimeConsumed = true;
                                 }

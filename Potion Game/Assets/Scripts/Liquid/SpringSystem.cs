@@ -150,7 +150,7 @@ public class SpringSystem : MonoBehaviour
         target.position = new Vector3(target.position.x, targetRoot.position.y, target.position.z);
         //finding the liquid mesh parameters and liquid levels
         Vector3 pointAtVec = bottleCenter - target.position;
-        Debug.Log(pointAtVec);
+        //Debug.Log(pointAtVec);
         pointAtVec = new Vector3(0.6f*pointAtVec.x, pointAtVec.y, 0.1f * pointAtVec.z);
         Vector3 pointNormal = NormalizePrecise(pointAtVec);
 
