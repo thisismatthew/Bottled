@@ -136,28 +136,23 @@ public class SpringSystem : MonoBehaviour
 
         //sends the compute shader generated texture to the main shader
         m_renderer.sharedMaterial.SetTexture("_WaveDeformTex", texture);
-
-    }
-    private void Update()
-    {
-        //updates the position of the swing root, and height of the swing weight by framerate for no jerky movement or
-        //loopty loops when jumping. Does not affect the physics otherwise
         Vector3 bottleCenter = m_renderer.bounds.center;
-        if (perpetualMotionCount>2*perpMotionSpeed)
+        if (perpetualMotionCount > 2 * perpMotionSpeed)
         {
             perpetualMotionCount = 1;
-        }    
+        }
         float spinModX = Mathf.Sin(perpetualMotionCount * Mathf.PI / perpMotionSpeed);
         float spinModZ = Mathf.Cos(perpetualMotionCount * Mathf.PI / perpMotionSpeed);
         perpetualMotionCount += 1;
 
-        targetRoot.position = new Vector3(bottleCenter.x+ spinModX* perpMotionMagnitude, targetRoot.position.y, bottleCenter.z+ spinModZ* perpMotionMagnitude);
+        targetRoot.position = new Vector3(bottleCenter.x + spinModX * perpMotionMagnitude, targetRoot.position.y, bottleCenter.z + spinModZ * perpMotionMagnitude);
 
         target.position = new Vector3(target.position.x, targetRoot.position.y, target.position.z);
-
         //finding the liquid mesh parameters and liquid levels
         Vector3 pointAtVec = bottleCenter - target.position;
-        Vector3 pointNormal = pointAtVec.normalized;
+        Debug.Log(pointAtVec);
+        pointAtVec = new Vector3(0.6f*pointAtVec.x, pointAtVec.y, 0.1f * pointAtVec.z);
+        Vector3 pointNormal = NormalizePrecise(pointAtVec);
 
         //Getting angles to reorientate the liquid
         Ray ray = new Ray(bottleCenter, pointNormal);
@@ -168,6 +163,12 @@ public class SpringSystem : MonoBehaviour
         m_renderer.material.SetVector("_planeNormal", pointNormal);
         m_renderer.material.SetFloat("_Rotate", sphereangle);
         m_renderer.material.SetFloat("_Rotate2", sphereangle - waveangle);
+    }
+    private void Update()
+    {
+        //updates the position of the swing root, and height of the swing weight by framerate for no jerky movement or
+        //loopty loops when jumping. Does not affect the physics otherwise
+
     }
 
     private void OnDestroy()
@@ -189,6 +190,14 @@ public class SpringSystem : MonoBehaviour
         propertiesBuffer.SetData(new float[] {Damping, SpringStiffness});
     }
 
+    Vector3 NormalizePrecise(Vector3 v)
+    {
+        float mag = v.magnitude;
 
+        if (mag == 0) return Vector3.zero;
+
+        return (v / mag);
+
+    }
 
 }
