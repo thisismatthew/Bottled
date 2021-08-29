@@ -55,7 +55,6 @@ namespace KinematicCharacterController.Examples
         public float StableMovementSharpness = 15f;
         public float OrientationSharpness = 10f;
 
-
         [Header("Air Movement")]
         public float MaxAirMoveSpeed = 15f;
         public float AirAccelerationSpeed = 15f;
@@ -99,7 +98,9 @@ namespace KinematicCharacterController.Examples
         [Header("Interaction")]
         public GameObject Interactable;
 
-       
+        [Header("Overides")]
+        public Transform LookTargetOveride = null;
+
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
@@ -219,6 +220,9 @@ namespace KinematicCharacterController.Examples
             }
         }
 
+
+        
+
         /// <summary>
         /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
         /// </summary>
@@ -236,7 +240,10 @@ namespace KinematicCharacterController.Examples
             }
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
-            _lookInputVector = _moveInputVector.normalized;
+            if (LookTargetOveride == null)
+                _lookInputVector = _moveInputVector.normalized;
+            else
+                _lookInputVector = (LookTargetOveride.position - this.transform.position).normalized;
 
             // Move and look inputs
             _moveInputVector = cameraPlanarRotation * moveInputVector;
@@ -433,24 +440,7 @@ namespace KinematicCharacterController.Examples
                         break;
                     }
 
-                    //TODO the current climbing rotation is bugged and needs to be fixed. 
-                    /*case CharacterState.Climbing:
-                        {
-
-                            Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
-                            target.y -= Motor.Capsule.height;
-
-                            // Smoothly interpolate from current to target look direction
-                            Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-
-                            //These Debug Lines help to show the climbing rotation bug. 
-                            //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
-                            //Debug.DrawLine(transform.position, target, Color.red);
-
-                            // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                            currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                            break;
-                        }*/
+                
             }
         }
 

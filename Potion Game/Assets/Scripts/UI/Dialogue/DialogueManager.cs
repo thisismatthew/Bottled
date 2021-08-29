@@ -23,8 +23,8 @@ public class DialogueManager : MonoBehaviour
     [Space]
 
     [Header("Cameras")]
-    public GameObject gameCam;
-    public GameObject dialogueCam;
+    public CinemachineVirtualCamera dialogueCam;
+    public CinemachineTargetGroup camTargetGroup;
 
     private void Awake()
     {
@@ -39,7 +39,8 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && inDialogue)
+
+        if (Input.GetKeyDown(KeyCode.Space) && inDialogue)
         {
             if (nextDialogue)
             {
@@ -50,8 +51,10 @@ public class DialogueManager : MonoBehaviour
 
     public void CameraChange(bool dialogue)
     {
-        gameCam.SetActive(!dialogue);
-        dialogueCam.SetActive(dialogue);
+        if (dialogue)
+            dialogueCam.m_Priority = 20;
+        else
+            dialogueCam.m_Priority = 0;
     }
 
     public void ClearText()
@@ -77,6 +80,7 @@ public class DialogueManager : MonoBehaviour
             dialogueIndex = 0;
             nextDialogue = false;
             canExit = true;
+            Debug.Log("Dialogue Done");
         }
     }
 }
