@@ -11,21 +11,25 @@ public class DialogueTrigger : MonoBehaviour
     private DialogueEvent currentDialogue;
     public CinemachineTargetGroup targetGroup;
     private PlayerInputHandler input;
+    private MainCharacterController controller;
 
 
     void Start()
     {
-        input = FindObjectOfType<PlayerInputHandler>();
+        controller = GetComponent<MainCharacterController>();
+        input = GetComponent<PlayerInputHandler>();
         ui = DialogueManager.instance;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !ui.inDialogue && currentDialogue != null)
+        if (Input.anyKey && !ui.inDialogue && currentDialogue != null)
         {
             Debug.Log("Initiated Dialogue");
             targetGroup.m_Targets[1].target = currentDialogue.transform;
+            controller.LookTargetOveride = currentDialogue.transform;
             input.Locked = true;
+            Debug.Log("Dialogue Locked");
             currentDialogue.active = false;
             ui.inDialogue = true;
             ui.CameraChange(true);

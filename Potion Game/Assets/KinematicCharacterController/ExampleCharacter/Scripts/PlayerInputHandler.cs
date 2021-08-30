@@ -18,10 +18,11 @@ namespace KinematicCharacterController.Examples
         private const string MouseScrollInput = "Mouse ScrollWheel";
         private const string HorizontalInput = "Horizontal";
         private const string VerticalInput = "Vertical";
+        private PlayerCharacterInputs NullInput;
 
         private void Start()
         {
-            
+            NullInput = new PlayerCharacterInputs();
             Cursor.lockState = CursorLockMode.Locked;
         }
 
@@ -58,6 +59,8 @@ namespace KinematicCharacterController.Examples
             // Apply inputs to character
             if (!Locked)
                 Character.SetInputs(ref characterInputs);
+            else
+                Character.SetInputs(ref NullInput);
         }
     }
 }
