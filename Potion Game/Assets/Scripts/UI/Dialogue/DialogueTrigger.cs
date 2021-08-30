@@ -23,17 +23,27 @@ public class DialogueTrigger : MonoBehaviour
 
     void Update()
     {
-        if (Input.anyKey && !ui.inDialogue && currentDialogue != null)
+        if (!currentDialogue.triggered)
         {
-            Debug.Log("Initiated Dialogue");
-            targetGroup.m_Targets[1].target = currentDialogue.transform;
-            controller.LookTargetOveride = currentDialogue.transform;
-            input.Locked = true;
-            Debug.Log("Dialogue Locked");
-            currentDialogue.active = false;
-            ui.inDialogue = true;
-            ui.CameraChange(true);
-            ui.ClearText();
+            if (Input.anyKey && !ui.inDialogue && currentDialogue != null)
+            {
+                Debug.Log("Initiated Dialogue");
+                targetGroup.m_Targets[1].target = currentDialogue.transform;
+                controller.LookTargetOveride = currentDialogue.transform;
+                input.Locked = true;
+                Debug.Log("Dialogue Locked");
+                currentDialogue.active = false;
+                ui.inDialogue = true;
+                ui.CameraChange(true);
+                ui.ClearText();
+                ui.FadeUI(true, .2f, .65f);
+            }
+        }
+        
+        if (currentDialogue.triggered)
+        {
+            controller.LookTargetOveride = null;
+            input.Locked = false;
         }
     }
 
@@ -44,7 +54,8 @@ public class DialogueTrigger : MonoBehaviour
         {
             Debug.Log("Dialogue Triggered");
             currentDialogue = other.GetComponent<DialogueEvent>();
-            ui.currentDialogue = currentDialogue;
+            if (!currentDialogue.triggered)
+                ui.currentDialogue = currentDialogue;
         }
     }
 
@@ -52,6 +63,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (other.CompareTag("DialogueEvent"))
         {
+            currentDialogue.triggered = true;
             currentDialogue = null;
             ui.currentDialogue = currentDialogue;
         }

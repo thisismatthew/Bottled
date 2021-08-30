@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
+using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine;
 using Cinemachine;
@@ -10,6 +11,7 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instance;
 
+    public CanvasGroup canvasGroup;
     public bool inDialogue;
     public Image textBubble;
     public TMP_Animated animatedText;
@@ -42,10 +44,33 @@ public class DialogueManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && inDialogue)
         {
+
+            if (canExit)
+            {
+                CameraChange(false);
+                FadeUI(false, .2f, 0);
+                Sequence s = DOTween.Sequence();
+                s.AppendInterval(.8f);
+                s.AppendCallback(() => ResetState());
+            }
+
             if (nextDialogue)
             {
                 animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
             }
+        }
+    }
+
+    public void FadeUI(bool show, float time, float delay)
+    {
+        Sequence s = DOTween.Sequence();
+        s.AppendInterval(delay);
+        s.Append(canvasGroup.DOFade(show ? 1 : 0, time));
+        if (show)
+        {
+            dialogueIndex = 0;
+            s.Join(canvasGroup.transform.DOScale(0, time * 2).From().SetEase(Ease.OutBack));
+            s.AppendCallback(() => animatedText.ReadText(currentDialogue.dialogue.conversationBlock[0]));
         }
     }
 
@@ -77,6 +102,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            currentDialogue.triggered = true;
             dialogueIndex = 0;
             nextDialogue = false;
             canExit = true;
