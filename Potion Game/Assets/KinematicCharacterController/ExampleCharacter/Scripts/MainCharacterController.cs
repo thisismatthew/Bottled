@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace KinematicCharacterController.Examples
 {
     [System.Serializable]
@@ -54,7 +55,6 @@ namespace KinematicCharacterController.Examples
         public float StableMovementSharpness = 15f;
         public float OrientationSharpness = 10f;
 
-
         [Header("Air Movement")]
         public float MaxAirMoveSpeed = 15f;
         public float AirAccelerationSpeed = 15f;
@@ -97,6 +97,9 @@ namespace KinematicCharacterController.Examples
 
         [Header("Interaction")]
         public GameObject Interactable;
+
+        [Header("Overides")]
+        public Transform LookTargetOveride = null;
 
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
@@ -217,6 +220,9 @@ namespace KinematicCharacterController.Examples
             }
         }
 
+
+        
+
         /// <summary>
         /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
         /// </summary>
@@ -234,7 +240,10 @@ namespace KinematicCharacterController.Examples
             }
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
-            _lookInputVector = _moveInputVector.normalized;
+            if (LookTargetOveride == null)
+                _lookInputVector = _moveInputVector.normalized;
+            else
+                _lookInputVector = (LookTargetOveride.position - this.transform.position).normalized;
 
             // Move and look inputs
             _moveInputVector = cameraPlanarRotation * moveInputVector;
@@ -305,36 +314,6 @@ namespace KinematicCharacterController.Examples
                                 {
 
                                     _isHolding = true;
-                                    //Interactable.transform.parent = this.transform;
-                                    //FixedJoint HoldingJoint = Interactable.AddComponent<FixedJoint>();
-                                    //var jointToAdd : FixedJoint;
-                                    //var player = GameObject.FindGameObjectWithTag("Player");
-                                    ///GameObject.FindGameObjectWithTag("Player").AddComponent<FixedJoint2D>();
-                                    ///var rope = Interactable;
-                                    //var hinge = player.GetComponent<HingeJoint2D>();
-                                    ///var rb = rope.GetComponent<Rigidbody2D>();
-                                    //hinge.connectedBody = rb;
-                                    //hinge.connectedAnchor = new Vector2(0, -2.5f);
-
-
-                                    //Rigidbody Rigid = this.gameObject.GetComponent(Rigidbody);
-                                    //if (GameObject.FindWithTag("player") != null)
-                                    //  {
-                                    // GameObject Player = GameObject.FindWithTag("player");
-                                    //     HoldingJoint.connectedBody = this.gameObject.GetComponent(Rigidbody);
-                                    // }
-                                    //var jointToAdd : FixedJoint;
-                                    //jointToAdd = gameObject.AddComponent(FixedJoint);
-                                    //jointToAdd.connectedBody = collision.gameObject.rigidbody;
-                                    //Interactable.gameObject.AddComponent(FixedJoint);
-                                    //gameObject.GetComponent(FixedJoint).connectedBody = collision.rigidbody;
-                                    //Interactable.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                                    //IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
-                                    //Interactable.GetComponent<Rigidbody>().useGravity = false;
-                                    //Interactable.GetComponent<BoxCollider>().enabled = false;
-
-
-
                                     Interactable.transform.parent = this.transform;
                                     IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
                                     Destroy(Interactable.GetComponent<Rigidbody>());
@@ -461,24 +440,7 @@ namespace KinematicCharacterController.Examples
                         break;
                     }
 
-                    //TODO the current climbing rotation is bugged and needs to be fixed. 
-                    /*case CharacterState.Climbing:
-                        {
-
-                            Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
-                            target.y -= Motor.Capsule.height;
-
-                            // Smoothly interpolate from current to target look direction
-                            Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-
-                            //These Debug Lines help to show the climbing rotation bug. 
-                            //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
-                            //Debug.DrawLine(transform.position, target, Color.red);
-
-                            // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                            currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                            break;
-                        }*/
+                
             }
         }
 
@@ -886,7 +848,7 @@ namespace KinematicCharacterController.Examples
         protected void OnLeaveStableGround()
         {
             anim.SetTrigger("Jump");
-            anim.SetBool("Airborne", true);        
+            anim.SetBool("Airborne", true);
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
@@ -897,8 +859,7 @@ namespace KinematicCharacterController.Examples
         {
             Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
             Vector3 localVel = transform.InverseTransformDirection(vel);
-
-            if (localVel.x <= 0.1f && localVel.x > -0.1f)
+            if(localVel.x <= 0.1f && localVel.x > -0.1f)
             {
                 if (localVel.z > 0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
@@ -906,6 +867,7 @@ namespace KinematicCharacterController.Examples
                     anim.SetBool("Run", true);
                     _armPower = Mathf.SmoothStep(0.5f, 0.85f , -0.02f);
                     _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
+
                 }
                 else if (localVel.z < -0.1f && Motor.GroundingStatus.IsStableOnGround)
                 {
