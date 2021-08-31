@@ -582,7 +582,9 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: AMPLIFY_SHADER_EDITOR
+    1: AMPLIFY_SHADER_EDITOR;OBI_ONI_SUPPORTED
+    4: OBI_ONI_SUPPORTED
+    7: OBI_ONI_SUPPORTED
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
