@@ -439,5 +439,27 @@ namespace Obi
             SetConstraintsDirty(Oni.ConstraintType.Bending);
             SetSimplicesDirty();
         }
+
+        // MATT - a probably hacky method for finding the closest particle on the rope to a given Vector3
+        public int FindClosestRopeParticle(Vector3 target)
+        {
+            var closestIndexDistance = 1000f;
+            int closestIndex = 0;
+
+            //Find nearest particle to players hand
+            foreach (int solverIndex in solverIndices)
+            {
+                Vector3 pos = GetParticlePosition(solverIndex);
+
+                float distance = Vector3.Distance(target, pos);
+                if (distance < closestIndexDistance)
+                {
+                    closestIndexDistance = distance;
+                    closestIndex = solverIndex;
+                }
+            }
+            return closestIndex;
+        }
     }
+
 }
