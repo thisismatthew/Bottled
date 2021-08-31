@@ -34,7 +34,7 @@ public class Ladel : MonoBehaviour
     }
     private void EffectsOn()
     {
-        _ladle.materials[1].SetFloat("_OnOff", 1);
+        //_ladle.materials[1].SetFloat("_OnOff", 1);
         _sparkle.enabled = true;
         _sparkle.Play();
         _dip.enabled = true; ;

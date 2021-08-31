@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5257429072216467470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5257429072216467471}
+  - component: {fileID: 5257429072216467469}
+  - component: {fileID: 5257429072216467468}
+  - component: {fileID: 5257429072216467466}
+  m_Layer: 0
+  m_Name: DialogueEvent
+  m_TagString: DialogueEvent
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5257429072216467471
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257429072216467470}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5257429072216467469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257429072216467470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6ea783091ffb64d9f0eaf81b8b022e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogue: {fileID: 11400000, guid: a2a3c5ee54651bf47aa7fc6e1765d9e3, type: 2}
+  active: 0
+  triggered: 0
+--- !u!135 &5257429072216467468
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257429072216467470}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.6512756
+  m_Center: {x: 0, y: 0, z: -0.021812439}
+--- !u!114 &5257429072216467466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257429072216467470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbfc46798d938494289660f4098d0e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voices:
+  - {fileID: 8300000, guid: 3b14c55d30b24c44ca2c874dc1d556a9, type: 3}
+  - {fileID: 8300000, guid: e38870b8d8d6b4a42b84302c5875f56d, type: 3}
+  - {fileID: 8300000, guid: e5fb48c8da489904e845d1160d67dfc7, type: 3}
+  - {fileID: 8300000, guid: 323d75df23aa9f34ea41153eaa4a5c3e, type: 3}
+  - {fileID: 8300000, guid: 877778b498d4f5940982f0aa6460024d, type: 3}
+  punctuations:
+  - {fileID: 8300000, guid: 0a152411c0e35bd419208469fae55e0f, type: 3}
+  voiceSource: {fileID: 0}
+  punctuationSource: {fileID: 0}
