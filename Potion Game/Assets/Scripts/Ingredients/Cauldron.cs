@@ -22,6 +22,7 @@ public class Cauldron : MonoBehaviour
         //linking script with enum PotionAttributeName value
         PotionAttributeDict.Add(PotionAttributeName.Fire, GetComponent<FireAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.Water, GetComponent<WaterAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.AntiGravity, GetComponent<AntiGravityAttribute>());
 
         //linking cauldron with distributer
         MyDistributer = MyDistributerCollider.GetComponent<Distributer>();
@@ -80,6 +81,7 @@ public class Cauldron : MonoBehaviour
                         //do what is needed to be done with curent recipe
                         //fill dispenser
                         RecipeMade = false;
+                        count = 0;
                     }
                 }
             }
