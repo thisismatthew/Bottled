@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Obi;
 
 
 namespace KinematicCharacterController.Examples
@@ -72,13 +73,15 @@ namespace KinematicCharacterController.Examples
         public float JumpPostGroundingGraceTime = 0f;
 
         [Header("Climbing")]
-        public float ClimbingSpeed = 0.01f;
-        public Spline CurrentClimbSpline;
-        private float _currentSplineIndex;
+        public ObiRope CurrentClimbRope;
+        private int _currentRopeParticleIndex;
+        public int ClimbingSpeed = 1;
         private bool _isClimbing = false;
         private bool _startedClimbing = false;
         public bool JumpingFromClimbing = false;
         private float _upDownInput = 0f;
+        
+        
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -214,7 +217,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        CurrentClimbSpline = null;
+                        CurrentClimbRope = null;
                         break;
                     }
             }
@@ -645,7 +648,8 @@ namespace KinematicCharacterController.Examples
                         //if this is the first update where we are climbing set velocity to 0
                         if (_startedClimbing == true)
                         {
-                            _currentSplineIndex = CurrentClimbSpline.GetClosestVertexIndex(transform.position);
+                            _currentRopeParticleIndex = CurrentClimbRope.FindClosestRopeParticle(transform.position);
+                            
                             //all we need are the two end points of the spline 
                             currentVelocity = Vector3.zero;
                             _startedClimbing = false;
@@ -657,16 +661,16 @@ namespace KinematicCharacterController.Examples
                             Vector3 target = Vector3.zero;
                             Debug.Log(_upDownInput);
                             //move the target spline point along, and snap the character to it. 
-                            if (_upDownInput < 0 && _currentSplineIndex <= 1)
+                            if (_upDownInput < 0 && _currentRopeParticleIndex <= CurrentClimbRope.particleCount)
                             {
-                                _currentSplineIndex += ClimbingSpeed;
+                                _currentRopeParticleIndex += ClimbingSpeed;
                                 anim.SetFloat("ClimbState", 1);
                                 anim.SetBool("ClimbUp", false);
                             }
 
-                            else if (_upDownInput > 0 && _currentSplineIndex >= 0)
+                            else if (_upDownInput > 0 && _currentRopeParticleIndex >= 0)
                             {
-                                _currentSplineIndex -= ClimbingSpeed;
+                                _currentRopeParticleIndex -= ClimbingSpeed;
                                 anim.SetFloat("ClimbState", 1);
                                 anim.SetBool("ClimbUp", true);
                             }
@@ -675,7 +679,7 @@ namespace KinematicCharacterController.Examples
                                 anim.SetFloat("ClimbState", 0);
                             }
 
-                            target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
+                            target = CurrentClimbRope.GetParticlePosition(_currentRopeParticleIndex);
                             //now lets make sure that the character is oriented and positioned right fo animations
                             //offset the snapped position by the hieght of the player to make it hang below the spline
                             target.y -= Motor.Capsule.height;
@@ -686,11 +690,12 @@ namespace KinematicCharacterController.Examples
 
                             Motor.MoveCharacter(target);
 
-                            //if we moved to the end of the spline take us off
-                            if (_currentSplineIndex == 1 || _currentSplineIndex == 0)
+                            /*
+                            //if we moved to the end of the Rope take us off
+                            if (_currentRopeParticleIndex == CurrentClimbRope.particleCount || _currentRopeParticleIndex == 0)
                             {
                                 TransitionToState(CharacterState.Default);
-                            }
+                            }*/
                         }
 
 

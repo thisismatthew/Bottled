@@ -8,7 +8,7 @@ using KinematicCharacterController.Examples;
 public class DialogueTrigger : MonoBehaviour
 {
     private DialogueManager ui;
-    private DialogueEvent currentDialogue;
+    private DialogueEvent currentDialogue = null;
     public CinemachineTargetGroup targetGroup;
     private PlayerInputHandler input;
     private MainCharacterController controller;
@@ -23,27 +23,30 @@ public class DialogueTrigger : MonoBehaviour
 
     void Update()
     {
-        if (!currentDialogue.triggered)
+        if (currentDialogue != null)
         {
-            if (Input.anyKey && !ui.inDialogue && currentDialogue != null)
+            if (!currentDialogue.triggered)
             {
-                Debug.Log("Initiated Dialogue");
-                targetGroup.m_Targets[1].target = currentDialogue.transform;
-                controller.LookTargetOveride = currentDialogue.transform;
-                input.Locked = true;
-                Debug.Log("Dialogue Locked");
-                currentDialogue.active = false;
-                ui.inDialogue = true;
-                ui.CameraChange(true);
-                ui.ClearText();
-                ui.FadeUI(true, .2f, .65f);
+                if (Input.anyKey && !ui.inDialogue && currentDialogue != null)
+                {
+                    Debug.Log("Initiated Dialogue");
+                    targetGroup.m_Targets[1].target = currentDialogue.transform;
+                    controller.LookTargetOveride = currentDialogue.transform;
+                    input.Locked = true;
+                    Debug.Log("Dialogue Locked");
+                    currentDialogue.active = false;
+                    ui.inDialogue = true;
+                    ui.CameraChange(true);
+                    ui.ClearText();
+                    ui.FadeUI(true, .2f, .65f);
+                }
             }
-        }
-        
-        if (currentDialogue.triggered)
-        {
-            controller.LookTargetOveride = null;
-            input.Locked = false;
+
+            if (currentDialogue.triggered)
+            {
+                controller.LookTargetOveride = null;
+                input.Locked = false;
+            }
         }
     }
 

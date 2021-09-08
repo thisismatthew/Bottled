@@ -4,6 +4,11 @@ using UnityEngine;
 using KinematicCharacterController;
 using KinematicCharacterController.Examples;
 
+/*
+ * This script is now depreciated and not supported as a part of the project,
+ * we have instead swapped to using Obi Ropes. 
+ */
+
 [RequireComponent(typeof(Spline))]
 public class Ledge : MonoBehaviour
 {
@@ -39,7 +44,7 @@ public class Ledge : MonoBehaviour
                 Debug.Log("climbing started");
                 playerController.TransitionToState(CharacterState.Climbing);
                 _playerIsClimbing = true;
-                playerController.CurrentClimbSpline = _spline;
+                //playerController.CurrentClimbSpline = _spline;
                 
             }
             
