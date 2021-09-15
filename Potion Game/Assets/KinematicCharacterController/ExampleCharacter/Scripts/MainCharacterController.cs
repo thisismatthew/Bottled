@@ -94,6 +94,8 @@ namespace KinematicCharacterController.Examples
         public GameObject LeftArm;
         public SpringJoint SpringWeightObject;
         public Rigidbody SpringRoot;
+        public ParticleSystem JumpClouds;
+        public ParticleSystem RunClouds;
 
         [Header("Interaction")]
         public GameObject Interactable;
@@ -500,6 +502,7 @@ namespace KinematicCharacterController.Examples
                             JumpingFromClimbing = false;
                             float currentVelocityMagnitude = currentVelocity.magnitude;
 
+
                             Vector3 effectiveGroundNormal = Motor.GroundingStatus.GroundNormal;
                             if (currentVelocityMagnitude > 0f && Motor.GroundingStatus.SnappingPrevented)
                             {
@@ -585,6 +588,7 @@ namespace KinematicCharacterController.Examples
 
                             // Drag
                             currentVelocity *= (1f / (1f + (Drag * deltaTime)));
+
                         }
 
                         // Handle jumping
@@ -753,6 +757,8 @@ namespace KinematicCharacterController.Examples
                         break;
                     }
             }
+            anim.SetFloat("VerticalVelocity", currentVelocity.y);
+            anim.SetFloat("ForwardVelocity", Mathf.Sqrt(currentVelocity.z* currentVelocity.z + currentVelocity.x * currentVelocity.x));
         }
 
         /// <summary>
@@ -881,12 +887,14 @@ namespace KinematicCharacterController.Examples
         {
             anim.SetTrigger("Grounded");
             anim.SetBool("Airborne", false);
+            JumpClouds.Play();
         }
 
         protected void OnLeaveStableGround()
         {
             anim.SetTrigger("Jump");
-            anim.SetBool("Airborne", true);        
+            anim.SetBool("Airborne", true);
+            JumpClouds.Play();
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
@@ -897,31 +905,24 @@ namespace KinematicCharacterController.Examples
         {
             Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
             Vector3 localVel = transform.InverseTransformDirection(vel);
-
-            if (localVel.x <= 0.1f && localVel.x > -0.1f)
+            if (localVel.z > 0.01f && Motor.GroundingStatus.IsStableOnGround)
             {
-                if (localVel.z > 0.1f && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("RunBackwards", false);
-                    anim.SetBool("Run", true);
-                    _armPower = Mathf.SmoothStep(0.5f, 0.85f , -0.02f);
-                    _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
-                }
-                else if (localVel.z < -0.1f && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", true);
-                }
-
-                else if (localVel.z <= 0.1f && localVel.z > -0.1f && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", false);
-                    _armPower = Mathf.SmoothStep(0.85f, 0.5f, 0.02f);
-                    _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
-                }
+                anim.SetBool("Run", true);
+                _armPower = Mathf.SmoothStep(0.5f, 0.85f, -0.02f);
+                _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
+            }
+            else
+            {
+                anim.SetBool("Run", false);
+                _armPower = Mathf.SmoothStep(0.85f, 0.5f, 0.02f);
+                _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
             }
 
+            Debug.Log("goin crazy " + ActualMoveSpeed);
+            if (ActualMoveSpeed > 11f && ActualMoveSpeed < 12f)
+            {
+                RunClouds.Play();
+            }
 
             R_ArmRend.material.SetFloat("_Power", _armPower);
             R_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);

@@ -5,16 +5,16 @@ using UnityEngine.VFX;
 
 public class PlayerVFXScript : MonoBehaviour
 {
-    public VisualEffect _runCloudL;
-    public VisualEffect _runCloudR;
+    public VisualEffect _runCloud;
+    public VisualEffect _jumpCloudR;
 
 
-    public void RunCloudL()
+    public void RunCloud()
     {
-        _runCloudL.Play();
+        _runCloud.Play();
     }
-    public void RunCloudR()
+    public void JumpCloud()
     {
-        _runCloudR.Play();
+        _jumpCloudR.Play();
     }
 }

@@ -14,6 +14,8 @@ namespace KinematicCharacterController.Examples
         public Transform RespawnPoint;
         public Transform SpringWeight;
 
+        public Animator anim;
+
         private KinematicCharacterMotor Motor;
         private MainCharacterController Controller;
         private float _currentHeight;
@@ -56,11 +58,16 @@ namespace KinematicCharacterController.Examples
             //if the players height has changed greater than the fall distance in the latest time slice,
             //and they have landed on stable ground. Smash em. 
            if ((_heightFallen< -DeadlyFallDistance)&& Motor.GroundingStatus.IsStableOnGround)
-            {
+           {
                 SmashCharacter();
-            }
+           }
 
-           if (Controller.CurrentCharacterState == CharacterState.Dead)
+           if (_heightFallen < -DeadlyFallDistance+1f)
+           {
+                anim.SetTrigger("DeathHeight");
+           }
+
+            if (Controller.CurrentCharacterState == CharacterState.Dead)
             {
                 _deadTimer += Time.deltaTime;
                 if (_deadTimer > LengthOfTimeDead)
