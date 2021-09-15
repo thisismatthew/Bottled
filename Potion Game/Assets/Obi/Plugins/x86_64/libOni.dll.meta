@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: e2c2ebd4a8d9a4f9c962e342f097d0f2
+=======
+guid: 37a07d088f8a9b4409e48272e44595b6
+>>>>>>> ArtDevelopment
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -12,6 +16,7 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
+<<<<<<< HEAD
       '': Linux
     second:
       enabled: 0
@@ -83,12 +88,29 @@ PluginImporter:
       enabled: 1
       settings:
         CPU: AnyCPU
+=======
+      Any: 
+    second:
+      enabled: 1
+      settings: {}
+  - first:
+      Editor: Editor
+    second:
+      enabled: 0
+      settings:
+        CPU: x86_64
+        DefaultValueInitialized: true
+>>>>>>> ArtDevelopment
   - first:
       Standalone: Linux64
     second:
       enabled: 1
       settings:
+<<<<<<< HEAD
         CPU: AnyCPU
+=======
+        CPU: x86_64
+>>>>>>> ArtDevelopment
   - first:
       Standalone: OSXUniversal
     second:
@@ -107,6 +129,7 @@ PluginImporter:
       enabled: 1
       settings:
         CPU: AnyCPU
+<<<<<<< HEAD
   - first:
       WebGL: WebGL
     second:
@@ -119,6 +142,8 @@ PluginImporter:
       settings:
         CompileFlags: 
         FrameworkDependencies: 
+=======
+>>>>>>> ArtDevelopment
   userData: 
   assetBundleName: 
   assetBundleVariant: 
