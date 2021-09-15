@@ -644,12 +644,14 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        
+                        Debug.Log("Rope Index: "+ _currentRopeParticleIndex);
+                        Debug.Log("Lowest Rope Index: " + CurrentClimbRope.activeParticleCount);
                         //if this is the first update where we are climbing set velocity to 0
                         if (_startedClimbing == true)
                         {
                             _currentRopeParticleIndex = CurrentClimbRope.FindClosestRopeParticle(transform.position);
-                            
+                            if (_currentRopeParticleIndex >= CurrentClimbRope.activeParticleCount - 5)
+                                _currentRopeParticleIndex = CurrentClimbRope.activeParticleCount - 5;
                             //all we need are the two end points of the spline 
                             currentVelocity = Vector3.zero;
                             _startedClimbing = false;
@@ -657,18 +659,20 @@ namespace KinematicCharacterController.Examples
 
                         if (_isClimbing)
                         {
-                            
+
                             Vector3 target = Vector3.zero;
-                            Debug.Log(_upDownInput);
+                            //TODO clear away this MAGIC NUMBER I've got going on below. for some reason
+                            //there are always extra particles indexed at the end of the active particle rope array that 
+                            //don't get used, and are physically at the 0 position of the ropes local space. 
                             //move the target spline point along, and snap the character to it. 
-                            if (_upDownInput < 0 && _currentRopeParticleIndex <= CurrentClimbRope.particleCount)
+                            if (_upDownInput < 0 && _currentRopeParticleIndex <= CurrentClimbRope.activeParticleCount-5)
                             {
                                 _currentRopeParticleIndex += ClimbingSpeed;
                                 anim.SetFloat("ClimbState", 1);
                                 anim.SetBool("ClimbUp", false);
                             }
 
-                            else if (_upDownInput > 0 && _currentRopeParticleIndex >= 0)
+                            else if (_upDownInput > 0 && _currentRopeParticleIndex >= 1)
                             {
                                 _currentRopeParticleIndex -= ClimbingSpeed;
                                 anim.SetFloat("ClimbState", 1);
