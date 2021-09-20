@@ -5,7 +5,7 @@ using UnityEngine;
 public class FireAttribute : MonoBehaviour, IPotionAttribute
 {
     public Renderer Potion;
-    public Color NewPotionColor;
+    public Material NewLiquidMaterial;
     private string _name = "fireAttribute";
     public GameObject FirePrefab;
     public bool FireLit = false;
@@ -13,7 +13,7 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     public void Equip()
     {
         Debug.Log("Equiped fire!!!!");
-        Potion.material.SetColor("_LiquidColour", NewPotionColor);
+        Potion.material = NewLiquidMaterial;
     }
 
     public void Unequip()

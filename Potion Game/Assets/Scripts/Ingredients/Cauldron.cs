@@ -21,6 +21,7 @@ public class Cauldron : MonoBehaviour
     {
         //linking script with enum PotionAttributeName value
         PotionAttributeDict.Add(PotionAttributeName.Fire, GetComponent<FireAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.HerbalTea, GetComponent<HerbalTeaAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.Water, GetComponent<WaterAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.AntiGravity, GetComponent<AntiGravityAttribute>());
 
@@ -68,11 +69,8 @@ public class Cauldron : MonoBehaviour
                     RecipeMade = CompareRecipes(Cauldronrecipe.Ingredients, recipe.Ingredients);
                     if (RecipeMade)
                     {
-                        Debug.Log("fire match");
-                        
                         foreach (PotionAttributeName attribute in recipe.RecipeAttributes)
                         {
-                            Debug.Log("add fire attribute");
                             ListOfAttributes.Add(PotionAttributeDict[attribute]);
                         }
                         

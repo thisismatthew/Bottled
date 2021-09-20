@@ -895,7 +895,7 @@ namespace KinematicCharacterController.Examples
                 _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
             }
 
-            Debug.Log("goin crazy " + ActualMoveSpeed);
+            //Debug.Log("goin crazy " + ActualMoveSpeed);
             if (ActualMoveSpeed > 11f && ActualMoveSpeed < 12f)
             {
                 RunClouds.Play();

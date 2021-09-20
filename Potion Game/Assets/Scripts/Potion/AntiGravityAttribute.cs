@@ -6,10 +6,8 @@ using KinematicCharacterController.Examples;
 public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
 {
     public Renderer Potion;
-    public Color NewPotionColor;
+    public Material NewPotionMaterial;
     private string _name = "antiGravityAttribute";
-    public GameObject FirePrefab;
-    public bool FireLit = false;
 
     [Header("Air Movement")]
     public float AntiGravityMaxAirMoveSpeed;
@@ -29,10 +27,11 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
     {
         var player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log("Equiped anti gravity");
-        Potion.material.SetColor("_LiquidColour", NewPotionColor);
+        Potion.material = NewPotionMaterial;
         var playerController = player.GetComponent<MainCharacterController>();
 
         // TODO cull unsused jump attributes
+       /* 
         playerController.MaxAirMoveSpeed = AntiGravityMaxAirMoveSpeed;
         playerController.AirAccelerationSpeed = AntiGravityAirAccelerationSpeed;
         playerController.Drag = AntiGravityDrag;
@@ -44,9 +43,8 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
         playerController.HangtimeGravityDampness = AntiGravityHangtimeGravityDampness;
         playerController.JumpPreGroundingGraceTime = AntiGravityJumpPreGroundingGraceTime;
         playerController.JumpPostGroundingGraceTime = AntiGravityJumpPostGroundingGraceTime;
-
-
-}
+       */
+    }
 
     public void Unequip()
     {
@@ -54,17 +52,6 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
     }
     public bool Use()
     {
-        //Flamable.equip
-        //TODO sprout fire particle affect
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (FireLit == false)
-        {
-            GameObject childobject = Instantiate(FirePrefab, player.transform);//= Instantiate(FirePrefab) as GameObject;
-            childobject.transform.localPosition = new Vector3(0, 3, 0);
-            player.AddComponent<Flamable>();
-            player.GetComponent<Flamable>().Burning = true;
-            FireLit = true;
-        }
         Debug.Log("Used A anti gravity");
         return true;
     }
