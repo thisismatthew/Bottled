@@ -11,7 +11,7 @@ public class CauldronThrowArea : MonoBehaviour
         //the player must have the tag Player for the collider to detect them 
         if (player.gameObject.tag == "Player")
         {
-            player.GetComponent<MainCharacterController>().CauldronThrowTarget = transform.position;
+            player.GetComponent<MainCharacterController>().CauldronThrowTarget.position = transform.position;
             player.GetComponent<MainCharacterController>().NearCauldron = true;
         }
     }

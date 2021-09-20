@@ -104,7 +104,7 @@ namespace KinematicCharacterController.Examples
         public GameObject Interactable;
         public Transform GrabPosition;
         public bool NearCauldron;
-        public Vector3 CauldronThrowTarget;
+        public Transform CauldronThrowTarget;
 
         [Header("Overides")]
         public Transform LookTargetOveride = null;
@@ -318,7 +318,7 @@ namespace KinematicCharacterController.Examples
                                     IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
                                     _isHolding = false;
                                     if(NearCauldron)
-                                        Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget);
+                                        Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
                                 }
                                 else
                                 {
