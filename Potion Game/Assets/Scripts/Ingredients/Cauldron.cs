@@ -27,7 +27,7 @@ public class Cauldron : MonoBehaviour
         //linking cauldron with distributer
         MyDistributer = MyDistributerCollider.GetComponent<Distributer>();
         //Starting ingredients in Cauldran
-        Cauldronrecipe.Ingredients[0] = Ingredient.apple;
+        Cauldronrecipe.Ingredients[0] = Ingredient.tea;
         //Cauldronrecipe.Ingredients[1] = Ingredient.Object;
         //Cauldronrecipe.Ingredients[2] = Ingredient.carrot;
     }
