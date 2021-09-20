@@ -22,13 +22,14 @@ public class Cauldron : MonoBehaviour
         //linking script with enum PotionAttributeName value
         PotionAttributeDict.Add(PotionAttributeName.Fire, GetComponent<FireAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.Water, GetComponent<WaterAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.AntiGravity, GetComponent<AntiGravityAttribute>());
 
         //linking cauldron with distributer
         MyDistributer = MyDistributerCollider.GetComponent<Distributer>();
         //Starting ingredients in Cauldran
         Cauldronrecipe.Ingredients[0] = Ingredient.apple;
-        Cauldronrecipe.Ingredients[1] = Ingredient.Object;
-        Cauldronrecipe.Ingredients[2] = Ingredient.carrot;
+        //Cauldronrecipe.Ingredients[1] = Ingredient.Object;
+        //Cauldronrecipe.Ingredients[2] = Ingredient.carrot;
     }
     // Update is called once per frame
     void Update()
@@ -38,9 +39,10 @@ public class Cauldron : MonoBehaviour
 
     public bool CompareRecipes(List<Ingredient>IngredientSet, List<Ingredient> RecipeCheck)
     {
+        //system was originally designed for 3 items so looping was required, kept architecture so it can easily be reverted if scope expands.
         IEnumerable<Ingredient> matchingIngredients = from ingredient in IngredientSet.Intersect(RecipeCheck)
         select ingredient;
-        if (matchingIngredients.Count() == 3)
+        if (matchingIngredients.Count() == 1)
         {
             return true;
         }
@@ -58,7 +60,7 @@ public class Cauldron : MonoBehaviour
             Destroy(collider.gameObject);
             Cauldronrecipe.Ingredients[count] = ingredientAdded;
             count++;
-            if (count == 3) 
+            if (count == 1) 
                 
             {
                 foreach (Recipe recipe in Recipes)
@@ -79,6 +81,7 @@ public class Cauldron : MonoBehaviour
                         //do what is needed to be done with curent recipe
                         //fill dispenser
                         RecipeMade = false;
+                        count = 0;
                     }
                 }
             }
