@@ -588,6 +588,17 @@ namespace KinematicCharacterController.Examples
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
                                 _jumpedThisFrame = true;
+
+                                var jumpSize = JumpClouds.sizeOverLifetime;
+                                var jumpShape = JumpClouds.shape;
+                                var jumpSpeed = JumpClouds.velocityOverLifetime;
+                                var jumpEmit = JumpClouds.emission;
+                                jumpSize.sizeMultiplier = 0.8f;
+                                jumpShape.scale = new Vector3(0.8f, 0.8f, 0.8f);
+                                jumpSpeed.speedModifierMultiplier = 3;
+                                jumpEmit.burstCount = 4;
+                                JumpClouds.Play();
+                                anim.SetTrigger("Jump");         
                             }
                         }
 
@@ -621,6 +632,7 @@ namespace KinematicCharacterController.Examples
 
                             if (_jumpApexReached)
                             {
+                                anim.SetTrigger("Apex");
                                 if (HangTime >= 0)
                                 {
                                     //Debug.Log("hanging");
@@ -735,7 +747,23 @@ namespace KinematicCharacterController.Examples
                     }
             }
             anim.SetFloat("VerticalVelocity", currentVelocity.y);
-            anim.SetFloat("ForwardVelocity", Mathf.Sqrt(currentVelocity.z* currentVelocity.z + currentVelocity.x * currentVelocity.x));
+            anim.SetFloat("ForwardVelocity", Mathf.Sqrt(currentVelocity.z * currentVelocity.z + currentVelocity.x * currentVelocity.x));
+            if (!JumpClouds.isEmitting)
+            {
+                var jumpSize = JumpClouds.sizeOverLifetime;
+                var jumpShape = JumpClouds.shape;
+                var jumpSpeed = JumpClouds.velocityOverLifetime;
+                var jumpEmit = JumpClouds.emission;
+
+                if (currentVelocity.y < 0)
+                {
+                    jumpSize.sizeMultiplier = Mathf.Clamp(-currentVelocity.y / 25, 0.5f, 2f);
+                    float jumpScale = Mathf.Clamp(-currentVelocity.y-5 / 10, 0.3f, 1f);
+                    jumpShape.scale = new Vector3(jumpScale, jumpScale, jumpScale);
+                    jumpSpeed.speedModifierMultiplier = Mathf.Clamp(-currentVelocity.y / 8, 2f, 5f);
+                    jumpEmit.burstCount = (int)Mathf.Clamp((Mathf.Abs(-currentVelocity.y - 10) /2), 2, 8);
+                }
+            }
         }
 
         /// <summary>
@@ -863,15 +891,11 @@ namespace KinematicCharacterController.Examples
         protected void OnLanded()
         {
             anim.SetTrigger("Grounded");
-            anim.SetBool("Airborne", false);
             JumpClouds.Play();
         }
 
         protected void OnLeaveStableGround()
         {
-            anim.SetTrigger("Jump");
-            anim.SetBool("Airborne", true);
-            JumpClouds.Play();
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
@@ -887,6 +911,11 @@ namespace KinematicCharacterController.Examples
                 anim.SetBool("Run", true);
                 _armPower = Mathf.SmoothStep(0.5f, 0.85f, -0.02f);
                 _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
+
+                if (ActualMoveSpeed > 14f && ActualMoveSpeed < 15f)
+                {
+                    RunClouds.Play();
+                }
             }
             else
             {
@@ -895,11 +924,6 @@ namespace KinematicCharacterController.Examples
                 _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
             }
 
-            Debug.Log("goin crazy " + ActualMoveSpeed);
-            if (ActualMoveSpeed > 11f && ActualMoveSpeed < 12f)
-            {
-                RunClouds.Play();
-            }
 
             R_ArmRend.material.SetFloat("_Power", _armPower);
             R_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
