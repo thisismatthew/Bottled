@@ -12,6 +12,7 @@ namespace KinematicCharacterController.Examples
         public MainCharacterController Character;
         public GameObject CharacterCamera;
         public bool Locked = false;
+        public bool ControllerActive = false;
 
         private const string MouseXInput = "Mouse X";
         private const string MouseYInput = "Mouse Y";
@@ -46,7 +47,6 @@ namespace KinematicCharacterController.Examples
 
             // Build the CharacterInputs struct
             characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
-            
             characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
             characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Space);
             characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Space);
@@ -56,6 +56,12 @@ namespace KinematicCharacterController.Examples
             characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
             characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
             characterInputs.CameraRotation = CharacterCamera.transform.rotation;
+            if (ControllerActive)
+            {
+                characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Joystick1Button0);
+                characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Joystick1Button0);
+            }
+
             // Apply inputs to character
             if (!Locked)
                 Character.SetInputs(ref characterInputs);
