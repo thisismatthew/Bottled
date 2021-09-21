@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FireAttribute : MonoBehaviour, IPotionAttribute
 {
+    public Light FireLight;
+    public Transform FlameParticlePosition;
     public Renderer Potion;
     public Material NewLiquidMaterial;
     private string _name = "fireAttribute";
@@ -14,22 +16,24 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     {
         Debug.Log("Equiped fire!!!!");
         Potion.material = NewLiquidMaterial;
+        FireLight.enabled = true;
     }
 
     public void Unequip()
     {
         Debug.Log("No fire left... :(");
+        FireLight.enabled = false;
+        FireLit = false;
     }
 
     public bool Use()
     {
-        //Flamable.equip
-        //TODO sprout fire particle affect
+
+        GameObject childobject = Instantiate(FirePrefab, FlameParticlePosition);//= Instantiate(FirePrefab) as GameObject;
+        childobject.transform.localPosition = Vector3.zero;
         var player = GameObject.FindGameObjectWithTag("Player");
         if (FireLit == false)
         {
-            GameObject childobject = Instantiate(FirePrefab, player.transform);//= Instantiate(FirePrefab) as GameObject;
-            childobject.transform.localPosition = new Vector3(0, 3, 0);
             player.AddComponent<Flamable>();
             player.GetComponent<Flamable>().Burning = true;
             FireLit = true;

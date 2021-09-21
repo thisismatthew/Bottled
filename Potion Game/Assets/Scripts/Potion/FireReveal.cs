@@ -5,6 +5,7 @@ using UnityEngine;
 public class FireReveal : MonoBehaviour
 {
     public Light light;
+    public int DistanceMod = 12;
 
     private Renderer _hiddenObject;
 
@@ -17,14 +18,21 @@ public class FireReveal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 p2p = light.transform.position - _hiddenObject.transform.position;
-        float distance = p2p.magnitude;
-        float multiplier = 0;
-        if (distance<12)
+        if (light.enabled)
         {
-            multiplier = 1 - distance / 12;
+            Vector3 p2p = light.transform.position - _hiddenObject.transform.position;
+            float distance = p2p.magnitude;
+            float multiplier = 0;
+            if (distance < DistanceMod)
+            {
+                multiplier = 1 - distance / DistanceMod;
+            }
+            _hiddenObject.sharedMaterial.SetVector("_LightPos", light.transform.position);
+            _hiddenObject.sharedMaterial.SetFloat("_Strength", multiplier);
         }
-        _hiddenObject.sharedMaterial.SetVector("_LightPos", light.transform.position);
-        _hiddenObject.sharedMaterial.SetFloat("_Strength", multiplier);
+        else
+        {
+            _hiddenObject.sharedMaterial.SetFloat("_Strength", 0);
+        }
     }
 }
