@@ -56,7 +56,9 @@ public class DialogueManager : MonoBehaviour
 
             if (nextDialogue)
             {
+                Debug.Log("next Input Requested");
                 animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
+                nextDialogue = false;
             }
         }
     }

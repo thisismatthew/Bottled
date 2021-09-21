@@ -30,7 +30,12 @@ public class DialogueTrigger : MonoBehaviour
                 if (Input.anyKey && !ui.inDialogue && currentDialogue != null)
                 {
                     Debug.Log("Initiated Dialogue");
-                    targetGroup.m_Targets[1].target = currentDialogue.transform;
+                    
+                    for(int i = 0; i<currentDialogue.LookTargets.Count; i++)
+                    {
+                        targetGroup.m_Targets[i+1].target = currentDialogue.LookTargets[i];
+                    }
+                    
                     controller.LookTargetOveride = currentDialogue.transform;
                     input.Locked = true;
                     Debug.Log("Dialogue Locked");

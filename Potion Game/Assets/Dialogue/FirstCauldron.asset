@@ -10,11 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c243f7db4b8c0f4895ef2c85d2f8674, type: 3}
-  m_Name: FirstIngredient
+  m_Name: FirstCauldron
   m_EditorClassIdentifier: 
   conversationBlock:
-  - '<speed=30><size=200%> Well what do we have here<speed=5>... <speed=20>An Ingredient!
-    These go in the large cauldron over there! '
-  - <speed=20><size=300%>The big one in the stone pit!
-  - <speed=30><size=200%>You can pick up and put down ingredients by pressing E....
-    Go on, give it a go!
+  - <speed=30><size=250%> When you have an Ingredient, and you're next to the cualdron,
+    you can press E and throw it in!
+  - <speed=30><size=300%> There are two more ingredients in this room!
