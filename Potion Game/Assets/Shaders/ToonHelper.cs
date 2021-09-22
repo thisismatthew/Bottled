@@ -214,7 +214,7 @@ namespace Toon {
                 Debug.DrawRay(posAbs, dir.normalized * hit.distance, Color.red);
                 return -0.1f;
             } else {
-                Debug.DrawRay(posAbs, dir.normalized * dist, Color.green);
+                //Debug.DrawRay(posAbs, dir.normalized * dist, Color.green);
                 return 1.1f;
             }
         }
