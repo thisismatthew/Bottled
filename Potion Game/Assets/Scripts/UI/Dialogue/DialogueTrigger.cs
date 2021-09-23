@@ -69,9 +69,8 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("DialogueEvent"))
+        if (other.CompareTag("DialogueEvent")&&(currentDialogue.triggered))
         {
-            currentDialogue.triggered = true;
             currentDialogue = null;
             ui.currentDialogue = currentDialogue;
         }
