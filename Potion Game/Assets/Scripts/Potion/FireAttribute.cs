@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FireAttribute : MonoBehaviour, IPotionAttribute
 {
+    public Light FireLight;
     public Transform FlameParticlePosition;
     public Renderer Potion;
     public Material NewLiquidMaterial;
@@ -15,12 +16,14 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     {
         Debug.Log("Equiped fire!!!!");
         Potion.material = NewLiquidMaterial;
+        FireLight.enabled = true;
     }
 
     public void Unequip()
     {
         Debug.Log("No fire left... :(");
         FireLit = false;
+        FireLight.enabled = false;
     }
 
     public bool Use()
