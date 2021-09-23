@@ -7,8 +7,23 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     public Sprite Tick, Cross;
-    public Image ControllerSettings, FullscreenSettings;
+    public Image ControllerUISprite, FullscreenUISprite;
     public bool ControllerActive, FullscreenActive = false;
+    private OptionsHelper options;
+    public Slider volumeSlider;
+
+    private void Start()
+    {
+        options = FindObjectOfType<OptionsHelper>();
+        options.Fullscreen = FullscreenActive;
+        options.GamepadController = ControllerActive;
+    }
+
+    private void Update()
+    {
+        options.MasterVolume = volumeSlider.value;
+    }
+
     public void PlayGame()
     {
         SceneManager.LoadScene("Latest_Build_V4");
@@ -23,27 +38,32 @@ public class MainMenu : MonoBehaviour
     {
         if (ControllerActive)
         {
+            options.GamepadController = false;
             ControllerActive = false;
-            ControllerSettings.sprite = Cross;
+            ControllerUISprite.sprite = Cross;
         }
         else
         {
+            options.GamepadController = true;
             ControllerActive = true;
-            ControllerSettings.sprite = Tick;
+            ControllerUISprite.sprite = Tick;
         }
     }
 
     public void SetFullscreen()
     {
+        Screen.fullScreen = !Screen.fullScreen;
         if (FullscreenActive)
         {
+            options.Fullscreen = false;
             FullscreenActive = false;
-            FullscreenSettings.sprite = Cross;
+            FullscreenUISprite.sprite = Cross;
         }
         else
         {
+            options.Fullscreen = true;
             FullscreenActive = true;
-            FullscreenSettings.sprite = Tick;
+            FullscreenUISprite.sprite = Tick;
         }
     }
 }
