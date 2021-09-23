@@ -757,10 +757,10 @@ namespace KinematicCharacterController.Examples
 
                 if (currentVelocity.y < 0)
                 {
-                    jumpSize.sizeMultiplier = Mathf.Clamp(-currentVelocity.y / 25, 0.5f, 2f);
-                    float jumpScale = Mathf.Clamp(-currentVelocity.y-5 / 10, 0.3f, 1f);
+                    jumpSize.sizeMultiplier = Mathf.Clamp(-currentVelocity.y / 25, 0.3f, 2f);
+                    float jumpScale = Mathf.Clamp(-currentVelocity.y-5 / 10, 0.3f, 0.6f);
                     jumpShape.scale = new Vector3(jumpScale, jumpScale, jumpScale);
-                    jumpSpeed.speedModifierMultiplier = Mathf.Clamp(-currentVelocity.y / 8, 2f, 5f);
+                    jumpSpeed.speedModifierMultiplier = Mathf.Clamp(-currentVelocity.y / 12, 0.5f, 2f);
                     jumpEmit.burstCount = (int)Mathf.Clamp((Mathf.Abs(-currentVelocity.y - 10) /2), 2, 8);
                 }
             }
@@ -912,7 +912,7 @@ namespace KinematicCharacterController.Examples
                 _armPower = Mathf.SmoothStep(0.5f, 0.85f, -0.02f);
                 _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
 
-                if (ActualMoveSpeed > 14f && ActualMoveSpeed < 15f)
+                if (ActualMoveSpeed > 11f && ActualMoveSpeed < 12f)
                 {
                     RunClouds.Play();
                 }
