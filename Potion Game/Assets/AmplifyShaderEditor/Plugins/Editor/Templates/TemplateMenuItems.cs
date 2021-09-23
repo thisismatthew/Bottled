@@ -59,6 +59,11 @@ namespace AmplifyShaderEditor
 		[MenuItem( "Assets/Create/Amplify Shader/Legacy/Lit", false, 85 )]
 		public static void ApplyTemplateLegacyLit()
 		{
+			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "faf3a359aa17de440b38aaed484024ed" );
+		}
+		[MenuItem( "Assets/Create/Amplify Shader/Legacy/Lit 1", false, 85 )]
+		public static void ApplyTemplateLegacyLit1()
+		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "ed95fe726fd7b4644bb42f4d1ddd2bcd" );
 		}
 		[MenuItem( "Assets/Create/Amplify Shader/Universal/Experimental/2D Lit", false, 85 )]
