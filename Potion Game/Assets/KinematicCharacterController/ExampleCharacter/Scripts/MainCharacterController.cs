@@ -80,8 +80,11 @@ namespace KinematicCharacterController.Examples
         private bool _startedClimbing = false;
         public bool JumpingFromClimbing = false;
         private float _upDownInput = 0f;
-        
-        
+        public Transform LandingTarget;
+        public float ClimbingJumpArcHeight = 5f;
+        public float ClimbJumpPowerModifier = 2f;
+
+
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -732,7 +735,15 @@ namespace KinematicCharacterController.Examples
                         {
                             TransitionToState(CharacterState.Default);
                             // Add to the return velocity and reset jump state
-                            currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                            if (LandingTarget != null)
+                            {
+                                currentVelocity = CalculateParabolaVelocity(LandingTarget.position) * ClimbJumpPowerModifier;
+                            }
+                            else
+                            {
+                                currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+
+                            }
                             //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                             _jumpRequested = false;
                             _isClimbing = false;
@@ -929,6 +940,17 @@ namespace KinematicCharacterController.Examples
             R_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
             L_ArmRend.material.SetFloat("_Power", _armPower);
             L_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
+        }
+
+        Vector3 CalculateParabolaVelocity(Vector3 target)
+        {
+            float displacementY = target.y - transform.position.y;
+            Vector3 displacementXZ = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
+
+            Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * ClimbingJumpArcHeight);
+            Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * ClimbingJumpArcHeight / Physics.gravity.y) + Mathf.Sqrt(2 * (displacementY - ClimbingJumpArcHeight) / Physics.gravity.y));
+
+            return velocityXZ + velocityY;
         }
     }
 }

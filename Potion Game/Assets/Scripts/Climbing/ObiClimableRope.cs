@@ -38,12 +38,13 @@ namespace Obi
                 //then set the player as climbing this rope
                 if (Vector3.Distance(_closestPos, PlayerRopeGrabPos.position) < RopeGrabDistance)
                 {
-                    
-                    Debug.Log("climbing started");
-                    playerController.TransitionToState(CharacterState.Climbing);
-                    _playerIsClimbing = true;
-                    playerController.CurrentClimbRope = _rope;
-
+                    if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button3))
+                    {
+                        Debug.Log("climbing started");
+                        playerController.TransitionToState(CharacterState.Climbing);
+                        _playerIsClimbing = true;
+                        playerController.CurrentClimbRope = _rope;
+                    }
                 }
 
             }
@@ -51,6 +52,7 @@ namespace Obi
             if (_playerIsClimbing)
             {
                 //if the player moves outside of the LetGoDistance set climbing back to false
+                //TODO remove this without breaking things. 
                 if (Vector3.Distance(_closestPos, PlayerRopeGrabPos.position) > RopeLetGoDistance)
                 {
                     Debug.Log("climbing finished");
