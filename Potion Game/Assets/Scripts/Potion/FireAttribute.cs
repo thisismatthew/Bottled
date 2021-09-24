@@ -22,8 +22,8 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     public void Unequip()
     {
         Debug.Log("No fire left... :(");
-        FireLight.enabled = false;
         FireLit = false;
+        FireLight.enabled = false;
     }
 
     public bool Use()
