@@ -10,5 +10,6 @@ public class JumpZone : MonoBehaviour
     private void OnTriggerEnter(Collider player)
     {
         if (player.gameObject.tag == "Player") player.GetComponent<MainCharacterController>().LandingTarget = LandingTarget;
+
     }
 }
