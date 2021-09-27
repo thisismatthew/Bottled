@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class Distributer : MonoBehaviour
 {
     // This Class distributes attributes when the player walks into a collider that this is attatched to. 
     
-    public List<IPotionAttribute> SetAttributesToDistribute;
     public IPotionAttribute AttibuteOne;
     public int SetChargesToDeliver;
     private Potion newPotion;
+    private List<IPotionAttribute> SetAttributesToDistribute;
 
     private void Start()
     {
@@ -21,17 +21,9 @@ public class Distributer : MonoBehaviour
         }
         */
     }
-    public bool FillDistributor(List<IPotionAttribute> PotionFill)
-
+    public void FillDistributor(List<IPotionAttribute> PotionFill)
     {
-        foreach (var a in SetAttributesToDistribute)
-        {
-            Debug.Log("atributes to distribute" + a);
-        }
-        SetAttributesToDistribute = PotionFill;
-
-        return true;
-
+        SetAttributesToDistribute = new List<IPotionAttribute>(PotionFill);
     }
 
     private void OnTriggerEnter(Collider player)
@@ -40,12 +32,7 @@ public class Distributer : MonoBehaviour
         if (player.gameObject.tag == "Player")
         {
             //assign it our attributes
-            Debug.Log("amount of atributes to distriubute" + SetAttributesToDistribute.Count);
             Debug.Log("distribute starting");
-            foreach (var a in SetAttributesToDistribute)
-            {
-                Debug.Log("atributes to distribute" + a);
-            }
             player.GetComponent<Potion>().EquipPotion(SetAttributesToDistribute);
             player.GetComponent<Potion>().Charges = SetChargesToDeliver;
             //TODO probably don't need to search for the component twice but im too lazy to check if I can get a ref rather than a copy. 

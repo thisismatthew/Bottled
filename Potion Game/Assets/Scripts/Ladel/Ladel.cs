@@ -60,7 +60,7 @@ public class Ladel : MonoBehaviour
         {
 
             EffectsOn();
-            Debug.Log("EffectsAdded");
+            //Debug.Log("EffectsAdded");
             if (Vector3.Distance(transform.position, _target) < 0.5)
             {
                 _chaseStart = false;
