@@ -73,8 +73,18 @@ public class Cauldron : MonoBehaviour
                         {
                             ListOfAttributes.Add(PotionAttributeDict[attribute]);
                         }
-                        
-                        MyDistributer.FillDistributor(ListOfAttributes);
+                        //MyDistributer.EmptyDistributor();
+                        foreach (var a in ListOfAttributes)
+                        {
+                            Debug.Log("atributes to add to distributor" + a);
+                        }
+                        //bool confirmDistribution =  false;
+                        if (MyDistributer.FillDistributor(ListOfAttributes))
+                        {
+                            ListOfAttributes.Clear();
+                        }
+                        Debug.Log("Fill distributor");
+                        //ListOfAttributes.RemoveAt(0);
                         ladel.StartChase();
                         //do what is needed to be done with curent recipe
                         //fill dispenser

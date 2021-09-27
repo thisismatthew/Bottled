@@ -14,23 +14,38 @@ public class Distributer : MonoBehaviour
     private void Start()
     {
         SetAttributesToDistribute = new List<IPotionAttribute>();
+        /*
         foreach(IPotionAttribute a in GetComponents<IPotionAttribute>())
         {
             SetAttributesToDistribute.Add(a);
         }
+        */
     }
-    public void FillDistributor(List<IPotionAttribute> PotionFill)
+    public bool FillDistributor(List<IPotionAttribute> PotionFill)
+
     {
+        foreach (var a in SetAttributesToDistribute)
+        {
+            Debug.Log("atributes to distribute" + a);
+        }
         SetAttributesToDistribute = PotionFill;
+
+        return true;
+
     }
+
     private void OnTriggerEnter(Collider player)
     {
         //the player must have the tag Player for the collider to detect them 
         if (player.gameObject.tag == "Player")
         {
-
             //assign it our attributes
-            Debug.Log("fire distribute");
+            Debug.Log("amount of atributes to distriubute" + SetAttributesToDistribute.Count);
+            Debug.Log("distribute starting");
+            foreach (var a in SetAttributesToDistribute)
+            {
+                Debug.Log("atributes to distribute" + a);
+            }
             player.GetComponent<Potion>().EquipPotion(SetAttributesToDistribute);
             player.GetComponent<Potion>().Charges = SetChargesToDeliver;
             //TODO probably don't need to search for the component twice but im too lazy to check if I can get a ref rather than a copy. 
