@@ -15,14 +15,26 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
     public float AntiGravityDrag;
 
     [Header("Jumping")]
-    public bool AntiGravityAllowJumpingWhenSliding;
+    //public bool AntiGravityAllowJumpingWhenSliding;
     public float AntiGravityTimeToMaxJumpApex;
     public float AntiGravityMaxJumpHeight;
     public float AntiGravityMinJumpHeight;
     public float AntiGravityHangTime;
     public float AntiGravityHangtimeGravityDampness;
-    public float AntiGravityJumpPreGroundingGraceTime;
-    public float AntiGravityJumpPostGroundingGraceTime;
+
+
+    // variables to switchback
+    [Header("Original Air Movement")]
+    public float OriginalMaxAirMoveSpeed;
+    public float OriginalAirAccelerationSpeed;
+    public float OriginalDrag;
+
+    [Header("Original Jumping")]
+    public float OriginalTimeToMaxJumpApex;
+    public float OriginalMaxJumpHeight;
+    public float OriginalMinJumpHeight;
+    public float OriginalHangTime;
+    public float OriginalHangtimeGravityDampness;
     public void Equip()
     {
         var player = GameObject.FindGameObjectWithTag("Player");
@@ -30,25 +42,49 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
         Potion.material = NewPotionMaterial;
         var playerController = player.GetComponent<MainCharacterController>();
 
+        /*
+        OriginalMaxAirMoveSpeed  = playerController.MaxAirMoveSpeed;
+        OriginalAirAccelerationSpeed = playerController.AirAccelerationSpeed;
+        OriginalDrag = playerController.Drag = AntiGravityDrag;
+        OriginalTimeToMaxJumpApex = playerController.TimeToMaxJumpApex;
+        OriginalMaxJumpHeight = playerController.MaxJumpHeight;
+        OriginalMinJumpHeight = playerController.MinJumpHeight;
+        OriginalHangTime = playerController.HangTime;
+        OriginalHangtimeGravityDampness = playerController.HangtimeGravityDampness;
+        */
         // TODO cull unsused jump attributes
-       /* 
+
         playerController.MaxAirMoveSpeed = AntiGravityMaxAirMoveSpeed;
         playerController.AirAccelerationSpeed = AntiGravityAirAccelerationSpeed;
         playerController.Drag = AntiGravityDrag;
-        playerController.AllowJumpingWhenSliding = AntiGravityAllowJumpingWhenSliding;
+        //playerController.AllowJumpingWhenSliding = AntiGravityAllowJumpingWhenSliding;
         playerController.TimeToMaxJumpApex = AntiGravityTimeToMaxJumpApex;
         playerController.MaxJumpHeight = AntiGravityMaxJumpHeight;
         playerController.MinJumpHeight = AntiGravityMinJumpHeight;
         playerController.HangTime = AntiGravityHangTime;
         playerController.HangtimeGravityDampness = AntiGravityHangtimeGravityDampness;
-        playerController.JumpPreGroundingGraceTime = AntiGravityJumpPreGroundingGraceTime;
-        playerController.JumpPostGroundingGraceTime = AntiGravityJumpPostGroundingGraceTime;
-       */
+        //playerController.JumpPreGroundingGraceTime = AntiGravityJumpPreGroundingGraceTime;
+        //playerController.JumpPostGroundingGraceTime = AntiGravityJumpPostGroundingGraceTime;
+       
     }
 
     public void Unequip()
     {
-     
+
+        var player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log("UnEquiped anti gravity");
+        Potion.material = NewPotionMaterial;
+        var playerController = player.GetComponent<MainCharacterController>();
+
+        playerController.MaxAirMoveSpeed = OriginalMaxAirMoveSpeed;
+        playerController.AirAccelerationSpeed = OriginalAirAccelerationSpeed;
+        playerController.Drag = OriginalDrag;
+        playerController.TimeToMaxJumpApex = OriginalTimeToMaxJumpApex;
+        playerController.MaxJumpHeight = OriginalMaxJumpHeight;
+        playerController.MinJumpHeight = OriginalMinJumpHeight;
+        playerController.HangTime = OriginalHangTime;
+        playerController.HangtimeGravityDampness = OriginalHangtimeGravityDampness;
+        Debug.Log("end  of UnEquiped anti gravity");
     }
     public bool Use()
     {
