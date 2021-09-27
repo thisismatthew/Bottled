@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using KinematicCharacterController.Examples;
+using Cinemachine;
 
 namespace KinematicCharacterController.Examples
 {
@@ -11,8 +12,8 @@ namespace KinematicCharacterController.Examples
     {
         public MainCharacterController Character;
         public GameObject CharacterCamera;
+        public CinemachineFreeLook FreeLookVirtualCamera;
         public bool Locked = false;
-        public bool ControllerActive = false;
 
         private const string MouseXInput = "Mouse X";
         private const string MouseYInput = "Mouse Y";
@@ -20,11 +21,13 @@ namespace KinematicCharacterController.Examples
         private const string HorizontalInput = "Horizontal";
         private const string VerticalInput = "Vertical";
         private PlayerCharacterInputs NullInput;
+        private OptionsHelper options; 
 
         private void Start()
         {
             NullInput = new PlayerCharacterInputs();
             Cursor.lockState = CursorLockMode.Locked;
+            options = FindObjectOfType<OptionsHelper>();
         }
 
         private void Update()
@@ -55,13 +58,24 @@ namespace KinematicCharacterController.Examples
             characterInputs.UsePotion = Input.GetKeyDown(KeyCode.E);
             characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
             characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
-            characterInputs.CameraRotation = CharacterCamera.transform.rotation;
-            if (ControllerActive)
+            
+            if (options.GamepadController)
             {
                 characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Joystick1Button0);
                 characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Joystick1Button0);
+                characterInputs.UsePotion = Input.GetKeyDown(KeyCode.Joystick1Button1);
+                characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.Joystick1Button2);
+                FreeLookVirtualCamera.m_XAxis.m_InputAxisName = "Joystick X";
+                FreeLookVirtualCamera.m_XAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+                FreeLookVirtualCamera.m_XAxis.m_MaxSpeed = 50;
+                FreeLookVirtualCamera.m_YAxis.m_InputAxisName = "Joystick Y";
+                FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+                FreeLookVirtualCamera.m_YAxis.m_MaxSpeed = 0.5f;
+                FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+                FreeLookVirtualCamera.m_YAxis.m_InvertInput = false;
             }
 
+            characterInputs.CameraRotation = CharacterCamera.transform.rotation;
             // Apply inputs to character
             if (!Locked)
                 Character.SetInputs(ref characterInputs);

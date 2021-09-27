@@ -13,6 +13,7 @@ namespace KinematicCharacterController.Examples
         public Animator RespawnAnimator;
         public Transform RespawnPoint;
         public Transform SpringWeight;
+        public float CheckpointResetFrequency = 1;
 
         public Animator anim;
 
@@ -25,6 +26,7 @@ namespace KinematicCharacterController.Examples
         private float _timeSlice = 0.1f;
         private float _fallTimer = 0f;
         private float _deadTimer = 0f;
+        private float _checkpointTimer = 0f;
         
 
         private void Start()
@@ -39,6 +41,17 @@ namespace KinematicCharacterController.Examples
         // Update is called once per frame
         void Update()
         {
+            if (Controller.Motor.GroundingStatus.IsStableOnGround)
+            {
+                _checkpointTimer += Time.deltaTime;
+                if (_checkpointTimer> CheckpointResetFrequency)
+                    RespawnPoint.position = Controller.gameObject.transform.position;
+            }
+            else
+            {
+                _checkpointTimer = 0;
+            }
+                
            // Debug.DrawLine(RespawnPoint.position, Motor.transform.position, Color.red);
            
             _fallTimer += Time.deltaTime;
@@ -59,6 +72,7 @@ namespace KinematicCharacterController.Examples
             //and they have landed on stable ground. Smash em. 
            if ((_heightFallen< -DeadlyFallDistance)&& Motor.GroundingStatus.IsStableOnGround)
            {
+                _checkpointTimer = 0;
                 SmashCharacter();
            }
 
@@ -69,6 +83,7 @@ namespace KinematicCharacterController.Examples
 
             if (Controller.CurrentCharacterState == CharacterState.Dead)
             {
+                _checkpointTimer = 0;
                 _deadTimer += Time.deltaTime;
                 if (_deadTimer > LengthOfTimeDead)
                 {
