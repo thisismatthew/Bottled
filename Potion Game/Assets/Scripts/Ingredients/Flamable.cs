@@ -23,6 +23,15 @@ public class Flamable : MonoBehaviour
             }
         }
     }
+
+    private void Update()
+    {
+        if (Burning && DestroyOnBurn)
+        {
+            LightFire();
+            Burning = false;
+        }
+    }
     public void LightFire()
     {
         if (DestroyOnBurn == false)
