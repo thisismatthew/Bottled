@@ -907,6 +907,7 @@ namespace KinematicCharacterController.Examples
 
         protected void OnLeaveStableGround()
         {
+            anim.ResetTrigger("Grounded");
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
