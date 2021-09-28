@@ -137,10 +137,6 @@ namespace KinematicCharacterController.Examples
         private Vector3 lastOuterNormal = Vector3.zero;
 
         //Arm wiggle
-        private Renderer R_ArmRend;
-        private Renderer L_ArmRend;
-        private float _armPower;
-        private float _armSpeed;
 
         private void Awake()
         {
@@ -150,10 +146,7 @@ namespace KinematicCharacterController.Examples
             TransitionToState(CharacterState.Default);
             // Assign the characterController to the motor
             Motor.CharacterController = this;
-
-            //Get Arms Renderer
-            R_ArmRend = RightArm.GetComponent<Renderer>();
-            L_ArmRend = LeftArm.GetComponent<Renderer>();
+            
             _hangtimeInitial = HangTime;
         }
 
@@ -921,8 +914,6 @@ namespace KinematicCharacterController.Examples
             if (localVel.z > 0.01f && Motor.GroundingStatus.IsStableOnGround)
             {
                 anim.SetBool("Run", true);
-                _armPower = Mathf.SmoothStep(0.5f, 0.85f, -0.02f);
-                _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
 
                 if (ActualMoveSpeed > 11f && ActualMoveSpeed < 12f)
                 {
@@ -932,15 +923,8 @@ namespace KinematicCharacterController.Examples
             else
             {
                 anim.SetBool("Run", false);
-                _armPower = Mathf.SmoothStep(0.85f, 0.5f, 0.02f);
-                _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
             }
 
-
-            R_ArmRend.material.SetFloat("_Power", _armPower);
-            R_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
-            L_ArmRend.material.SetFloat("_Power", _armPower);
-            L_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
         }
 
         Vector3 CalculateParabolaVelocity(Vector3 target)

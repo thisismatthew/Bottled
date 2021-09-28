@@ -9,6 +9,7 @@ public class IngredientRitual : MonoBehaviour
     private List<RitualSpot> _ritualSpotsUpdate;
     public int _ritualSpotsNeeded;
     public GameObject IngredientPrefab;
+    public Animator RitualCircleAnimator;
 
 
     private void Start()
@@ -36,6 +37,7 @@ public class IngredientRitual : MonoBehaviour
 
         if (RitualSpotsCompleted == _ritualSpotsNeeded)
         {
+            RitualCircleAnimator.Play("SummoningCircleAnim");
             IngredientPrefab.active = true;
 
             RitualSpotsCompleted = 0;
