@@ -75,7 +75,8 @@ namespace KinematicCharacterController.Examples
         [Header("Climbing")]
         public ObiRope CurrentClimbRope;
         private int _currentRopeParticleIndex;
-        public int ClimbingSpeed = 1;
+        public float ClimbingSpeed = 0.1f;
+        private float _climbingIndexThreshold = 1f;
         private bool _isClimbing = false;
         private bool _startedClimbing = false;
         public bool JumpingFromClimbing = false;
@@ -683,18 +684,42 @@ namespace KinematicCharacterController.Examples
                             //there are always extra particles indexed at the end of the active particle rope array that 
                             //don't get used, and are physically at the 0 position of the ropes local space. 
                             //move the target spline point along, and snap the character to it. 
+
+
+                            // now the character updates a float from 0 to 1 or -1,
+                            // incrementing or decrementing along the rope particle index
+                            // when reaching that threshold
                             if (_upDownInput < 0 && _currentRopeParticleIndex <= CurrentClimbRope.activeParticleCount-5)
                             {
-                                _currentRopeParticleIndex += ClimbingSpeed;
-                                anim.SetFloat("ClimbState", 1);
-                                anim.SetBool("ClimbUp", false);
+                                if (_climbingIndexThreshold < 0)
+                                    _climbingIndexThreshold = 0;
+
+                                _climbingIndexThreshold += ClimbingSpeed;
+
+                                if (_climbingIndexThreshold> 1)
+                                {
+                                    _currentRopeParticleIndex += 1;
+                                    anim.SetFloat("ClimbState", 1);
+                                    anim.SetBool("ClimbUp", false);
+                                    _climbingIndexThreshold = 0;
+                                }
                             }
 
                             else if (_upDownInput > 0 && _currentRopeParticleIndex >= 1)
                             {
-                                _currentRopeParticleIndex -= ClimbingSpeed;
-                                anim.SetFloat("ClimbState", 1);
-                                anim.SetBool("ClimbUp", true);
+                                if (_climbingIndexThreshold > 0)
+                                    _climbingIndexThreshold = 0;
+
+                                _climbingIndexThreshold -= ClimbingSpeed;
+
+                                if (_climbingIndexThreshold < -1)
+                                {
+                                    //actually index down on the rope. 
+                                    _currentRopeParticleIndex -= 1;
+                                    anim.SetFloat("ClimbState", 1);
+                                    anim.SetBool("ClimbUp", true);
+                                    _climbingIndexThreshold = 0;
+                                }
                             }
                             else
                             {
@@ -709,8 +734,8 @@ namespace KinematicCharacterController.Examples
                             target += -(Motor.CharacterForward * (Motor.Capsule.radius*2));
 
 
-
-                            Motor.MoveCharacter(target);
+                            Debug.DrawLine(transform.position, target, Color.green);
+                            Motor.MoveCharacter(Vector3.Lerp(transform.position, target, 0.4f));
 
                             /*
                             //if we moved to the end of the Rope take us off
