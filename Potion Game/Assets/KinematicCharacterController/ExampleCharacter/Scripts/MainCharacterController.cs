@@ -107,6 +107,7 @@ namespace KinematicCharacterController.Examples
         [Header("Interaction")]
         public GameObject Interactable;
         public Transform GrabPosition;
+        public Animator GrabAnim;
         public bool NearCauldron;
         public Transform CauldronThrowTarget;
 
@@ -133,6 +134,8 @@ namespace KinematicCharacterController.Examples
         private bool _isCrouching = false;
         private Potion _potion;
         private bool _isHolding = false;
+        private float _climbSpeed = 0;
+        private float _groundedFrame = 0;
 
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
@@ -315,18 +318,26 @@ namespace KinematicCharacterController.Examples
                                     IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
                                     _isHolding = false;
                                     if(NearCauldron)
+                                    {
+                                        anim.SetTrigger("Yeet");
                                         Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
+                                    }
+                                    anim.SetBool("Hold", false);
+                                    anim.ResetTrigger("Pickup");
+                                    GrabAnim.SetBool("Pickup", false);
                                 }
                                 else
                                 {
 
                                     _isHolding = true;
-                                    Interactable.transform.parent = this.transform;
-                                    Interactable.GetComponent<Pickupable>().MoveToTarget(GrabPosition.position);
+                                    //this is parenting to the grab object now
+                                    Interactable.transform.parent = this.transform.GetChild(1).transform;
+                                    Interactable.transform.position = Interactable.transform.parent.position;
                                     IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
                                     Destroy(Interactable.GetComponent<Rigidbody>());
-
-
+                                    anim.SetBool("Hold", true);
+                                    anim.SetTrigger("Pickup");
+                                    GrabAnim.SetBool("Pickup", true);
                                 }
 
                             }
@@ -699,7 +710,8 @@ namespace KinematicCharacterController.Examples
                                 if (_climbingIndexThreshold> 1)
                                 {
                                     _currentRopeParticleIndex += 1;
-                                    anim.SetFloat("ClimbState", 1);
+                                    _climbSpeed = -1f;
+                                    anim.SetFloat("ClimbState", _climbSpeed);
                                     anim.SetBool("ClimbUp", false);
                                     _climbingIndexThreshold = 0;
                                 }
@@ -716,14 +728,24 @@ namespace KinematicCharacterController.Examples
                                 {
                                     //actually index down on the rope. 
                                     _currentRopeParticleIndex -= 1;
-                                    anim.SetFloat("ClimbState", 1);
+                                    _climbSpeed = 1f;
+                                    //Mathf.Clamp(_climbSpeed, -1, 1);
+                                    anim.SetFloat("ClimbState", _climbSpeed);
                                     anim.SetBool("ClimbUp", true);
                                     _climbingIndexThreshold = 0;
                                 }
                             }
                             else
                             {
-                                anim.SetFloat("ClimbState", 0);
+                                if (_climbSpeed < 0)
+                                {
+                                    _climbSpeed += 0.05f;
+                                }
+                                else if (_climbSpeed > 0)
+                                {
+                                    _climbSpeed -= 0.05f;
+                                }
+                                anim.SetFloat("ClimbState", _climbSpeed);
                             }
 
                             target = CurrentClimbRope.GetParticlePosition(_currentRopeParticleIndex);
@@ -920,12 +942,14 @@ namespace KinematicCharacterController.Examples
         protected void OnLanded()
         {
             anim.SetTrigger("Grounded");
+            anim.ResetTrigger("Fall");
             JumpClouds.Play();
         }
 
         protected void OnLeaveStableGround()
         {
-            anim.ResetTrigger("Grounded");
+            anim.SetTrigger("Fall");
+            _groundedFrame = 1;
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
@@ -949,7 +973,18 @@ namespace KinematicCharacterController.Examples
             {
                 anim.SetBool("Run", false);
             }
-
+            if (_groundedFrame > 0)
+            {
+                if (_groundedFrame > 3)
+                {
+                    anim.ResetTrigger("Grounded");
+                    _groundedFrame = 0;
+                }
+                else
+                {
+                    _groundedFrame += 1;
+                }
+            }
         }
 
         Vector3 CalculateParabolaVelocity(Vector3 target)
