@@ -21,13 +21,24 @@ namespace KinematicCharacterController.Examples
         private const string HorizontalInput = "Horizontal";
         private const string VerticalInput = "Vertical";
         private PlayerCharacterInputs NullInput;
-        private OptionsHelper options; 
+        private OptionsHelper options;
+
+
+        private void Awake()
+        {
+            if (FindObjectOfType<OptionsHelper>() == null)
+            {
+                Debug.LogError("No Player Options Detected: Adding One To Player Input Handler.");
+                gameObject.AddComponent<OptionsHelper>();
+            }
+        }
 
         private void Start()
         {
             NullInput = new PlayerCharacterInputs();
             Cursor.lockState = CursorLockMode.Locked;
             options = FindObjectOfType<OptionsHelper>();
+           
         }
 
         private void Update()
