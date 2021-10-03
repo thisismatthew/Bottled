@@ -9,8 +9,7 @@ public class AudioManager : MonoBehaviour
 
     // This is Brackeys Audio Manager system with some small tweaks. 
     void Awake()
-    {
-        DontDestroyOnLoad(transform.gameObject);
+    {       
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
