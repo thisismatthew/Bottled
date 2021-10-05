@@ -23,7 +23,10 @@ public class IngredientThrowArcIndicator : MonoBehaviour
             ingredient = player.Interactable.GetComponent<Pickupable>();
             Debug.Log("near cauldron with ingredient");
             ProjectThrowTrajectory(player.CauldronThrowTarget.position);
-
+        }
+        else
+        {
+            lineRenderer.enabled = false;
         }
     }
 
