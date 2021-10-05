@@ -60,6 +60,12 @@ public class DialogueManager : MonoBehaviour
                 animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
                 nextDialogue = false;
             }
+            else
+            {
+                StopCoroutine(animatedText.readCoroutine);
+                animatedText.SkipText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
+                //nextDialogue = true;
+            }
         }
     }
 

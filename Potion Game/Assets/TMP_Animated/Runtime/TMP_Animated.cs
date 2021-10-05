@@ -16,6 +16,7 @@ namespace TMPro
         [SerializeField] private float speed = 10;
         public TextRevealEvent onTextReveal;
         public DialogueEvent onDialogueFinish;
+        public Coroutine readCoroutine;
 
         public void ReadText(string newText)
         {
@@ -42,7 +43,8 @@ namespace TMPro
             // send that string to textmeshpro and hide all of it, then start reading
             text = displayText;
             maxVisibleCharacters = 0;
-            StartCoroutine(Read());
+            readCoroutine = StartCoroutine(Read());
+
 
             IEnumerator Read()
             {
@@ -87,6 +89,34 @@ namespace TMPro
                 }
                 onDialogueFinish.Invoke();
             }
+        }
+
+        public void SkipText(string newText)
+        {
+            text = string.Empty;
+            // split the whole text into parts based off the <> tags 
+            // even numbers in the array are text, odd numbers are tags
+            string[] subTexts = newText.Split('<', '>');
+
+            // textmeshpro still needs to parse its built-in tags, so we only include noncustom tags
+            string displayText = "";
+            for (int i = 0; i < subTexts.Length; i++)
+            {
+                if (i % 2 == 0)
+                    displayText += subTexts[i];
+                else if (!isCustomTag(subTexts[i].Replace(" ", "")))
+                    displayText += $"<{subTexts[i]}>";
+            }
+            // check to see if a tag is our own
+            bool isCustomTag(string tag)
+            {
+                return tag.StartsWith("speed=") || tag.StartsWith("pause=");
+            }
+
+            // send that string to textmeshpro and make sure its all visible
+            text = displayText;
+            maxVisibleCharacters = displayText.Length;
+            onDialogueFinish.Invoke();
         }
     }
 }
