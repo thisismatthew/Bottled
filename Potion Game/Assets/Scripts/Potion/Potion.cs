@@ -42,8 +42,7 @@ public class Potion : MonoBehaviour
         Debug.Log("\nCurrent Potion Attributes:");
         foreach (IPotionAttribute a in Attributes)
         {
-            Debug.Log("\n");
-            Debug.Log(a.Name);
+            Debug.Log(" - "+a.Name);
         }
     }
     public int Charges { get => _charges; set => _charges = value; }

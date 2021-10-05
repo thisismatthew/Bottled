@@ -9,15 +9,17 @@ namespace KinematicCharacterController.Examples
 {
     public class PlayableMover : MonoBehaviour, IMoverController
     {
-        public PhysicsMover Mover;
+        private PhysicsMover Mover;
 
         public float Speed = 1f;
-        public PlayableDirector Director;
+        private PlayableDirector Director;
 
         private Transform _transform;
 
         private void Start()
         {
+            Mover = GetComponent<PhysicsMover>();
+            Director = GetComponent<PlayableDirector>();
             _transform = this.transform;
             Director.timeUpdateMode = DirectorUpdateMode.Manual;
 

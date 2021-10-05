@@ -21,15 +21,16 @@ public class Cauldron : MonoBehaviour
     {
         //linking script with enum PotionAttributeName value
         PotionAttributeDict.Add(PotionAttributeName.Fire, GetComponent<FireAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.HerbalTea, GetComponent<HerbalTeaAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.Water, GetComponent<WaterAttribute>());
-        PotionAttributeDict.Add(PotionAttributeName.Float, GetComponent<FloatyAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.AntiGravity, GetComponent<AntiGravityAttribute>());
 
         //linking cauldron with distributer
         MyDistributer = MyDistributerCollider.GetComponent<Distributer>();
         //Starting ingredients in Cauldran
-        Cauldronrecipe.Ingredients[0] = Ingredient.apple;
-        Cauldronrecipe.Ingredients[1] = Ingredient.Object;
-        Cauldronrecipe.Ingredients[2] = Ingredient.carrot;
+        Cauldronrecipe.Ingredients[0] = Ingredient.tea;
+        //Cauldronrecipe.Ingredients[1] = Ingredient.Object;
+        //Cauldronrecipe.Ingredients[2] = Ingredient.carrot;
     }
     // Update is called once per frame
     void Update()
@@ -39,16 +40,15 @@ public class Cauldron : MonoBehaviour
 
     public bool CompareRecipes(List<Ingredient>IngredientSet, List<Ingredient> RecipeCheck)
     {
+        //system was originally designed for 3 items so looping was required, kept architecture so it can easily be reverted if scope expands.
         IEnumerable<Ingredient> matchingIngredients = from ingredient in IngredientSet.Intersect(RecipeCheck)
         select ingredient;
-        if (matchingIngredients.Count() == 3)         
+        if (matchingIngredients.Count() == 1)
         {
-            Debug.Log("match");
             return true;
         }
         else
         {
-            Debug.Log("no match");
             return false;
         }
     }
@@ -61,7 +61,7 @@ public class Cauldron : MonoBehaviour
             Destroy(collider.gameObject);
             Cauldronrecipe.Ingredients[count] = ingredientAdded;
             count++;
-            if (count == 3) 
+            if (count == 1) 
                 
             {
                 foreach (Recipe recipe in Recipes)
@@ -69,19 +69,27 @@ public class Cauldron : MonoBehaviour
                     RecipeMade = CompareRecipes(Cauldronrecipe.Ingredients, recipe.Ingredients);
                     if (RecipeMade)
                     {
-                        Debug.Log("fire match");
-                        
                         foreach (PotionAttributeName attribute in recipe.RecipeAttributes)
                         {
-                            Debug.Log("add fire attribute");
                             ListOfAttributes.Add(PotionAttributeDict[attribute]);
                         }
-                        
+                        //MyDistributer.EmptyDistributor();
+
+                        Debug.Log("atributes to add to distributor: ");
+                        foreach (var a in ListOfAttributes)
+                        {
+                            Debug.Log(" - " + a);
+                        }
                         MyDistributer.FillDistributor(ListOfAttributes);
+                        Debug.Log("Fill distributor");
+                        ListOfAttributes.Clear();
+                        Debug.Log("Attributes cleared");
+
                         ladel.StartChase();
                         //do what is needed to be done with curent recipe
                         //fill dispenser
                         RecipeMade = false;
+                        count = 0;
                     }
                 }
             }

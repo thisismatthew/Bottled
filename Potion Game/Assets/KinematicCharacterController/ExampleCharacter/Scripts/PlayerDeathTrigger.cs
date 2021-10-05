@@ -13,6 +13,9 @@ namespace KinematicCharacterController.Examples
         public Animator RespawnAnimator;
         public Transform RespawnPoint;
         public Transform SpringWeight;
+        public float CheckpointResetFrequency = 1;
+
+        public Animator anim;
 
         private KinematicCharacterMotor Motor;
         private MainCharacterController Controller;
@@ -23,6 +26,7 @@ namespace KinematicCharacterController.Examples
         private float _timeSlice = 0.1f;
         private float _fallTimer = 0f;
         private float _deadTimer = 0f;
+        private float _checkpointTimer = 0f;
         
 
         private void Start()
@@ -37,7 +41,18 @@ namespace KinematicCharacterController.Examples
         // Update is called once per frame
         void Update()
         {
-            Debug.DrawLine(RespawnPoint.position, Motor.transform.position, Color.red);
+            if (Controller.Motor.GroundingStatus.IsStableOnGround)
+            {
+                _checkpointTimer += Time.deltaTime;
+                if (_checkpointTimer> CheckpointResetFrequency)
+                    RespawnPoint.position = Controller.gameObject.transform.position;
+            }
+            else
+            {
+                _checkpointTimer = 0;
+            }
+                
+           // Debug.DrawLine(RespawnPoint.position, Motor.transform.position, Color.red);
            
             _fallTimer += Time.deltaTime;
             if (_fallTimer > _timeSlice)
@@ -56,12 +71,19 @@ namespace KinematicCharacterController.Examples
             //if the players height has changed greater than the fall distance in the latest time slice,
             //and they have landed on stable ground. Smash em. 
            if ((_heightFallen< -DeadlyFallDistance)&& Motor.GroundingStatus.IsStableOnGround)
-            {
+           {
+                _checkpointTimer = 0;
                 SmashCharacter();
-            }
+           }
 
-           if (Controller.CurrentCharacterState == CharacterState.Dead)
+           if (_heightFallen < -DeadlyFallDistance+.5f)
+           {
+                anim.SetTrigger("DeathHeight");
+           }
+
+            if (Controller.CurrentCharacterState == CharacterState.Dead)
             {
+                _checkpointTimer = 0;
                 _deadTimer += Time.deltaTime;
                 if (_deadTimer > LengthOfTimeDead)
                 {

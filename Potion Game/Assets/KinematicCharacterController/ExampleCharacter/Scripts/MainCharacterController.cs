@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Obi;
 
 
 namespace KinematicCharacterController.Examples
@@ -12,11 +13,6 @@ namespace KinematicCharacterController.Examples
         Dead,
     }
 
-    public enum OrientationMethod
-    {
-        TowardsCamera,
-        TowardsMovement,
-    }
 
     public struct PlayerCharacterInputs
     {
@@ -59,7 +55,6 @@ namespace KinematicCharacterController.Examples
         public float Acceleration = 0.5f;
         public float StableMovementSharpness = 15f;
         public float OrientationSharpness = 10f;
-        public OrientationMethod OrientationMethod = OrientationMethod.TowardsCamera;
 
         [Header("Air Movement")]
         public float MaxAirMoveSpeed = 15f;
@@ -71,18 +66,26 @@ namespace KinematicCharacterController.Examples
         public float TimeToMaxJumpApex = 0.3f;
         public float MaxJumpHeight = 4f;
         public float MinJumpHeight = 1f;
-        public float JumpScalableForwardSpeed = 10f;
+        public float HangTime = 0.3f;
+        public float HangtimeGravityDampness = 0.3f;
+        //public float JumpScalableForwardSpeed = 10f;
         public float JumpPreGroundingGraceTime = 0f;
         public float JumpPostGroundingGraceTime = 0f;
 
         [Header("Climbing")]
-        public float ClimbingSpeed = 0.01f;
-        public Spline CurrentClimbSpline;
-        private float _currentSplineIndex;
+        public ObiRope CurrentClimbRope;
+        private int _currentRopeParticleIndex;
+        public float ClimbingSpeed = 0.1f;
+        private float _climbingIndexThreshold = 1f;
         private bool _isClimbing = false;
         private bool _startedClimbing = false;
         public bool JumpingFromClimbing = false;
         private float _upDownInput = 0f;
+        public Transform LandingTarget;
+        public float ClimbingJumpArcHeight = 5f;
+        public float ClimbJumpPowerModifier = 2f;
+
+
 
         [Header("Misc")]
         public List<Collider> IgnoredColliders = new List<Collider>();
@@ -90,7 +93,7 @@ namespace KinematicCharacterController.Examples
         public float BonusOrientationSharpness = 10f;
         public Vector3 Gravity = new Vector3(0, -30f, 0);
         public Transform MeshRoot;
-        public Transform CameraFollowPoint;
+        //public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
         public GameObject SmashedCharacterPrefab;
         public GameObject Body;
@@ -98,11 +101,18 @@ namespace KinematicCharacterController.Examples
         public GameObject LeftArm;
         public SpringJoint SpringWeightObject;
         public Rigidbody SpringRoot;
+        public ParticleSystem JumpClouds;
+        public ParticleSystem RunClouds;
 
         [Header("Interaction")]
         public GameObject Interactable;
+        public Transform GrabPosition;
+        public bool NearCauldron;
+        public Transform CauldronThrowTarget;
 
-       
+        [Header("Overides")]
+        public Transform LookTargetOveride = null;
+
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
@@ -113,6 +123,9 @@ namespace KinematicCharacterController.Examples
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
         private bool _jumpedThisFrame = false;
+        private bool _jumpApexReached = false;
+        private bool _hangtimeConsumed = false;
+        private float _hangtimeInitial;
         private float _timeSinceJumpRequested = Mathf.Infinity;
         private float _timeSinceLastAbleToJump = 0f;
         private Vector3 _internalVelocityAdd = Vector3.zero;
@@ -125,10 +138,6 @@ namespace KinematicCharacterController.Examples
         private Vector3 lastOuterNormal = Vector3.zero;
 
         //Arm wiggle
-        private Renderer R_ArmRend;
-        private Renderer L_ArmRend;
-        private float _armPower;
-        private float _armSpeed;
 
         private void Awake()
         {
@@ -138,10 +147,8 @@ namespace KinematicCharacterController.Examples
             TransitionToState(CharacterState.Default);
             // Assign the characterController to the motor
             Motor.CharacterController = this;
-
-            //Get Arms Renderer
-            R_ArmRend = RightArm.GetComponent<Renderer>();
-            L_ArmRend = LeftArm.GetComponent<Renderer>();
+            
+            _hangtimeInitial = HangTime;
         }
 
         private void Update()
@@ -212,11 +219,14 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        CurrentClimbSpline = null;
+                        CurrentClimbRope = null;
                         break;
                     }
             }
         }
+
+
+        
 
         /// <summary>
         /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
@@ -235,19 +245,15 @@ namespace KinematicCharacterController.Examples
             }
             Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
-
-            switch (OrientationMethod)
-            {
-                case OrientationMethod.TowardsCamera:
-                    _lookInputVector = cameraPlanarDirection;
-                    break;
-                case OrientationMethod.TowardsMovement:
-                    _lookInputVector = _moveInputVector.normalized;
-                    break;
-            }
+            if (LookTargetOveride == null)
+                _lookInputVector = _moveInputVector.normalized;
+            else
+                _lookInputVector = (LookTargetOveride.position - this.transform.position).normalized;
 
             // Move and look inputs
             _moveInputVector = cameraPlanarRotation * moveInputVector;
+/*            Debug.DrawLine(_moveInputVector, _moveInputVector * 2, Color.green);
+            Debug.Log(cameraPlanarDirection);*/
 
             //let the character self destruct at any stage
             if (inputs.SelfDestruct)
@@ -304,16 +310,19 @@ namespace KinematicCharacterController.Examples
                             {
                                 if (_isHolding)
                                 {
-                                    Interactable.AddComponent<Rigidbody>();
+                                    Interactable.AddComponent<Rigidbody>(); 
                                     Interactable.transform.parent = null;
                                     IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
                                     _isHolding = false;
+                                    if(NearCauldron)
+                                        Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
                                 }
                                 else
                                 {
 
                                     _isHolding = true;
                                     Interactable.transform.parent = this.transform;
+                                    Interactable.GetComponent<Pickupable>().MoveToTarget(GrabPosition.position);
                                     IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
                                     Destroy(Interactable.GetComponent<Rigidbody>());
 
@@ -439,24 +448,7 @@ namespace KinematicCharacterController.Examples
                         break;
                     }
 
-                    //TODO the current climbing rotation is bugged and needs to be fixed. 
-                    /*case CharacterState.Climbing:
-                        {
-
-                            Vector3 target = CurrentClimbSpline.GetClosestVertexPosition(transform.position);
-                            target.y -= Motor.Capsule.height;
-
-                            // Smoothly interpolate from current to target look direction
-                            Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, target.normalized, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-
-                            //These Debug Lines help to show the climbing rotation bug. 
-                            //Debug.DrawLine(transform.position + smoothedLookInputDirection, transform.position + smoothedLookInputDirection * 10, Color.blue);
-                            //Debug.DrawLine(transform.position, target, Color.red);
-
-                            // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                            currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                            break;
-                        }*/
+                
             }
         }
 
@@ -477,6 +469,7 @@ namespace KinematicCharacterController.Examples
                             //make sure we have landed from a ledge jump
                             JumpingFromClimbing = false;
                             float currentVelocityMagnitude = currentVelocity.magnitude;
+
 
                             Vector3 effectiveGroundNormal = Motor.GroundingStatus.GroundNormal;
                             if (currentVelocityMagnitude > 0f && Motor.GroundingStatus.SnappingPrevented)
@@ -563,6 +556,7 @@ namespace KinematicCharacterController.Examples
 
                             // Drag
                             currentVelocity *= (1f / (1f + (Drag * deltaTime)));
+
                         }
 
                         // Handle jumping
@@ -581,27 +575,82 @@ namespace KinematicCharacterController.Examples
                                 }
 
                                 // Makes the character skip ground probing/snapping on its next update. 
-                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+                                // If this line weren't here, the character would remain snapped to the ground when trying to jump. 
                                 Motor.ForceUnground();
 
                                 // Add to the return velocity and reset jump state
                                 currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
-                                currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
+                                
+                                //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
                                 _jumpedThisFrame = true;
+
+                                var jumpSize = JumpClouds.sizeOverLifetime;
+                                var jumpShape = JumpClouds.shape;
+                                var jumpSpeed = JumpClouds.velocityOverLifetime;
+                                var jumpEmit = JumpClouds.emission;
+                                jumpSize.sizeMultiplier = 0.8f;
+                                jumpShape.scale = new Vector3(0.8f, 0.8f, 0.8f);
+                                jumpSpeed.speedModifierMultiplier = 3;
+                                jumpEmit.burstCount = 4;
+                                JumpClouds.Play();
+                                anim.SetTrigger("Jump");         
                             }
                         }
 
                         if (_jumpEndRequested)
                         {
+                           
                             //check we are traveling up
                             if (currentVelocity.y > _minJumpVelocity)
                             {
                                 //TODO also reduce the forward velocity of the jump. 
                                 currentVelocity += (jumpDirection * _minJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+                                
                             }
                             _jumpEndRequested = false;
+                        }
+                        
+                        //we've hit the apex and we're on our way down
+                        if (_jumpConsumed)
+                        {
+                            //Debug.Log("current vel: " + currentVelocity);
+                            Vector3 down = transform.position;
+                            down.y = 0;
+
+                            if (currentVelocity.y < -0.01f & _hangtimeConsumed == false)
+                            {
+                                Debug.DrawLine(transform.position, down, Color.green);
+                                //Debug.Log("current vel: " + currentVelocity);
+                                _jumpApexReached = true;
+                                //Debug.Log("Apex reached");
+                            }
+
+                            if (_jumpApexReached)
+                            {
+                                anim.SetTrigger("Apex");
+                                if (HangTime >= 0)
+                                {
+                                    //Debug.Log("hanging");
+                                    HangTime -= Time.deltaTime;
+                                    currentVelocity.y = currentVelocity.y * HangtimeGravityDampness;
+                                }
+                                else
+                                {
+                                    //Debug.Log("hanging done");
+                                    _jumpApexReached = false;
+                                    _hangtimeConsumed = true;
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            //Debug.Log("hanging restored");
+                            _jumpApexReached = false;
+                            _hangtimeConsumed = false;
+                            HangTime = _hangtimeInitial;
                         }
 
                         // Take into account additive velocity
@@ -614,11 +663,14 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Climbing:
                     {
-                        
+                        Debug.Log("Rope Index: "+ _currentRopeParticleIndex);
+                        Debug.Log("Lowest Rope Index: " + CurrentClimbRope.activeParticleCount);
                         //if this is the first update where we are climbing set velocity to 0
                         if (_startedClimbing == true)
                         {
-                            _currentSplineIndex = CurrentClimbSpline.GetClosestVertexIndex(transform.position);
+                            _currentRopeParticleIndex = CurrentClimbRope.FindClosestRopeParticle(transform.position);
+                            if (_currentRopeParticleIndex >= CurrentClimbRope.activeParticleCount - 5)
+                                _currentRopeParticleIndex = CurrentClimbRope.activeParticleCount - 5;
                             //all we need are the two end points of the spline 
                             currentVelocity = Vector3.zero;
                             _startedClimbing = false;
@@ -626,29 +678,55 @@ namespace KinematicCharacterController.Examples
 
                         if (_isClimbing)
                         {
-                            
+
                             Vector3 target = Vector3.zero;
-                            Debug.Log(_upDownInput);
+                            //TODO clear away this MAGIC NUMBER I've got going on below. for some reason
+                            //there are always extra particles indexed at the end of the active particle rope array that 
+                            //don't get used, and are physically at the 0 position of the ropes local space. 
                             //move the target spline point along, and snap the character to it. 
-                            if (_upDownInput < 0 && _currentSplineIndex <= 1)
+
+
+                            // now the character updates a float from 0 to 1 or -1,
+                            // incrementing or decrementing along the rope particle index
+                            // when reaching that threshold
+                            if (_upDownInput < 0 && _currentRopeParticleIndex <= CurrentClimbRope.activeParticleCount-5)
                             {
-                                _currentSplineIndex += ClimbingSpeed;
-                                anim.SetFloat("ClimbState", 1);
-                                anim.SetBool("ClimbUp", false);
+                                if (_climbingIndexThreshold < 0)
+                                    _climbingIndexThreshold = 0;
+
+                                _climbingIndexThreshold += ClimbingSpeed;
+
+                                if (_climbingIndexThreshold> 1)
+                                {
+                                    _currentRopeParticleIndex += 1;
+                                    anim.SetFloat("ClimbState", 1);
+                                    anim.SetBool("ClimbUp", false);
+                                    _climbingIndexThreshold = 0;
+                                }
                             }
 
-                            else if (_upDownInput > 0 && _currentSplineIndex >= 0)
+                            else if (_upDownInput > 0 && _currentRopeParticleIndex >= 1)
                             {
-                                _currentSplineIndex -= ClimbingSpeed;
-                                anim.SetFloat("ClimbState", 1);
-                                anim.SetBool("ClimbUp", true);
+                                if (_climbingIndexThreshold > 0)
+                                    _climbingIndexThreshold = 0;
+
+                                _climbingIndexThreshold -= ClimbingSpeed;
+
+                                if (_climbingIndexThreshold < -1)
+                                {
+                                    //actually index down on the rope. 
+                                    _currentRopeParticleIndex -= 1;
+                                    anim.SetFloat("ClimbState", 1);
+                                    anim.SetBool("ClimbUp", true);
+                                    _climbingIndexThreshold = 0;
+                                }
                             }
                             else
                             {
                                 anim.SetFloat("ClimbState", 0);
                             }
 
-                            target = CurrentClimbSpline.GetSplinePosition(_currentSplineIndex);
+                            target = CurrentClimbRope.GetParticlePosition(_currentRopeParticleIndex);
                             //now lets make sure that the character is oriented and positioned right fo animations
                             //offset the snapped position by the hieght of the player to make it hang below the spline
                             target.y -= Motor.Capsule.height;
@@ -656,14 +734,15 @@ namespace KinematicCharacterController.Examples
                             target += -(Motor.CharacterForward * (Motor.Capsule.radius*2));
 
 
+                            Debug.DrawLine(transform.position, target, Color.green);
+                            Motor.MoveCharacter(Vector3.Lerp(transform.position, target, 0.4f));
 
-                            Motor.MoveCharacter(target);
-
-                            //if we moved to the end of the spline take us off
-                            if (_currentSplineIndex == 1 || _currentSplineIndex == 0)
+                            /*
+                            //if we moved to the end of the Rope take us off
+                            if (_currentRopeParticleIndex == CurrentClimbRope.particleCount || _currentRopeParticleIndex == 0)
                             {
                                 TransitionToState(CharacterState.Default);
-                            }
+                            }*/
                         }
 
 
@@ -674,8 +753,16 @@ namespace KinematicCharacterController.Examples
                         {
                             TransitionToState(CharacterState.Default);
                             // Add to the return velocity and reset jump state
-                            currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
-                            currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
+                            if (LandingTarget != null)
+                            {
+                                currentVelocity = CalculateParabolaVelocity(LandingTarget.position) * ClimbJumpPowerModifier;
+                            }
+                            else
+                            {
+                                currentVelocity += (jumpDirection * _maxJumpVelocity) - Vector3.Project(currentVelocity, Motor.CharacterUp);
+
+                            }
+                            //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                             _jumpRequested = false;
                             _isClimbing = false;
                         }
@@ -687,6 +774,24 @@ namespace KinematicCharacterController.Examples
                         currentVelocity = Vector3.zero;
                         break;
                     }
+            }
+            anim.SetFloat("VerticalVelocity", currentVelocity.y);
+            anim.SetFloat("ForwardVelocity", Mathf.Sqrt(currentVelocity.z * currentVelocity.z + currentVelocity.x * currentVelocity.x));
+            if (!JumpClouds.isEmitting)
+            {
+                var jumpSize = JumpClouds.sizeOverLifetime;
+                var jumpShape = JumpClouds.shape;
+                var jumpSpeed = JumpClouds.velocityOverLifetime;
+                var jumpEmit = JumpClouds.emission;
+
+                if (currentVelocity.y < 0)
+                {
+                    jumpSize.sizeMultiplier = Mathf.Clamp(-currentVelocity.y / 25, 0.3f, 2f);
+                    float jumpScale = Mathf.Clamp(-currentVelocity.y-5 / 10, 0.3f, 0.6f);
+                    jumpShape.scale = new Vector3(jumpScale, jumpScale, jumpScale);
+                    jumpSpeed.speedModifierMultiplier = Mathf.Clamp(-currentVelocity.y / 12, 0.5f, 2f);
+                    jumpEmit.burstCount = (int)Mathf.Clamp((Mathf.Abs(-currentVelocity.y - 10) /2), 2, 8);
+                }
             }
         }
 
@@ -815,13 +920,12 @@ namespace KinematicCharacterController.Examples
         protected void OnLanded()
         {
             anim.SetTrigger("Grounded");
-            anim.SetBool("Airborne", false);
+            JumpClouds.Play();
         }
 
         protected void OnLeaveStableGround()
         {
-            anim.SetTrigger("Jump");
-            anim.SetBool("Airborne", true);
+            anim.ResetTrigger("Grounded");
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
@@ -832,36 +936,31 @@ namespace KinematicCharacterController.Examples
         {
             Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
             Vector3 localVel = transform.InverseTransformDirection(vel);
-            if(localVel.x <= 0.1f && localVel.x > -0.1f)
+            if (localVel.z > 0.01f && Motor.GroundingStatus.IsStableOnGround)
             {
-                if (localVel.z > 0.1f && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("RunBackwards", false);
-                    anim.SetBool("Run", true);
-                    _armPower = Mathf.SmoothStep(0.5f, 0.85f , -0.02f);
-                    _armSpeed = Mathf.SmoothStep(3f, 4.5f, 0.02f);
+                anim.SetBool("Run", true);
 
-                }
-                else if (localVel.z < -0.1f && Motor.GroundingStatus.IsStableOnGround)
+                if (ActualMoveSpeed > 11f && ActualMoveSpeed < 12f)
                 {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", true);
-                }
-
-                else if (localVel.z <= 0.1f && localVel.z > -0.1f && Motor.GroundingStatus.IsStableOnGround)
-                {
-                    anim.SetBool("Run", false);
-                    anim.SetBool("RunBackwards", false);
-                    _armPower = Mathf.SmoothStep(0.85f, 0.5f, 0.02f);
-                    _armSpeed = Mathf.SmoothStep(4.5f, 3f, -0.02f);
+                    RunClouds.Play();
                 }
             }
+            else
+            {
+                anim.SetBool("Run", false);
+            }
 
+        }
 
-            R_ArmRend.material.SetFloat("_Power", _armPower);
-            R_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
-            L_ArmRend.material.SetFloat("_Power", _armPower);
-            L_ArmRend.material.SetFloat("_WobbleSpeed", _armSpeed);
+        Vector3 CalculateParabolaVelocity(Vector3 target)
+        {
+            float displacementY = target.y - transform.position.y;
+            Vector3 displacementXZ = new Vector3(target.x - transform.position.x, 0, target.z - transform.position.z);
+
+            Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * ClimbingJumpArcHeight);
+            Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * ClimbingJumpArcHeight / Physics.gravity.y) + Mathf.Sqrt(2 * (displacementY - ClimbingJumpArcHeight) / Physics.gravity.y));
+
+            return velocityXZ + velocityY;
         }
     }
 }

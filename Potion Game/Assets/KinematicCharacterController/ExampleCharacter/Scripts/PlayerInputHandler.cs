@@ -3,31 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using KinematicCharacterController.Examples;
+using Cinemachine;
 
 namespace KinematicCharacterController.Examples
 {
+
     public class PlayerInputHandler : MonoBehaviour
     {
         public MainCharacterController Character;
-        public MainCharacterCamera CharacterCamera;
+        public GameObject CharacterCamera;
+        public CinemachineFreeLook FreeLookVirtualCamera;
+        public bool Locked = false;
 
         private const string MouseXInput = "Mouse X";
         private const string MouseYInput = "Mouse Y";
         private const string MouseScrollInput = "Mouse ScrollWheel";
         private const string HorizontalInput = "Horizontal";
         private const string VerticalInput = "Vertical";
+        private PlayerCharacterInputs NullInput;
+        private OptionsHelper options;
+
+
+        private void Awake()
+        {
+            if (FindObjectOfType<OptionsHelper>() == null)
+            {
+                Debug.LogError("No Player Options Detected: Adding One To Player Input Handler.");
+                gameObject.AddComponent<OptionsHelper>();
+            }
+        }
 
         private void Start()
         {
-            
+            NullInput = new PlayerCharacterInputs();
             Cursor.lockState = CursorLockMode.Locked;
-
-            // Tell camera to follow transform
-            CharacterCamera.SetFollowTransform(Character.CameraFollowPoint);
-
-            // Ignore the character's collider(s) for camera obstruction checks
-            CharacterCamera.IgnoredColliders.Clear();
-            CharacterCamera.IgnoredColliders.AddRange(Character.GetComponentsInChildren<Collider>());
+            options = FindObjectOfType<OptionsHelper>();
+           
         }
 
         private void Update()
@@ -44,48 +55,6 @@ namespace KinematicCharacterController.Examples
             HandleCharacterInput();
         }
 
-        private void LateUpdate()
-        {
-            // Handle rotating the camera along with physics movers
-            if (CharacterCamera.RotateWithPhysicsMover && Character.Motor.AttachedRigidbody != null)
-            {
-                CharacterCamera.PlanarDirection = Character.Motor.AttachedRigidbody.GetComponent<PhysicsMover>().RotationDeltaFromInterpolation * CharacterCamera.PlanarDirection;
-                CharacterCamera.PlanarDirection = Vector3.ProjectOnPlane(CharacterCamera.PlanarDirection, Character.Motor.CharacterUp).normalized;
-            }
-
-            HandleCameraInput();
-        }
-
-        private void HandleCameraInput()
-        {
-            // Create the look input vector for the camera
-            float mouseLookAxisUp = Input.GetAxisRaw(MouseYInput);
-            float mouseLookAxisRight = Input.GetAxisRaw(MouseXInput);
-
-            Vector3 lookInputVector = new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f);
-
-            // Prevent moving the camera while the cursor isn't locked
-            if (Cursor.lockState != CursorLockMode.Locked)
-            {
-                lookInputVector = Vector3.zero;
-            }
-
-            // Input for zooming the camera (disabled in WebGL because it can cause problems)
-            float scrollInput = -Input.GetAxis(MouseScrollInput);
-#if UNITY_WEBGL
-        scrollInput = 0f;
-#endif
-
-            // Apply inputs to the camera
-            CharacterCamera.UpdateWithInput(Time.deltaTime, scrollInput, lookInputVector);
-
-            // Handle toggling zoom level
-            if (Input.GetMouseButtonDown(1))
-            {
-                CharacterCamera.TargetDistance = (CharacterCamera.TargetDistance == 0f) ? CharacterCamera.DefaultDistance : 0f;
-            }
-        }
-
         private void HandleCharacterInput()
         {
             PlayerCharacterInputs characterInputs = new PlayerCharacterInputs();
@@ -93,7 +62,6 @@ namespace KinematicCharacterController.Examples
             // Build the CharacterInputs struct
             characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
             characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
-            characterInputs.CameraRotation = CharacterCamera.Transform.rotation;
             characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Space);
             characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Space);
             characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
@@ -101,9 +69,29 @@ namespace KinematicCharacterController.Examples
             characterInputs.UsePotion = Input.GetKeyDown(KeyCode.E);
             characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
             characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
+            
+            if (options.GamepadController)
+            {
+                characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Joystick1Button0);
+                characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Joystick1Button0);
+                characterInputs.UsePotion = Input.GetKeyDown(KeyCode.Joystick1Button1);
+                characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.Joystick1Button2);
+                FreeLookVirtualCamera.m_XAxis.m_InputAxisName = "Joystick X";
+                FreeLookVirtualCamera.m_XAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+                FreeLookVirtualCamera.m_XAxis.m_MaxSpeed = 50;
+                FreeLookVirtualCamera.m_YAxis.m_InputAxisName = "Joystick Y";
+                FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+                FreeLookVirtualCamera.m_YAxis.m_MaxSpeed = 0.5f;
+                FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+                FreeLookVirtualCamera.m_YAxis.m_InvertInput = false;
+            }
 
+            characterInputs.CameraRotation = CharacterCamera.transform.rotation;
             // Apply inputs to character
-            Character.SetInputs(ref characterInputs);
+            if (!Locked)
+                Character.SetInputs(ref characterInputs);
+            else
+                Character.SetInputs(ref NullInput);
         }
     }
 }

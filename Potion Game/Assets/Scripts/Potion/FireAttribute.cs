@@ -4,28 +4,40 @@ using UnityEngine;
 
 public class FireAttribute : MonoBehaviour, IPotionAttribute
 {
+    public Light FireLight;
+    public Transform FlameParticlePosition;
     public Renderer Potion;
-    public Color NewPotionColor;
+    public Material NewLiquidMaterial;
     private string _name = "fireAttribute";
+    public GameObject FirePrefab;
+    public bool FireLit = false;
 
     public void Equip()
     {
         Debug.Log("Equiped fire!!!!");
-        Potion.material.SetColor("_LiquidColour", NewPotionColor);
+        Potion.material = NewLiquidMaterial;
+        FireLight.enabled = true;
     }
 
     public void Unequip()
     {
-        Debug.Log("No fire left... :(");
+        Debug.Log("UnEquiped fire ");
+        FireLit = false;
+        FireLight.enabled = false;
     }
 
     public bool Use()
     {
-        
-        //Flamable.equip
-        //TODO sprout fire particle affect
-        gameObject.AddComponent<Flamable>();
-        gameObject.GetComponent<Flamable>().Burning = true;
+
+        GameObject childobject = Instantiate(FirePrefab, FlameParticlePosition);//= Instantiate(FirePrefab) as GameObject;
+        childobject.transform.localPosition = Vector3.zero;
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (FireLit == false)
+        {
+            player.AddComponent<Flamable>();
+            player.GetComponent<Flamable>().Burning = true;
+            FireLit = true;
+        }   
         Debug.Log("Used A fire");
         return true;
     }
