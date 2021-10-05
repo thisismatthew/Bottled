@@ -37,7 +37,7 @@ public class IngredientRitual : MonoBehaviour
 
         if (RitualSpotsCompleted == _ritualSpotsNeeded)
         {
-            RitualCircleAnimator.Play("SummoningCircleAnim");
+            RitualCircleAnimator.SetTrigger("All Candle");
             IngredientPrefab.active = true;
 
             RitualSpotsCompleted = 0;
