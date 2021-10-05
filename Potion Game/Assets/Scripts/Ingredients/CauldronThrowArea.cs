@@ -13,6 +13,7 @@ public class CauldronThrowArea : MonoBehaviour
         {
             player.GetComponent<MainCharacterController>().CauldronThrowTarget.position = transform.position;
             player.GetComponent<MainCharacterController>().NearCauldron = true;
+            player.GetComponent<MainCharacterController>().LookTargetOveride = transform;
         }
     }
     private void OnTriggerExit(Collider player)
@@ -21,6 +22,7 @@ public class CauldronThrowArea : MonoBehaviour
         if (player.gameObject.tag == "Player")
         {
             player.GetComponent<MainCharacterController>().NearCauldron = false;
+            player.GetComponent<MainCharacterController>().LookTargetOveride = null;
         }
     }
 }

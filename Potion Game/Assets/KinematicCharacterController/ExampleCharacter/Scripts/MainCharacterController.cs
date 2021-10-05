@@ -321,7 +321,7 @@ namespace KinematicCharacterController.Examples
                                 {
 
                                     _isHolding = true;
-                                    Interactable.transform.parent = this.transform;
+                                    Interactable.transform.parent = this.transform.GetChild(1).transform;
                                     Interactable.GetComponent<Pickupable>().MoveToTarget(GrabPosition.position);
                                     IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
                                     Destroy(Interactable.GetComponent<Rigidbody>());
