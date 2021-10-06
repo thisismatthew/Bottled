@@ -11,6 +11,7 @@ public class Pickupable : MonoBehaviour
     public float ArcHeight = 5f;
     public float MoveSpeed = 10f;
     public float PickupAccuracy = 0.2f;
+    public bool DisablePickup = false;
 
 
     public Ingredient IngredientName;
@@ -29,12 +30,18 @@ public class Pickupable : MonoBehaviour
     }
     private void OnTriggerEnter(Collider player)
     {
-        if (player.gameObject.tag == "Player") player.GetComponent<MainCharacterController>().Interactable = this.gameObject;
+        if (player.gameObject.tag == "Player" && !DisablePickup && player.GetComponent<MainCharacterController>().Interactable == null) player.GetComponent<MainCharacterController>().Interactable = this.gameObject;
     }
 
     private void OnTriggerExit(Collider player)
     {
-        if (player.gameObject.tag == "Player") player.GetComponent<MainCharacterController>().Interactable = null;
+        if (player.gameObject.tag == "Player")
+        {
+            if (!player.GetComponent<MainCharacterController>().IsHolding)
+            {
+                player.GetComponent<MainCharacterController>().Interactable = null;
+            }
+        }
     }
 
     public void MoveToTarget(Vector3 target)
