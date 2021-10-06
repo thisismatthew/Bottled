@@ -165,6 +165,10 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: -3590227117744795546, guid: 5d0683fda27234d6ab5abe6bbf5a268e, type: 2}
     value: {fileID: 7614775680873152625}
+  - key: {fileID: 4371619821366620991, guid: 5d0683fda27234d6ab5abe6bbf5a268e, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 2909846097740254028, guid: 5d0683fda27234d6ab5abe6bbf5a268e, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!95 &7614775680873152625
@@ -212,6 +216,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 160d994062e8fe6418c50c339a9e34e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mover: {fileID: 7614775680873152635}
   Speed: 1
-  Director: {fileID: 7614775680873152632}

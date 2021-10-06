@@ -13,7 +13,7 @@ public class CauldronThrowArea : MonoBehaviour
         {
             player.GetComponent<MainCharacterController>().CauldronThrowTarget.position = transform.position;
             player.GetComponent<MainCharacterController>().NearCauldron = true;
-            player.GetComponent<MainCharacterController>().LookTargetOveride = transform;
+            player.GetComponent<MainCharacterController>().LookTargetOveride = this.transform;
         }
     }
     private void OnTriggerExit(Collider player)

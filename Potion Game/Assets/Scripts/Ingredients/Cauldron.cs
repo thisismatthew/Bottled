@@ -12,7 +12,7 @@ public class Cauldron : MonoBehaviour
     public Recipe Cauldronrecipe;
     public bool RecipeMade = false;
     public Dictionary<PotionAttributeName, IPotionAttribute> PotionAttributeDict = new Dictionary<PotionAttributeName, IPotionAttribute>();
-    
+    public GameObject CauldfronFloatFX, CauldronFireFX, CauldronNuetralFX;
     public List<IPotionAttribute> ListOfAttributes = new List<IPotionAttribute>();
     private int count = 0;
 
@@ -58,6 +58,18 @@ public class Cauldron : MonoBehaviour
         if (collider.gameObject.tag == "PickUpable")
         {
             Ingredient ingredientAdded = collider.gameObject.GetComponent<Pickupable>().IngredientName;
+            Debug.Log(ingredientAdded.ToString());
+            if (ingredientAdded.ToString() == "fire")
+            {
+                CauldronNuetralFX.SetActive(false);
+                CauldronFireFX.SetActive(true);
+            }
+            if (ingredientAdded.ToString() == "levitation")
+            {
+                CauldronNuetralFX.SetActive(false);
+                CauldronFireFX.SetActive(false);
+                CauldfronFloatFX.SetActive(true);
+            }
             Destroy(collider.gameObject);
             Cauldronrecipe.Ingredients[count] = ingredientAdded;
             count++;
@@ -69,6 +81,7 @@ public class Cauldron : MonoBehaviour
                     RecipeMade = CompareRecipes(Cauldronrecipe.Ingredients, recipe.Ingredients);
                     if (RecipeMade)
                     {
+                        
                         foreach (PotionAttributeName attribute in recipe.RecipeAttributes)
                         {
                             ListOfAttributes.Add(PotionAttributeDict[attribute]);
