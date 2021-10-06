@@ -66,8 +66,8 @@ namespace KinematicCharacterController.Examples
             characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Space);
             characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
             characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.C);
-            characterInputs.UsePotion = Input.GetKeyDown(KeyCode.E);
-            characterInputs.Interact = Input.GetKeyDown(KeyCode.Q);
+            characterInputs.UsePotion = Input.GetKeyDown(KeyCode.Q);
+            characterInputs.Interact = Input.GetKeyDown(KeyCode.E);
             characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
             
             if (options.GamepadController)
@@ -75,7 +75,7 @@ namespace KinematicCharacterController.Examples
                 characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Joystick1Button0);
                 characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Joystick1Button0);
                 characterInputs.UsePotion = Input.GetKeyDown(KeyCode.Joystick1Button1);
-                characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.Joystick1Button2);
+                characterInputs.Interact = Input.GetKeyDown(KeyCode.Joystick1Button2);
                 FreeLookVirtualCamera.m_XAxis.m_InputAxisName = "Joystick X";
                 FreeLookVirtualCamera.m_XAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
                 FreeLookVirtualCamera.m_XAxis.m_MaxSpeed = 50;

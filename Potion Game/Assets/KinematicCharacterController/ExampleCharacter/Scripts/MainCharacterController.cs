@@ -301,15 +301,16 @@ namespace KinematicCharacterController.Examples
                             _shouldBeCrouching = false;
                         }
 
-                        //Use input
-                        //this is pretty messy, the rigidbody gets detroyed and remade when an object is picked up/down. 
                         if (inputs.UsePotion)
                         {
-                            if (Interactable == null)
-                            {
-                                _potion.UsePotion();
-                            }
-                            else
+                            _potion.UsePotion();
+                        }
+
+                        //Use input
+                        //this is pretty messy, the rigidbody gets detroyed and remade when an object is picked up/down. 
+                        if (inputs.Interact)
+                        {
+                            if (Interactable != null)
                             {
                                 if (IsHolding)
                                 {
