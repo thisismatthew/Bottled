@@ -11,6 +11,7 @@ namespace KinematicCharacterController.Examples
         Default,
         Climbing,
         Dead,
+        Spilling,
     }
 
 
@@ -196,6 +197,7 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Climbing:
                     {
                         _startedClimbing = true;
+                        GetComponent<DropShadow>()._climbShadowRemove = true;
                         break;
                     }
                 case CharacterState.Dead:
@@ -203,6 +205,13 @@ namespace KinematicCharacterController.Examples
                         Body.active = false;
                         Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
                         SpringWeightObject.connectedBody = null;
+                        break;
+                    }
+                case CharacterState.Spilling:
+                    {
+                        _potion.UsePotion();
+                        anim.SetTrigger("Spill");
+                        GetComponent<PlayerInputHandler>().Locked = true;
                         break;
                     }
             }
@@ -223,6 +232,12 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Climbing:
                     {
                         CurrentClimbRope = null;
+                        GetComponent<DropShadow>()._climbShadowRemove = false;
+                        break;
+                    }
+                case CharacterState.Spilling:
+                    {
+                        GetComponent<PlayerInputHandler>().Locked = false;
                         break;
                     }
             }
@@ -307,7 +322,11 @@ namespace KinematicCharacterController.Examples
                         {
                             if (Interactable == null)
                             {
-                                _potion.UsePotion();
+                                if (Motor.GroundingStatus.IsStableOnGround)
+                                {
+                                    TransitionToState(CharacterState.Spilling);
+                                }
+
                             }
                             else
                             {
@@ -640,7 +659,6 @@ namespace KinematicCharacterController.Examples
 
                             if (_jumpApexReached)
                             {
-                                anim.SetTrigger("Apex");
                                 if (HangTime >= 0)
                                 {
                                     //Debug.Log("hanging");
@@ -796,6 +814,13 @@ namespace KinematicCharacterController.Examples
                         currentVelocity = Vector3.zero;
                         break;
                     }
+
+                case CharacterState.Spilling:
+                    {
+                        currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, 0.1f);
+                        break;
+                    }
+
             }
             anim.SetFloat("VerticalVelocity", currentVelocity.y);
             anim.SetFloat("ForwardVelocity", Mathf.Sqrt(currentVelocity.z * currentVelocity.z + currentVelocity.x * currentVelocity.x));
@@ -942,18 +967,23 @@ namespace KinematicCharacterController.Examples
         protected void OnLanded()
         {
             anim.SetTrigger("Grounded");
-            anim.ResetTrigger("Fall");
+            anim.SetBool("Fall", false);
             JumpClouds.Play();
         }
 
         protected void OnLeaveStableGround()
         {
-            anim.SetTrigger("Fall");
+            anim.SetBool("Fall", true);
             _groundedFrame = 1;
         }
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
+        }
+
+        public void ReturnToDefaultState()
+        {
+            TransitionToState(CharacterState.Default);
         }
 
         private void CharacterMoving()

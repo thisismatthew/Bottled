@@ -11,7 +11,7 @@ public class SpringSystem : MonoBehaviour
 
     const int SPRING_COUNT = 16;
     [Header("Waves")]
-    [Range(0.1f, 0.999f)] public float Damping = 0.1f;
+    [Range(0.1f, 5f)] public float Damping = 0.1f;
     [Range(0.1f, 300.0f)] public float SpringStiffness = 5.0f;
 
     [Range(0.001f, 0.1f)] public float perpMotionMagnitude = 0.015f;
@@ -36,6 +36,8 @@ public class SpringSystem : MonoBehaviour
     private Vector3 lastUp;
     private float[] extForce = new float[SPRING_COUNT * SPRING_COUNT];
     private float[] delta = new float[1];
+    private int liquidpulse = 0;
+    private int liquidwave = 0;
 
     public RenderTexture getSimulatedTexture
     {
@@ -91,13 +93,48 @@ public class SpringSystem : MonoBehaviour
         float vscale = 0.1f*Mathf.SmoothStep(0,20,velocity.magnitude + rotVelocity.magnitude);
 
         //sin wave to send to the compute shader
-        for (int y = 0; y < SPRING_COUNT; y++)
+
+
+
+        if (liquidpulse >= 40 && liquidpulse <180)
         {
-            for (int x = 0; x < SPRING_COUNT; x++)
+            for (int y = 0; y < SPRING_COUNT; y++)
             {
-                extForce[y + x * SPRING_COUNT] = vscale * Mathf.Sin((x + 7.5f) / 4.75f);
+                for (int x = 0; x < SPRING_COUNT - 2; x++)
+                {
+                    extForce[2 + x * SPRING_COUNT] = liquidwave;
+                    extForce[13 + x * SPRING_COUNT] = -liquidwave;
+                }
+            }
+            if (liquidpulse <110)
+                liquidwave += 1;
+            else
+            {
+                liquidwave -= 1;
             }
         }
+        else
+        {
+            for (int y = 0; y < SPRING_COUNT; y++)
+            {
+                for (int x = 0; x < SPRING_COUNT - 2; x++)
+                {
+                    extForce[2 + x * SPRING_COUNT] = 0;
+                    extForce[13 + x * SPRING_COUNT] = 0;
+                }
+            }
+        }
+
+        if (liquidpulse == 200)
+        {
+            liquidpulse = 0;
+        }
+        Debug.Log("liquid "+liquidwave);
+        liquidpulse++;
+
+        //Debug.Log("it is " + liquidpulse);
+
+
 
         //for the veloctites
         lastPos = transform.position;
