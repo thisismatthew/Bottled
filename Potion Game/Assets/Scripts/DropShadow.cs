@@ -8,10 +8,12 @@ public class DropShadow : MonoBehaviour
      * The wanted length for the Raycast.
      */
     public float distance = 100f;
-    public Transform _dropShadow;
+    public MeshRenderer _dropShadow;
+    public bool _climbShadowRemove = false;
 
     void Update()
     {
+        _dropShadow.GetComponent<MeshRenderer>().enabled = !_climbShadowRemove;
         /*
          * Create the hit object.
          */
@@ -21,11 +23,11 @@ public class DropShadow : MonoBehaviour
          */
         Vector3 targetLocation = new Vector3(transform.position.x, FiveRays(), transform.position.z);
 
-        targetLocation += new Vector3(0, _dropShadow.localScale.y / 8, 0);
+        targetLocation += new Vector3(0, _dropShadow.transform.localScale.y / 8, 0);
         /*
          * Move the object to the target location.
          */
-        _dropShadow.position = targetLocation;
+        _dropShadow.transform.position = targetLocation;
         //Debug.Log("target is at " + _dropShadow.position);
     }
 
