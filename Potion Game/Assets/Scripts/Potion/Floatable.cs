@@ -1,41 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController;
 
-public class Floatable : MonoBehaviour
+public class Floatable : MonoBehaviour, IMoverController
 {
-    // User Inputs
-    public float degreesPerSecond = 15.0f;
-    public float amplitude = 0.5f;
-    public float frequency = 1f;
-    public bool Floating = false;
+    public PhysicsMover Mover;
+    
+    public Vector3 TranslationAxis = Vector3.right;
+    public float TranslationPeriod = 10;
+    public float TranslationSpeed = 1;
+    public Vector3 RotationAxis = Vector3.up;
+    public float RotSpeed = 10;
+    public Vector3 OscillationAxis = Vector3.zero;
+    public float OscillationPeriod = 10;
+    public float OscillationSpeed = 10;
+    public bool Floating;
+    public float StartStopLinearInterpolant = 0.2f;
 
-    // Position Storage Variables
-    Vector3 posOffset = new Vector3();
-    Vector3 tempPos = new Vector3();
 
-    // Use this for initialization
-    void Start()
+    private Vector3 _originalPosition;
+    private Quaternion _originalRotation;
+    private float _floatingTime =0;
+
+    private void Start()
     {
-        // Store the starting position & rotation of the object
-        posOffset = transform.position;
-        posOffset.y += amplitude;
+        _originalPosition = Mover.Rigidbody.position;
+        _originalRotation = Mover.Rigidbody.rotation;
+
+        Mover.MoverController = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime)
     {
         if (Floating)
-            {
-            // Spin object around Y-Axis
-            transform.Rotate(new Vector3(0f, Time.deltaTime * degreesPerSecond, 0f), Space.World);
-
-            // Float up/down with a Sin()
-            tempPos = posOffset;
-            tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude;
-
-            transform.position = tempPos;
+        {
+            _floatingTime += Time.deltaTime;
+            goalPosition = Vector3.Lerp(transform.position,(_originalPosition + (TranslationAxis.normalized * Mathf.Sin(_floatingTime * TranslationSpeed) * TranslationPeriod)), StartStopLinearInterpolant);
+            Quaternion targetRotForOscillation = Quaternion.Euler(OscillationAxis.normalized * (Mathf.Sin(_floatingTime * OscillationSpeed) * OscillationPeriod)) * _originalRotation;
+            goalRotation = Quaternion.Euler(RotationAxis * RotSpeed * _floatingTime) * targetRotForOscillation;
+            
         }
+        else
+        {
+            _floatingTime = 0;
+            goalPosition = Vector3.Lerp(transform.position,_originalPosition, StartStopLinearInterpolant);
+            goalRotation = Quaternion.Lerp(transform.rotation, _originalRotation, StartStopLinearInterpolant);
+        }
+        
     }
 
 }
