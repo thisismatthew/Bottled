@@ -161,6 +161,10 @@ namespace KinematicCharacterController.Examples
             _maxJumpVelocity = (TimeToMaxJumpApex * Mathf.Abs(Gravity.y));
             _minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(Gravity.y) * MinJumpHeight);
             CharacterMoving();
+            if (GetComponent<KinematicCharacterMotor>().Velocity.y < 0.1f)
+            {
+                anim.SetTrigger("Grounded");
+            }
             //lol lets not forget to remove this... or at least add it to the player input struct.
             if (Input.GetKeyDown(KeyCode.X))
             {
