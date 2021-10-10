@@ -8,10 +8,14 @@ public class Pickupable : MonoBehaviour
     private bool _moving = false;
     private Vector3 _target;
     private Rigidbody _rb;
+    private Quaternion _normalRotation;
     public float ArcHeight = 5f;
     public float MoveSpeed = 10f;
     public float PickupAccuracy = 0.2f;
     public bool DisablePickup = false;
+    public bool RotateToDefault;
+    private float _rotationAccuracy = 2f;
+
 
 
     public Ingredient IngredientName;
@@ -21,12 +25,21 @@ public class Pickupable : MonoBehaviour
     {
         gameObject.tag = "PickUpable";
         _rb = GetComponent<Rigidbody>();
-
+        _normalRotation = transform.rotation;
     }
 
     private void Update()
     {
         if (_moving) MoveToTarget(_target);
+        if (RotateToDefault)
+        {
+            Debug.Log(Quaternion.Angle(transform.rotation, _normalRotation));
+            transform.rotation = Quaternion.Lerp(transform.rotation, _normalRotation, 0.1f);
+            if (Quaternion.Angle(transform.rotation,_normalRotation)< _rotationAccuracy)
+            {
+                RotateToDefault = false;
+            }
+        }
     }
     private void OnTriggerEnter(Collider player)
     {
@@ -58,6 +71,8 @@ public class Pickupable : MonoBehaviour
             _target = target;
         }
         transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * MoveSpeed);
+        Debug.Log("test");
+        transform.rotation = Quaternion.Lerp(transform.rotation, _normalRotation, 0.1f);
     }
 
     public void ThrowToTarget(Vector3 target)

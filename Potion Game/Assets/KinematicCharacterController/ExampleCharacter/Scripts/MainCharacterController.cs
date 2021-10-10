@@ -328,49 +328,44 @@ namespace KinematicCharacterController.Examples
                             _shouldBeCrouching = false;
                         }
 
-                        //Use input
-                        //this is pretty messy, the rigidbody gets detroyed and remade when an object is picked up/down. 
                         if (inputs.UsePotion)
                         {
-                            if (Interactable == null)
+                            if (Motor.GroundingStatus.IsStableOnGround)
                             {
-                                if (Motor.GroundingStatus.IsStableOnGround)
-                                {
-                                    TransitionToState(CharacterState.Spilling);
-                                }
+                                TransitionToState(CharacterState.Spilling);
+                            }
+                        }
 
+                        //Use input
+                        if (inputs.Interact)
+                        {
+                            if (IsHolding)
+                            {
+                                Interactable.AddComponent<Rigidbody>(); 
+                                Interactable.transform.parent = null;
+                                IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
+                                IsHolding = false;
+                                if(NearCauldron)
+                                {
+                                    anim.SetTrigger("Yeet");
+                                    Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
+                                }
+                                anim.SetBool("Hold", false);
+                                anim.ResetTrigger("Pickup");
+                                GrabAnim.SetBool("Pickup", false);
                             }
                             else
                             {
-                                if (IsHolding)
-                                {
-                                    Interactable.AddComponent<Rigidbody>(); 
-                                    Interactable.transform.parent = null;
-                                    IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
-                                    IsHolding = false;
-                                    if(NearCauldron)
-                                    {
-                                        anim.SetTrigger("Yeet");
-                                        Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
-                                    }
-                                    anim.SetBool("Hold", false);
-                                    anim.ResetTrigger("Pickup");
-                                    GrabAnim.SetBool("Pickup", false);
-                                }
-                                else
-                                {
-
-                                    IsHolding = true;
-                                    //this is parenting to the grab object now
-                                    Interactable.transform.parent = this.transform.GetChild(1).transform;
-                                    Interactable.transform.position = Interactable.transform.parent.position;
-                                    IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
-                                    Destroy(Interactable.GetComponent<Rigidbody>());
-                                    anim.SetBool("Hold", true);
-                                    anim.SetTrigger("Pickup");
-                                    GrabAnim.SetBool("Pickup", true);
-                                }
-
+                                IsHolding = true;
+                                Interactable.GetComponent<Pickupable>().RotateToDefault = true;
+                                //this is parenting to the grab object now
+                                Interactable.transform.parent = this.transform.GetChild(1).transform;
+                                Interactable.transform.position = Interactable.transform.parent.position;
+                                IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
+                                Destroy(Interactable.GetComponent<Rigidbody>());
+                                anim.SetBool("Hold", true);
+                                anim.SetTrigger("Pickup");
+                                GrabAnim.SetBool("Pickup", true);
                             }
 
                         }
