@@ -161,15 +161,7 @@ namespace KinematicCharacterController.Examples
             _maxJumpVelocity = (TimeToMaxJumpApex * Mathf.Abs(Gravity.y));
             _minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(Gravity.y) * MinJumpHeight);
             CharacterMoving();
-            if (Mathf.Abs(GetComponent<KinematicCharacterMotor>().Velocity.y) < 0.05f)
-            {
-                _groundCounter += 1;
-                if (_groundCounter>10)
-                {
-                    anim.SetTrigger("Grounded");
-                    _groundCounter = 0;
-                }
-            }
+
             //lol lets not forget to remove this... or at least add it to the player input struct.
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -293,6 +285,17 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Default:
                     {
                         anim.SetBool("Climbing", false);
+
+                        if (Mathf.Abs(GetComponent<KinematicCharacterMotor>().Velocity.y) < 0.05f)
+                        {
+                            _groundCounter += 1;
+                            if (_groundCounter > 10)
+                            {
+                                anim.SetTrigger("Grounded");
+                                _groundCounter = 0;
+                            }
+                        }
+
                         // Jumping input
                         if (inputs.JumpDown)
                         {
