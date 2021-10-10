@@ -75,7 +75,7 @@ void CSMainVel (uint3 id : SV_DispatchThreadID)
           
            float dampingForce = (nVel - velocity) * damp;
            acceleration += ((nHeight - springHeight) * stiffness)+dampingForce;
-           if ((int)id.y < 2 || (int)id.y>13) {
+           if ((int)id.y < 2 || (int)id.y>14) {
                acceleration = 0;
            }
        }
@@ -96,11 +96,9 @@ void CSMainPos (uint3 id : SV_DispatchThreadID)
     float exadd = findAdd(externalForcesBuffer[id1d]);
     velocity = velocity + exadd;
 
-    float pos = springPositionsArray[id1d] + velocity * timestep;
-    float heightclamp = clamp(pos, -1, 1);
-    float newpos = smoothstep(-4, 4, heightclamp);
+    float pos = saturate(springPositionsArray[id1d] + velocity * timestep);
 
-    springPositionsArray[id1d] = saturate(pos);
+    springPositionsArray[id1d] = pos;
 
     // Pack into texture
     Result[id.xy] = saturate(pos);
