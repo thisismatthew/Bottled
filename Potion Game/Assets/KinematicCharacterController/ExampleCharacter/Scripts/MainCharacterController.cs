@@ -134,7 +134,7 @@ namespace KinematicCharacterController.Examples
         private bool _shouldBeCrouching = false;
         private bool _isCrouching = false;
         private Potion _potion;
-        private bool _isHolding = false;
+        public bool IsHolding = false;
         private float _climbSpeed = 0;
         private float _groundedFrame = 0;
         private float _groundCounter = 0;
@@ -342,12 +342,12 @@ namespace KinematicCharacterController.Examples
                             }
                             else
                             {
-                                if (_isHolding)
+                                if (IsHolding)
                                 {
                                     Interactable.AddComponent<Rigidbody>(); 
                                     Interactable.transform.parent = null;
                                     IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
-                                    _isHolding = false;
+                                    IsHolding = false;
                                     if(NearCauldron)
                                     {
                                         anim.SetTrigger("Yeet");
@@ -360,7 +360,7 @@ namespace KinematicCharacterController.Examples
                                 else
                                 {
 
-                                    _isHolding = true;
+                                    IsHolding = true;
                                     //this is parenting to the grab object now
                                     Interactable.transform.parent = this.transform.GetChild(1).transform;
                                     Interactable.transform.position = Interactable.transform.parent.position;
