@@ -111,13 +111,13 @@ public class SpringSystem : MonoBehaviour
         if (dancin)
         {
             dancemulti = 2;          
-            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti,0.4f,0.05f));
+            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti,0.45f,0.05f));
         }
         else
         {
             m_renderer.sharedMaterial.SetFloat("_RunMultiplier", velo.magnitude / 5);
             m_renderer.sharedMaterial.SetFloat("_Height", Mathf.Clamp(-0.5f - velo.magnitude / 15, -0.85f, -0.5f));
-            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti, 0.25f, 0.05f));
+            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti, 0.35f, 0.05f));
         }
         lastVelo.Enqueue(velo);
 

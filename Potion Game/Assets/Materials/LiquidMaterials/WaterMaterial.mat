@@ -72,6 +72,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_2225137e7ef849c08d383620ebe24093_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 37e6f91f3efb0954cbdce254638862ea, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2DLOD_2f7dbfc8d6d1442da73ccfd8beca598b_Texture_1:
         m_Texture: {fileID: 2800000, guid: bb4b08b8b2c37084db91499ce178fee2, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -126,9 +130,11 @@ Material:
     - Vector1_1bff0a1b0ed5412dbe0465c7727ea045: 9.5
     - Vector1_2049fa9e73f14cd7b279653ab93937bc: 0.39
     - Vector1_3255b2fc1fe54c46b391c5e07d262078: 0.16
+    - Vector1_52786f068e4541009882c49a41d8cf4d: -0.09
     - Vector1_6c6f379ba7c54d80852ae4653c6e2c65: 0
     - Vector1_6c9b088a5e58457c817b069661455fa4: 1.2
     - Vector1_6e919d24ee6d49f59fcc6c603d635f8b: 3
+    - Vector1_9014969bffec4673aca668827caf2cb0: 0.76
     - Vector1_9f1bdb61e28a4ab1b94a4de35663f222: -0.3
     - Vector1_cf32503b7356413c89be3bde22286c48: 1
     - Vector1_da1171ec41be4559aa2d33b0ca8a33ae: 0.7
@@ -173,7 +179,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SphereRadius: 0.95
-    - _SpringMultiplier: 0.25
+    - _SpringMultiplier: 0.26618597
     - _SrcBlend: 1
     - _Surface: 0
     - _TextureSpeed: 0.09
