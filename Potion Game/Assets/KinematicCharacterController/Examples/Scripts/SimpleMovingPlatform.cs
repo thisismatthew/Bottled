@@ -22,10 +22,9 @@ namespace KinematicCharacterController.Examples
         
         private void Start()
         {
+            Mover.MoverController = this;
             _originalPosition = Mover.Rigidbody.position;
             _originalRotation = Mover.Rigidbody.rotation;
-
-            Mover.MoverController = this;
         }
 
         public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime)
