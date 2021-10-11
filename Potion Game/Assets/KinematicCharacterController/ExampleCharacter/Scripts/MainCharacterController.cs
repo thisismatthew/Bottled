@@ -341,9 +341,11 @@ namespace KinematicCharacterController.Examples
                         {
                             if (IsHolding)
                             {
+                               
                                 Interactable.AddComponent<Rigidbody>(); 
                                 Interactable.transform.parent = null;
                                 IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
+                                Interactable.tag = "PickUpable";
                                 IsHolding = false;
                                 if(NearCauldron)
                                 {
@@ -356,6 +358,7 @@ namespace KinematicCharacterController.Examples
                             }
                             else
                             {
+                                Interactable.tag = "HeldObject";
                                 IsHolding = true;
                                 Interactable.GetComponent<Pickupable>().RotateToDefault = true;
                                 //this is parenting to the grab object now

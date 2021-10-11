@@ -11,9 +11,11 @@ public class MainMenu : MonoBehaviour
     public bool ControllerActive, FullscreenActive = false;
     private OptionsHelper options;
     public Slider volumeSlider;
+    private AudioManager audio;
 
     private void Start()
     {
+        audio = FindObjectOfType<AudioManager>();
         options = FindObjectOfType<OptionsHelper>();
         options.Fullscreen = FullscreenActive;
         options.GamepadController = ControllerActive;
@@ -26,11 +28,13 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
+        audio.Play("PageTurn");
         SceneManager.LoadScene("Latest_Build_V4");
     }
 
     public void QuitGame()
     {
+        audio.Play("PageTurn");
         Application.Quit();
     }
 
@@ -65,5 +69,10 @@ public class MainMenu : MonoBehaviour
             FullscreenActive = true;
             FullscreenUISprite.sprite = Tick;
         }
+    }
+    public void PlayPageSound()
+    {
+        audio.SetPitch("PageTurn", Random.Range(0.8f, 1.2f));
+        audio.Play("PageTurn");
     }
 }
