@@ -15,6 +15,7 @@ public class Floatable : MonoBehaviour, IMoverController
     public Vector3 OscillationAxis = Vector3.zero;
     public float OscillationPeriod = 10;
     public float OscillationSpeed = 10;
+    public GameObject FloatParticles;
 
     private bool _descending = false;
     private float _floatTimeMax;
@@ -22,18 +23,38 @@ public class Floatable : MonoBehaviour, IMoverController
     private float StartStopLinearInterpolant = 0.2f;
     private float RotationResetThreshold = 2f;
     private Vector3 _originalPosition;
+    private Vector3 _originalParticleScale;
     private Quaternion _originalRotation;
 
     private void Start()
     {
         _originalPosition = Mover.Rigidbody.position;
         _originalRotation = Mover.Rigidbody.rotation;
+        _originalParticleScale = FloatParticles.transform.localScale;
         FloatTarget = FloatTarget + _originalPosition;
         _floatTimeMax = FloatTime;
         Mover.MoverController = this;
+
     }
 
-   
+    private void Update()
+    {
+        if (Floating)
+        {
+            FloatParticles.SetActive(true);
+            Vector3.Lerp(FloatParticles.transform.localScale, _originalParticleScale, StartStopLinearInterpolant);
+        }
+        else if (_descending)
+        {
+            FloatParticles.SetActive(true);
+            Vector3.Lerp(FloatParticles.transform.localScale,Vector3.zero, StartStopLinearInterpolant);
+        }
+        else 
+        {
+            FloatParticles.SetActive(false);
+        }
+    }
+
 
     public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime)
     {
