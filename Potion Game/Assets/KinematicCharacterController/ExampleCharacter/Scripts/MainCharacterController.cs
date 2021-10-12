@@ -821,7 +821,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Dead:
                     {
-                        Debug.Log("Velocity Stopped ");
+                        //Debug.Log("Velocity Stopped ");
                         currentVelocity = Vector3.zero;
                         break;
                     }
