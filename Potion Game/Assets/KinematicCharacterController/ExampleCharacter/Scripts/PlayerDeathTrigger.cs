@@ -13,7 +13,9 @@ namespace KinematicCharacterController.Examples
         public Animator RespawnAnimator;
         public Transform RespawnPoint;
         public Transform SpringWeight;
+        public Transform DeathBlobSpawn;
         public float CheckpointResetFrequency = 1;
+        public ParticleSystem DeathBlobs;
 
         public Animator anim;
 
@@ -99,11 +101,18 @@ namespace KinematicCharacterController.Examples
 
         public void SmashCharacter()
         {
+            Blob();
             FindObjectOfType<AudioManager>().Play("Glass_Smash");
             SpringWeight.parent = this.transform;
             Controller.TransitionToState(CharacterState.Dead);
             RespawnAnimator.Play("crossfade_start");
             _heightFallen = 0;
+        }
+
+        public void Blob()
+        {
+            DeathBlobs.transform.position = DeathBlobSpawn.position;
+            DeathBlobs.Play();
         }
     }
 }

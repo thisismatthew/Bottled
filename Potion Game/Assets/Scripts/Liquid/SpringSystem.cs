@@ -92,6 +92,7 @@ public class SpringSystem : MonoBehaviour
         //combines the velocities into a value for scaling
         Vector3 velo = MainCharacterParent.GetComponent<KinematicCharacterController.KinematicCharacterMotor>().Velocity;
         bool dancin = anim.GetCurrentAnimatorStateInfo(0).IsName("Dance");
+        bool spillin = anim.GetCurrentAnimatorStateInfo(0).IsName("Spill");
         float dancemulti = 1;
         if (velo.magnitude < lastVelo.Dequeue().magnitude * 0.8f && velo.magnitude > 1f && swishing == false)
         {
@@ -107,8 +108,15 @@ public class SpringSystem : MonoBehaviour
             liquidpulse = 0;
         }
 
+        if (spillin == true && swishing == false)
+        {
+            swishing = true;
+            liquidwave = 0;
+            liquidpulse = 0;
+        }
+
         float oldmulti = m_renderer.sharedMaterial.GetFloat("_SpringMultiplier");
-        if (dancin)
+        if (dancin || spillin)
         {
             dancemulti = 2;          
             m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti,0.45f,0.05f));
