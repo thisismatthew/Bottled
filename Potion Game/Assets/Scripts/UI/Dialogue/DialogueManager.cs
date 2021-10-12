@@ -42,23 +42,31 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space) && inDialogue)
+        if (Input.GetKeyDown(KeyCode.Space)|| Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
-
-            if (canExit)
+            if (inDialogue)
             {
-                CameraChange(false);
-                FadeUI(false, .2f, 0);
-                Sequence s = DOTween.Sequence();
-                s.AppendInterval(.8f);
-                s.AppendCallback(() => ResetState());
-            }
+                if (canExit)
+                {
+                    CameraChange(false);
+                    FadeUI(false, .2f, 0);
+                    Sequence s = DOTween.Sequence();
+                    s.AppendInterval(.8f);
+                    s.AppendCallback(() => ResetState());
+                }
 
-            if (nextDialogue)
-            {
-                Debug.Log("next Input Requested");
-                animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
-                nextDialogue = false;
+                if (nextDialogue)
+                {
+                    Debug.Log("next Input Requested");
+                    animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
+                    nextDialogue = false;
+                }
+                else
+                {
+                    StopCoroutine(animatedText.readCoroutine);
+                    animatedText.SkipText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
+                    //nextDialogue = true;
+                }
             }
         }
     }

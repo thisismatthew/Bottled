@@ -25,31 +25,10 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (currentDialogue != null)
         {
-            if (!currentDialogue.triggered)
-            {
-                if (Input.anyKey && !ui.inDialogue && currentDialogue != null)
-                {
-                    Debug.Log("Initiated Dialogue");
-                    
-                    for(int i = 0; i<currentDialogue.LookTargets.Count; i++)
-                    {
-                        targetGroup.m_Targets[i+1].target = currentDialogue.LookTargets[i];
-                    }
-                    
-                    controller.LookTargetOveride = currentDialogue.transform;
-                    input.Locked = true;
-                    Debug.Log("Dialogue Locked");
-                    currentDialogue.active = false;
-                    ui.inDialogue = true;
-                    ui.CameraChange(true);
-                    ui.ClearText();
-                    ui.FadeUI(true, .2f, .65f);
-                }
-            }
-
             if (currentDialogue.triggered)
             {
-                controller.LookTargetOveride = null;
+                if (controller.LookTargetOveride == currentDialogue.transform)
+                    controller.LookTargetOveride = null;
                 input.Locked = false;
             }
         }
@@ -62,8 +41,26 @@ public class DialogueTrigger : MonoBehaviour
         {
             Debug.Log("Dialogue Triggered");
             currentDialogue = other.GetComponent<DialogueEvent>();
+            
             if (!currentDialogue.triggered)
+            {
                 ui.currentDialogue = currentDialogue;
+                Debug.Log("Initiated Dialogue");
+
+                for (int i = 0; i < currentDialogue.LookTargets.Count; i++)
+                {
+                    targetGroup.m_Targets[i + 1].target = currentDialogue.LookTargets[i];
+                }
+
+                controller.LookTargetOveride = currentDialogue.transform;
+                input.Locked = true;
+                Debug.Log("Dialogue Locked");
+                currentDialogue.active = false;
+                ui.inDialogue = true;
+                ui.CameraChange(true);
+                ui.ClearText();
+                ui.FadeUI(true, .2f, .65f);
+            }
         }
     }
 

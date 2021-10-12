@@ -5,6 +5,7 @@ using UnityEngine;
 public class LockRotation : MonoBehaviour
 {
     private Rigidbody rb;
+    public bool LockMovement = false;
     // Update is called once per frame
     void Update()
     {
@@ -12,9 +13,16 @@ public class LockRotation : MonoBehaviour
         if (rb != null)
         {
             rb = this.GetComponent<Rigidbody>();
-            rb.constraints = RigidbodyConstraints.FreezeRotationX;
-            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
-            rb.rotation.Set(0,0,0,0);
+            rb.constraints = 0;
+            float y = transform.rotation.y;
+            float w = transform.rotation.w;
+            transform.rotation = new Quaternion(0f, y, 0f, w);
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            if (LockMovement)
+            {
+                rb.constraints = RigidbodyConstraints.FreezeAll;
+                rb.useGravity = false;
+            }
         }
         else
         {

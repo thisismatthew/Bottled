@@ -11,7 +11,7 @@ public class SpringSystem : MonoBehaviour
 
     const int SPRING_COUNT = 16;
     [Header("Waves")]
-    [Range(0.1f, 0.999f)] public float Damping = 0.1f;
+    [Range(0.1f, 5f)] public float Damping = 0.1f;
     [Range(0.1f, 300.0f)] public float SpringStiffness = 5.0f;
 
     [Range(0.001f, 0.1f)] public float perpMotionMagnitude = 0.015f;
@@ -19,6 +19,7 @@ public class SpringSystem : MonoBehaviour
 
     public Transform target;
     public Transform targetRoot;
+    public Transform MainCharacterParent;
 
     public ComputeShader calculationEngine;
     public ParticleSystem bubbles;
@@ -32,11 +33,13 @@ public class SpringSystem : MonoBehaviour
     private ComputeBuffer externalForcesBuffer;
 
     private float perpetualMotionCount;
-    private Vector3 lastPos;
-    private Vector3 lastUp;
     private float[] extForce = new float[SPRING_COUNT * SPRING_COUNT];
     private float[] delta = new float[1];
-
+    private int liquidpulse = 0;
+    private float liquidwave = 0;
+    private bool swishing = false;
+    private Queue<Vector3> lastVelo = new Queue<Vector3>();
+    private Animator anim;
     public RenderTexture getSimulatedTexture
     {
         get { return texture; }
@@ -72,10 +75,13 @@ public class SpringSystem : MonoBehaviour
         _springHeightBuffer.SetData(posArray);
         _spring1DVelocityBuffer.SetData(velArray);
         SetGridProperties();
-
-        lastPos = transform.position;
   
+        for (int i=0;i<3;i++)
+        {
+            lastVelo.Enqueue(Vector3.zero);
+        }
 
+        anim = MainCharacterParent.GetChild(0).GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -83,26 +89,93 @@ public class SpringSystem : MonoBehaviour
 
         delta[0] = Time.fixedDeltaTime;
 
-        //velocity to scale the waves
-        Vector3 velocity = (transform.position - lastPos) / Time.fixedDeltaTime;
-        Vector3 rotVelocity = (transform.up - lastUp) / Time.fixedDeltaTime;
-
         //combines the velocities into a value for scaling
-        float vscale = 0.1f*Mathf.SmoothStep(0,20,velocity.magnitude + rotVelocity.magnitude);
-
-        //sin wave to send to the compute shader
-        for (int y = 0; y < SPRING_COUNT; y++)
+        Vector3 velo = MainCharacterParent.GetComponent<KinematicCharacterController.KinematicCharacterMotor>().Velocity;
+        bool dancin = anim.GetCurrentAnimatorStateInfo(0).IsName("Dance");
+        float dancemulti = 1;
+        if (velo.magnitude < lastVelo.Dequeue().magnitude * 0.8f && velo.magnitude > 1f && swishing == false)
         {
-            for (int x = 0; x < SPRING_COUNT; x++)
+            swishing = true;
+            liquidwave = 0;
+            liquidpulse = 0;
+        }
+
+        if ( dancin== true && swishing == false)
+        {
+            swishing = true;
+            liquidwave = 0;
+            liquidpulse = 0;
+        }
+
+        float oldmulti = m_renderer.sharedMaterial.GetFloat("_SpringMultiplier");
+        if (dancin)
+        {
+            dancemulti = 2;          
+            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti,0.45f,0.05f));
+        }
+        else
+        {
+            m_renderer.sharedMaterial.SetFloat("_RunMultiplier", velo.magnitude / 5);
+            m_renderer.sharedMaterial.SetFloat("_Height", Mathf.Clamp(-0.5f - velo.magnitude / 15, -0.85f, -0.5f));
+            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti, 0.35f, 0.05f));
+        }
+        lastVelo.Enqueue(velo);
+
+        //Debug.Log(velo.magnitude);
+        //sin wave to send to the compute shader
+        //Debug.Log("The velo" + velo);
+
+        if (swishing == true)
+        {
+            if (liquidpulse < 40)
             {
-                extForce[y + x * SPRING_COUNT] = vscale * Mathf.Sin((x + 7.5f) / 4.75f);
+                /*for (int y = 0; y < SPRING_COUNT; y++)
+                {
+                    for (int x = 0; x < SPRING_COUNT - 2; x++)
+                    {
+                        extForce[2 + x * SPRING_COUNT] = liquidwave;
+                        extForce[13 + x * SPRING_COUNT] = -liquidwave;
+                    }
+                }*/
+
+                for (int y = 2; y < SPRING_COUNT-2; y++)
+                {
+                    for (int x = 2; x < SPRING_COUNT - 2; x++)
+                    {
+                        extForce[2 + x * SPRING_COUNT] = -liquidwave* dancemulti;
+                        extForce[14 + x * SPRING_COUNT] = liquidwave* dancemulti;
+                    }
+                }
+
+                if (liquidpulse <20)
+                    liquidwave += 1;
+                else
+                    liquidwave -= 1f;
+            }
+            else
+            {
+                swishing = false;
+            }
+
+            //Debug.Log("liquid " + liquidwave);
+            //Debug.Log("timer " + liquidpulse);
+            liquidpulse++;
+        }
+        else
+        {
+            for (int y = 0; y < SPRING_COUNT; y++)
+            {
+                for (int x = 0; x < SPRING_COUNT - 2; x++)
+                {
+                    extForce[2 + x * SPRING_COUNT] = 0;
+                    extForce[13 + x * SPRING_COUNT] = 0;
+                }
             }
         }
 
-        //for the veloctites
-        lastPos = transform.position;
-        lastUp = transform.up;
 
+
+        //Debug.Log("it is " + liquidpulse);
 
         // Spring Velocity Kernel
         //values to be sent to the compute shader
@@ -151,13 +224,13 @@ public class SpringSystem : MonoBehaviour
         //finding the liquid mesh parameters and liquid levels
         Vector3 pointAtVec = bottleCenter - target.position;
         //Debug.Log(pointAtVec);
-        pointAtVec = new Vector3(0.6f*pointAtVec.x, pointAtVec.y, 0.1f * pointAtVec.z);
+        //pointAtVec = new Vector3(0.6f*pointAtVec.x, pointAtVec.y, 0.1f * pointAtVec.z);
         Vector3 pointNormal = NormalizePrecise(pointAtVec);
 
         //Getting angles to reorientate the liquid
         Ray ray = new Ray(bottleCenter, pointNormal);
-        float waveangle = Vector3.Angle(ray.direction.normalized, transform.parent.forward);
-        float sphereangle = 180 - transform.parent.rotation.eulerAngles.y;
+        float waveangle = Vector3.Angle(ray.direction.normalized, MainCharacterParent.forward);
+        float sphereangle = 180 - MainCharacterParent.rotation.eulerAngles.y;
 
         //sending data to shader
         m_renderer.material.SetVector("_planeNormal", pointNormal);

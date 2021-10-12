@@ -10,6 +10,7 @@ public class IngredientRitual : MonoBehaviour
     public int _ritualSpotsNeeded;
     public GameObject IngredientPrefab;
     public Animator RitualCircleAnimator;
+    public bool SummonIngredient = false;
 
 
     private void Start()
@@ -37,10 +38,14 @@ public class IngredientRitual : MonoBehaviour
 
         if (RitualSpotsCompleted == _ritualSpotsNeeded)
         {
-            RitualCircleAnimator.Play("SummoningCircleAnim");
-            IngredientPrefab.active = true;
-
+            RitualCircleAnimator.SetBool("All Candle", true);
             RitualSpotsCompleted = 0;
+        }
+
+        if (SummonIngredient)
+        {
+            RitualCircleAnimator.SetBool("All Candle", false);
+            IngredientPrefab.SetActive(true);
         }
     }
 }
