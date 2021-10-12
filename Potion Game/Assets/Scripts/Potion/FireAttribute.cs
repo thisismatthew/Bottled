@@ -24,6 +24,7 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
         Debug.Log("UnEquiped fire ");
         FireLit = false;
         FireLight.enabled = false;
+        FirePrefab.SetActive(false);
     }
 
     public bool Use()
