@@ -1,0 +1,1 @@
+These nodes are already ready for use. if they don't work on HDRP or URP, you need to update them. to do this, open the Shader using Shader Graph and click Save
