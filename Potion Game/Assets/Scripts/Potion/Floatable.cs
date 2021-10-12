@@ -6,48 +6,70 @@ using KinematicCharacterController;
 public class Floatable : MonoBehaviour, IMoverController
 {
     public PhysicsMover Mover;
-    
-    public Vector3 TranslationAxis = Vector3.right;
-    public float TranslationPeriod = 10;
-    public float TranslationSpeed = 1;
+    public bool Floating = false;
+    public float FloatTime = 15f;
+    public Vector3 FloatTarget;
+    public float FloatSpeed = 0.02f;
     public Vector3 RotationAxis = Vector3.up;
     public float RotSpeed = 10;
     public Vector3 OscillationAxis = Vector3.zero;
     public float OscillationPeriod = 10;
     public float OscillationSpeed = 10;
-    public bool Floating;
-    public float StartStopLinearInterpolant = 0.2f;
 
-
+    private bool _descending = false;
+    private float _floatTimeMax;
+    private float _sinWaveTimer = 0;
+    private float StartStopLinearInterpolant = 0.2f;
+    private float RotationResetThreshold = 2f;
     private Vector3 _originalPosition;
     private Quaternion _originalRotation;
-    private float _floatingTime =0;
 
     private void Start()
     {
         _originalPosition = Mover.Rigidbody.position;
         _originalRotation = Mover.Rigidbody.rotation;
-
+        FloatTarget = FloatTarget + _originalPosition;
+        _floatTimeMax = FloatTime;
         Mover.MoverController = this;
     }
+
+   
 
     public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime)
     {
         if (Floating)
         {
-            _floatingTime += Time.deltaTime;
-            goalPosition = Vector3.Lerp(transform.position,(_originalPosition + (TranslationAxis.normalized * Mathf.Sin(_floatingTime * TranslationSpeed) * TranslationPeriod)), StartStopLinearInterpolant);
-            Quaternion targetRotForOscillation = Quaternion.Euler(OscillationAxis.normalized * (Mathf.Sin(_floatingTime * OscillationSpeed) * OscillationPeriod)) * _originalRotation;
-            goalRotation = Quaternion.Euler(RotationAxis * RotSpeed * _floatingTime) * targetRotForOscillation;
-            
+            _descending = false;
+            _sinWaveTimer += Time.deltaTime;
+            FloatTime -= Time.deltaTime;
+            goalPosition = Vector3.MoveTowards(transform.position,FloatTarget, FloatSpeed);
+            Quaternion targetRotForOscillation = Quaternion.Euler(OscillationAxis.normalized * (Mathf.Sin(_sinWaveTimer * OscillationSpeed) * OscillationPeriod)) * _originalRotation;
+            goalRotation = Quaternion.Euler(RotationAxis * RotSpeed * _sinWaveTimer) * targetRotForOscillation;
+            if(FloatTime <= 0)
+            {
+                _descending = true;
+                Floating = false;
+                _sinWaveTimer = 0;
+                FloatTime = _floatTimeMax;
+            }
+        }
+        else if (_descending)
+        {
+            _sinWaveTimer += Time.deltaTime;
+            goalPosition = Vector3.MoveTowards(transform.position, _originalPosition, FloatSpeed);
+            Quaternion targetRotForOscillation = Quaternion.Euler(OscillationAxis.normalized * (Mathf.Sin(_sinWaveTimer * OscillationSpeed) * OscillationPeriod)) * _originalRotation;
+            goalRotation = Quaternion.Euler(RotationAxis * RotSpeed * _sinWaveTimer) * targetRotForOscillation;
+            if (Vector3.Distance(transform.position, _originalPosition) < 0.1f)
+            {
+                _sinWaveTimer = 0;
+                _descending = false;
+            }
         }
         else
         {
-            _floatingTime = 0;
-            goalPosition = Vector3.Lerp(transform.position,_originalPosition, StartStopLinearInterpolant);
+            goalPosition = Vector3.MoveTowards(transform.position, _originalPosition, FloatSpeed);
             goalRotation = Quaternion.Lerp(transform.rotation, _originalRotation, StartStopLinearInterpolant);
         }
-        
     }
 
 }
