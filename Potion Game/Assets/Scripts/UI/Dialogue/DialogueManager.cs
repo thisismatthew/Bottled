@@ -22,11 +22,11 @@ public class DialogueManager : MonoBehaviour
     public bool nextDialogue;
     [HideInInspector]
     public DialogueEvent currentDialogue;
+    private int camIndex = 0;
     [Space]
 
     [Header("Cameras")]
     public CinemachineVirtualCamera dialogueCam;
-    public CinemachineTargetGroup camTargetGroup;
 
     private void Awake()
     {
@@ -57,6 +57,11 @@ public class DialogueManager : MonoBehaviour
 
                 if (nextDialogue)
                 {
+                    if(currentDialogue.CameraShots[camIndex]!= null)
+                    {
+                        camIndex++;
+                        CameraChange(true);
+                    }
                     Debug.Log("next Input Requested");
                     animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
                     nextDialogue = false;
@@ -87,7 +92,12 @@ public class DialogueManager : MonoBehaviour
     public void CameraChange(bool dialogue)
     {
         if (dialogue)
+        {
+            dialogueCam.m_Priority = 0;
+            dialogueCam = currentDialogue.CameraShots[camIndex];
             dialogueCam.m_Priority = 20;
+            
+        }
         else
             dialogueCam.m_Priority = 0;
     }
@@ -117,6 +127,7 @@ public class DialogueManager : MonoBehaviour
             nextDialogue = false;
             canExit = true;
             Debug.Log("Dialogue Done");
+            camIndex = 0;
         }
     }
 }

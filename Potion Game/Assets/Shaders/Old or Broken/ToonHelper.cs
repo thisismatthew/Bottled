@@ -191,7 +191,7 @@ namespace Toon {
                     break;
 
                 default:
-                    Debug.Log("Lighting type '" + light.type + "' not supported by Toon Helper (" + light.name + ").");
+                    //Debug.Log("Lighting type '" + light.type + "' not supported by Toon Helper (" + light.name + ").");
                     lightSet.atten = 0f;
                     break;
             }

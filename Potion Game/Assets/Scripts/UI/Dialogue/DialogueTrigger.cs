@@ -46,17 +46,13 @@ public class DialogueTrigger : MonoBehaviour
             {
                 ui.currentDialogue = currentDialogue;
                 Debug.Log("Initiated Dialogue");
-
-                for (int i = 0; i < currentDialogue.LookTargets.Count; i++)
-                {
-                    targetGroup.m_Targets[i + 1].target = currentDialogue.LookTargets[i];
-                }
-
+                   
                 controller.LookTargetOveride = currentDialogue.transform;
                 input.Locked = true;
                 Debug.Log("Dialogue Locked");
                 currentDialogue.active = false;
                 ui.inDialogue = true;
+                ui.dialogueCam = currentDialogue.CameraShots[0];
                 ui.CameraChange(true);
                 ui.ClearText();
                 ui.FadeUI(true, .2f, .65f);
