@@ -57,7 +57,7 @@ public class DialogueManager : MonoBehaviour
 
                 if (nextDialogue)
                 {
-                    if(currentDialogue.CameraShots[camIndex]!= null)
+                    if(camIndex < currentDialogue.CameraShots.Count)
                     {
                         camIndex++;
                         CameraChange(true);

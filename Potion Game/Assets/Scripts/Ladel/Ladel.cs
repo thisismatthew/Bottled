@@ -19,8 +19,13 @@ public class Ladel : MonoBehaviour
     public VisualEffect _sparkle;
     public VisualEffect _dip;
     public VisualEffect _handle;
+    public List<GameObject> DialogueEvents;
+    private GameObject ActiveDialogueEvent;
+    private int dialogueEventIndex = 0;
+    
     private void Start()
     {
+        ActiveDialogueEvent = DialogueEvents[dialogueEventIndex];
         _startPosition = transform.position;
         _player = GameObject.FindGameObjectWithTag("Player").transform;
         EffectsOff();
@@ -28,6 +33,7 @@ public class Ladel : MonoBehaviour
 
     public void StartChase()
     {
+
         _chaseStart = true;
         _target = _startPosition;
         _target.y += LiftHeight;
@@ -95,6 +101,13 @@ public class Ladel : MonoBehaviour
             _target = _startPosition;
             if (Vector3.Distance(transform.position, _target) < 0.5)
             {
+                if (dialogueEventIndex < DialogueEvents.Count)
+                {
+                    ActiveDialogueEvent.SetActive(false);
+                    dialogueEventIndex++;
+                    ActiveDialogueEvent = DialogueEvents[dialogueEventIndex];
+                    ActiveDialogueEvent.SetActive(true);
+                }
                 EffectsOff();
                 _returnToStart = false;
             }
