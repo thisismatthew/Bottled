@@ -7,6 +7,7 @@ Bottled! Is a 3D puzzle platformer full of mischief and magic. Explore the home 
 In February 2021 a team of 7 students came together with the goal of creating a lighthearted, accessible platforming game. The idea for the game came from a character concept- a potion bottle who gained powers based on the potion it held inside. Melbourne’s second wave of lockdowns hit shortly after production began and development of Bottled! has continued remotely. The team gained its 8th member in August, and the game is set for release in November. 
 
 ## Features
+
 - Undertake challenging platforming puzzles that test your skills
 - Hunt for secret ingredients which create magical potions
 - Fill Noodles up with the brews to gain fantastical abilities
