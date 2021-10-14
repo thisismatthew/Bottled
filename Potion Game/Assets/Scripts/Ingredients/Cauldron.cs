@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using KinematicCharacterController.Examples;
 
 public class Cauldron : MonoBehaviour
 {
@@ -15,10 +16,12 @@ public class Cauldron : MonoBehaviour
     public GameObject CauldfronFloatFX, CauldronFireFX, CauldronNuetralFX;
     public List<IPotionAttribute> ListOfAttributes = new List<IPotionAttribute>();
     private int count = 0;
+    private MainCharacterController player;
 
     // Start is called before the first frame update
     void Start()
     {
+        player = FindObjectOfType<MainCharacterController>();
         //linking script with enum PotionAttributeName value
         PotionAttributeDict.Add(PotionAttributeName.Fire, GetComponent<FireAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.HerbalTea, GetComponent<HerbalTeaAttribute>());

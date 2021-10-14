@@ -5,6 +5,7 @@ using KinematicCharacterController.Examples;
 
 public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
 {
+    public SpillCollider SpillCollider;
     public Renderer Potion;
     public Material NewPotionMaterial;
     private string _name = "antiGravityAttribute";
@@ -88,8 +89,15 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
     }
     public bool Use()
     {
-        Debug.Log("Used A anti gravity");
+        foreach(GameObject g in SpillCollider.ObjectsInSplashZone)
+        {
+            if (g.GetComponent<Floatable>() != null)
+            {
+                g.GetComponent<Floatable>().Floating = true;
+            }
+        }
         return true;
     }
+
     public string Name { get => _name; }
 }

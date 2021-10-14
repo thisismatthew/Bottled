@@ -63,4 +63,10 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+
+    public void SetPitch(string name, float value)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        s.source.pitch = value;
+    }
 }

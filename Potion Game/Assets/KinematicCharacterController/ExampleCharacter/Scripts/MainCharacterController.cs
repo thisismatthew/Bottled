@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Obi;
+using UnityEngine.VFX;
 
 
 namespace KinematicCharacterController.Examples
@@ -98,12 +99,14 @@ namespace KinematicCharacterController.Examples
         public float CrouchedCapsuleHeight = 0.5f;
         public GameObject SmashedCharacterPrefab;
         public GameObject Body;
-        public GameObject RightArm;
-        public GameObject LeftArm;
         public SpringJoint SpringWeightObject;
         public Rigidbody SpringRoot;
         public ParticleSystem JumpClouds;
         public ParticleSystem RunClouds;
+        public VisualEffect JumpSpike;
+        public GameObject LiquidSphere;
+        public GameObject FaceRoot;
+        public float tiltmod = 1;
 
         [Header("Interaction")]
         public GameObject Interactable;
@@ -141,7 +144,7 @@ namespace KinematicCharacterController.Examples
         private Vector3 lastInnerNormal = Vector3.zero;
         private Vector3 lastOuterNormal = Vector3.zero;
 
-        //Arm wiggle
+
 
         private void Awake()
         {
@@ -153,6 +156,8 @@ namespace KinematicCharacterController.Examples
             Motor.CharacterController = this;
             
             _hangtimeInitial = HangTime;
+            JumpSpike.resetSeedOnPlay = false;
+            JumpSpike.startSeed = 1610499565;
         }
 
         private void Update()
@@ -161,6 +166,8 @@ namespace KinematicCharacterController.Examples
             _maxJumpVelocity = (TimeToMaxJumpApex * Mathf.Abs(Gravity.y));
             _minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(Gravity.y) * MinJumpHeight);
             CharacterMoving();
+            LiquidSphere.transform.LookAt(FaceRoot.transform);
+            //LiquidSphere.transform.eulerAngles = new Vector3(60, 0, 0);
 
             //lol lets not forget to remove this... or at least add it to the player input struct.
             if (Input.GetKeyDown(KeyCode.X))
@@ -341,9 +348,11 @@ namespace KinematicCharacterController.Examples
                         {
                             if (IsHolding)
                             {
+                               
                                 Interactable.AddComponent<Rigidbody>(); 
                                 Interactable.transform.parent = null;
                                 IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
+                                Interactable.tag = "PickUpable";
                                 IsHolding = false;
                                 if(NearCauldron)
                                 {
@@ -356,6 +365,7 @@ namespace KinematicCharacterController.Examples
                             }
                             else
                             {
+                                Interactable.tag = "HeldObject";
                                 IsHolding = true;
                                 Interactable.GetComponent<Pickupable>().RotateToDefault = true;
                                 //this is parenting to the grab object now
@@ -622,16 +632,8 @@ namespace KinematicCharacterController.Examples
                                 _jumpRequested = false;
                                 _jumpConsumed = true;
                                 _jumpedThisFrame = true;
-
-                                var jumpSize = JumpClouds.sizeOverLifetime;
-                                var jumpShape = JumpClouds.shape;
-                                var jumpSpeed = JumpClouds.velocityOverLifetime;
-                                var jumpEmit = JumpClouds.emission;
-                                jumpSize.sizeMultiplier = 0.8f;
-                                jumpShape.scale = new Vector3(0.8f, 0.8f, 0.8f);
-                                jumpSpeed.speedModifierMultiplier = 3;
-                                jumpEmit.burstCount = 4;
-                                JumpClouds.Play();
+                                JumpSpike.Reinit();
+                                JumpSpike.Play();
                                 anim.SetTrigger("Jump");         
                             }
                         }
@@ -817,7 +819,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Dead:
                     {
-                        Debug.Log("Velocity Stopped ");
+                        //Debug.Log("Velocity Stopped ");
                         currentVelocity = Vector3.zero;
                         break;
                     }
@@ -916,6 +918,15 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
+
+                case CharacterState.Spilling:
+                {
+                        if (tiltmod == 1)
+                        {
+                            SpringWeightObject.transform.localPosition = new Vector3(SpringWeightObject.transform.localPosition.x, SpringWeightObject.transform.localPosition.y, SpringWeightObject.transform.localPosition.z - 0.02f);
+                        }
+                        break;
+                }
             }
         }
 

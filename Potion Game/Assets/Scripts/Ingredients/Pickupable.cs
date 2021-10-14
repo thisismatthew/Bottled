@@ -33,7 +33,6 @@ public class Pickupable : MonoBehaviour
         if (_moving) MoveToTarget(_target);
         if (RotateToDefault)
         {
-            Debug.Log(Quaternion.Angle(transform.rotation, _normalRotation));
             transform.rotation = Quaternion.Lerp(transform.rotation, _normalRotation, 0.1f);
             if (Quaternion.Angle(transform.rotation,_normalRotation)< _rotationAccuracy)
             {
