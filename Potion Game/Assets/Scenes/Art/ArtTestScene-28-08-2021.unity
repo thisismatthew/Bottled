@@ -693,7 +693,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149035898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.444, y: 4.084, z: -19.388}
+  m_LocalPosition: {x: -23.458, y: 4.405, z: -20.255}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -7199,7 +7199,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768347934}
   m_LocalRotation: {x: 0.40673664, y: 0, z: 0, w: 0.9135455}
-  m_LocalPosition: {x: 28.7, y: 4.06, z: -17.87}
+  m_LocalPosition: {x: 29.05, y: 6.03, z: -18.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -10085,12 +10085,44 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_StitchLightmapSeams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2112943308}
     - target: {fileID: 919132149155446097, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
       propertyPath: m_Name
       value: Floorboard_02_LP (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16a479a1d4ce8c945b597f595bd2cd6b, type: 3}
@@ -10432,28 +10464,30 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Boolean_713eaeb8e111498ca4602123332b4580: 0
     - Vector1_0e5d50eb28ae4663b7dac7a6ff79bfbe: 0.5
     - Vector1_1: 0
-    - Vector1_1738931fcc48460e9bceb1d50233b1e8: 1.05
-    - Vector1_2b73dfd94a1146e59db484647b568628: -2.02
+    - Vector1_1738931fcc48460e9bceb1d50233b1e8: 1.15
+    - Vector1_2b73dfd94a1146e59db484647b568628: -1.24
     - Vector1_2f31dd05d1754ca5b3396791513c2483: 0
     - Vector1_3a5fd22a755e4008af967b5f68e20588: 11.19
     - Vector1_408dd7b581b54f0db5d6f3c8bb205cdd: 0.5
+    - Vector1_447eb38bbc4b48fdbb467ff815cb360c: 1.07
     - Vector1_46278d9edea54d02bb32684352a91a45: 0
     - Vector1_555d5b11364943be81c980158214e914: 1
     - Vector1_6be3f09ce70340e5abe08c6fc0666e32: 0
-    - Vector1_73c8bee8a81342fb90a913540ce0da0e: 3.89
-    - Vector1_771a0432d6a6442a95d8f9f809e0a32e: 0.738
+    - Vector1_73c8bee8a81342fb90a913540ce0da0e: 2.2
+    - Vector1_771a0432d6a6442a95d8f9f809e0a32e: -0
     - Vector1_77624c4170a045f790091809d74b4cc9: 1
-    - Vector1_8d105768a4e140819a3fbdf08faed1e6: -0.4
+    - Vector1_8d105768a4e140819a3fbdf08faed1e6: -0.01
     - Vector1_9072d4d0be3148c0bdc2db83c94c3a39: 0.25
     - Vector1_9111e3dec9054b55bf24c52dfc47b9a0: 1
-    - Vector1_92a9e360a31447899ef7626b0864630d: 0.169
-    - Vector1_af5921f6b3cc4a29b719fe2b56d452fc: 0.91
-    - Vector1_b39dd287322f44f1bad1de28001c585f: 0.808
+    - Vector1_92a9e360a31447899ef7626b0864630d: 1
+    - Vector1_af5921f6b3cc4a29b719fe2b56d452fc: -0
+    - Vector1_b39dd287322f44f1bad1de28001c585f: 0
     - Vector1_bab12212572241cb9d21585c41b3a421: 0.01
     - Vector1_cddbc850b64d4514a3b6138f5665a5ac: -5.67
-    - Vector1_d4a9610c66814acd889bfd782a017bfd: 0.98
+    - Vector1_d4a9610c66814acd889bfd782a017bfd: 0.516
     - Vector1_e994a979232e489e9c3ad1cc15d8b37b: 40
     - Vector1_f256c87ebbaa4cfeb5aeb6063bc0e454: 1.001
     - _AlphaClip: 0
@@ -10489,9 +10523,9 @@ Material:
     - Color_2fe5c49384544690a6b1aec8b4392e6c: {r: 1, g: 1, b: 1, a: 0}
     - Color_7520863afcb642249cf88bd17075518b: {r: 1, g: 1, b: 1, a: 0}
     - Color_9f32effa2ca341fe9791db746ffc461c: {r: 1, g: 1, b: 1, a: 0}
-    - Color_b30afdd53a0c41f7a74c79746ef9ffc8: {r: 0, g: 0, b: 0, a: 0}
-    - Vector2_0739ae5a52954657a3cd8cc0cd562e01: {r: 96.4, g: 99.8, b: 0, a: 0}
-    - Vector2_2dfb42e689204247b5a65a9163a90a7e: {r: 93.9, g: 99.8, b: 0, a: 0}
+    - Color_b30afdd53a0c41f7a74c79746ef9ffc8: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 0}
+    - Vector2_0739ae5a52954657a3cd8cc0cd562e01: {r: 100.2, g: 99.8, b: 0, a: 0}
+    - Vector2_2dfb42e689204247b5a65a9163a90a7e: {r: 101.1, g: 99.8, b: 0, a: 0}
     - Vector2_4a55779775444a5bb6e33a875828a162: {r: -0.02, g: 0.64, b: 0, a: 0}
     - Vector2_d0d2214e693f4366a9e02eb6dc1dab2f: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
