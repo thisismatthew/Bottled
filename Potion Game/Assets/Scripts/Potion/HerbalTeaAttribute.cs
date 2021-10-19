@@ -26,9 +26,13 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
     {
         foreach (GameObject g in SpillCollider.ObjectsInSplashZone)
         {
-            if (g.GetComponent<Fillable>() != null)
+            if (g.GetComponentInChildren<Fillable>() != null)
             {
-                g.GetComponent<Fillable>().Fill();
+                Debug.Log("we got one!: " + g.name);
+                g.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
+                g.GetComponent<Pickupable>().FillVolume();
+
+                //Temporary testing placement, please find better spot
             }
         }
         return true;

@@ -26,7 +26,7 @@ public class HealthAttribute : MonoBehaviour, IPotionAttribute
         {
             if (g.GetComponent<Fillable>() != null)
             {
-                g.GetComponent<Fillable>().Fill();
+                //g.GetComponent<Fillable>().Fill();
             }
         }
         return true;
