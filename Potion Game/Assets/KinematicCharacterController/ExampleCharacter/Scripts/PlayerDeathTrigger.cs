@@ -78,7 +78,7 @@ namespace KinematicCharacterController.Examples
                 SmashCharacter();
            }
 
-           if (_heightFallen < -DeadlyFallDistance+.5f)
+           if (_heightFallen < -DeadlyFallDistance+0.5f)
            {
                 anim.SetTrigger("DeathHeight");
            }

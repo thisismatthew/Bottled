@@ -293,7 +293,7 @@ namespace KinematicCharacterController.Examples
                     {
                         anim.SetBool("Climbing", false);
 
-                        if (Mathf.Abs(GetComponent<KinematicCharacterMotor>().Velocity.y) < 0.05f)
+                        if (Mathf.Abs(GetComponent<KinematicCharacterMotor>().Velocity.y) < 0.01f)
                         {
                             _groundCounter += 1;
                             if (_groundCounter > 10)
@@ -376,6 +376,9 @@ namespace KinematicCharacterController.Examples
                                 anim.SetBool("Hold", true);
                                 anim.SetTrigger("Pickup");
                                 GrabAnim.SetBool("Pickup", true);
+
+                                //Temporary testing placement, please find better spot
+                                Interactable.GetComponent<Pickupable>().FillVolume();
                             }
 
                         }
@@ -918,15 +921,6 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
-
-                case CharacterState.Spilling:
-                {
-                        if (tiltmod == 1)
-                        {
-                            SpringWeightObject.transform.localPosition = new Vector3(SpringWeightObject.transform.localPosition.x, SpringWeightObject.transform.localPosition.y, SpringWeightObject.transform.localPosition.z - 0.02f);
-                        }
-                        break;
-                }
             }
         }
 

@@ -91,9 +91,14 @@ public class Pickupable : MonoBehaviour
         return velocityXZ + velocityY;
     }
 
-    
 
-    
+    public void FillVolume()
+    {
+        Animator _cupAnim = transform.GetComponentInChildren<Animator>();
+        _cupAnim.SetBool("CupTipped", false);
+        _cupAnim.SetTrigger("CupFilled");
+    }
+
 
 }
 
