@@ -13,10 +13,12 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
     {
         Debug.Log("Equiped tea.");
         Potion.material = NewLiquidMaterial;
+        Potion.gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }
 
     public void Unequip()
     {
+        Potion.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         Debug.Log("No tea left.");
     }
 
