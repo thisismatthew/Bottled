@@ -98,6 +98,7 @@ namespace KinematicCharacterController.Examples
         //public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
         public GameObject SmashedCharacterPrefab;
+        public int SmashesBeforeCleanup = 3;
         public GameObject Body;
         public SpringJoint SpringWeightObject;
         public Rigidbody SpringRoot;
@@ -118,6 +119,7 @@ namespace KinematicCharacterController.Examples
         [Header("Overides")]
         public Transform LookTargetOveride = null;
 
+        private List<GameObject> oldSmashParticles;
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
@@ -148,6 +150,7 @@ namespace KinematicCharacterController.Examples
 
         private void Awake()
         {
+            oldSmashParticles = new List<GameObject>();
             //get Potion Component;
             _potion = GetComponent<Potion>();
             // Handle initial state
@@ -211,7 +214,14 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Dead:
                     {
                         Body.active = false;
-                        Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
+                        GameObject smash = Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
+                        oldSmashParticles.Add(smash);
+                        if (oldSmashParticles.Count > SmashesBeforeCleanup)
+                        {
+                            GameObject old = oldSmashParticles[0];
+                            oldSmashParticles.Remove(old);
+                            GameObject.Destroy(old);
+                        }
                         SpringWeightObject.connectedBody = null;
                         break;
                     }
