@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
 {
+    public SpillCollider SpillCollider;
     public Renderer Potion;
     public Material NewLiquidMaterial;
     private string _name = "teaAttribute";
@@ -21,7 +22,14 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
 
     public bool Use()
     {
-        return false;
+        foreach (GameObject g in SpillCollider.ObjectsInSplashZone)
+        {
+            if (g.GetComponent<Fillable>() != null)
+            {
+                g.GetComponent<Fillable>().Fill();
+            }
+        }
+        return true;
     }
 
     public string Name { get => _name; }
