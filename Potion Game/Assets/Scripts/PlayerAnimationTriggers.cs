@@ -41,24 +41,12 @@ public class PlayerAnimationTriggers : MonoBehaviour
         if (_spillLiquid.isEmitting)
         {
             _spillLiquid.Stop();
-            Debug.Log("spill");
         }
         else if (!_spillLiquid.isEmitting)
         {
             _spillLiquid.Play();
-            Debug.Log("spill");
 
         }
-    }
-
-    public void BendForward()
-    {
-        GetComponentInParent<KinematicCharacterController.Examples.MainCharacterController>().tiltmod = 1;
-    }
-
-    public void BendBackward()
-    {
-        GetComponentInParent<KinematicCharacterController.Examples.MainCharacterController>().tiltmod = 0;
     }
 
     public void LeftCloud()
@@ -68,5 +56,18 @@ public class PlayerAnimationTriggers : MonoBehaviour
     public void RightCloud()
     {
         _rightCloudVFX.Play();
+    }
+
+    public void IdleBreath()
+    {
+        GetComponentInChildren<Mouth>().Breath();
+    }
+    public void Scream()
+    {
+        GetComponentInChildren<Mouth>().Scream();
+    }
+    public void RunBreath()
+    {
+        GetComponentInChildren<Mouth>().RunBreath();
     }
 }

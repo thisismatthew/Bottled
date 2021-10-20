@@ -27,13 +27,14 @@ public class Cauldron : MonoBehaviour
         PotionAttributeDict.Add(PotionAttributeName.HerbalTea, GetComponent<HerbalTeaAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.Water, GetComponent<WaterAttribute>());
         PotionAttributeDict.Add(PotionAttributeName.AntiGravity, GetComponent<AntiGravityAttribute>());
+        PotionAttributeDict.Add(PotionAttributeName.Health, GetComponent<HealthAttribute>());
+
 
         //linking cauldron with distributer
         MyDistributer = MyDistributerCollider.GetComponent<Distributer>();
         //Starting ingredients in Cauldran
         Cauldronrecipe.Ingredients[0] = Ingredient.tea;
-        //Cauldronrecipe.Ingredients[1] = Ingredient.Object;
-        //Cauldronrecipe.Ingredients[2] = Ingredient.carrot;
+
     }
     // Update is called once per frame
     void Update()

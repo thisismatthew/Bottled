@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum PotionAttributeName
 {
-    Fire, Water, AntiGravity, HerbalTea
+    Fire, Water, AntiGravity, HerbalTea, Health
 }

@@ -14,6 +14,7 @@ namespace KinematicCharacterController.Examples
         public GameObject CharacterCamera;
         public CinemachineFreeLook FreeLookVirtualCamera;
         public bool Locked = false;
+        public bool EnableSelfDestructButton = false;
 
         private const string MouseXInput = "Mouse X";
         private const string MouseYInput = "Mouse Y";
@@ -64,11 +65,11 @@ namespace KinematicCharacterController.Examples
             characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
             characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Space);
             characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Space);
-            characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
-            characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.C);
             characterInputs.UsePotion = Input.GetKeyDown(KeyCode.Q);
             characterInputs.Interact = Input.GetKeyDown(KeyCode.E);
-            characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
+
+            if(EnableSelfDestructButton)
+                characterInputs.SelfDestruct = Input.GetKeyDown(KeyCode.R);
             
             if (options.GamepadController)
             {
