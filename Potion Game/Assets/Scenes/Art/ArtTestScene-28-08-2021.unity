@@ -8574,10 +8574,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0d94ad728b395e449bba490050eefb91, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8a8093f39201b614c985839e2187f182, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 0d94ad728b395e449bba490050eefb91, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8a8093f39201b614c985839e2187f182, type: 2}
     - target: {fileID: 919132149155446097, guid: 0d94ad728b395e449bba490050eefb91, type: 3}
       propertyPath: m_Name
       value: CauldronNookWalls+Floor01
       objectReference: {fileID: 0}
+    - target: {fileID: 4834792634780246784, guid: 0d94ad728b395e449bba490050eefb91, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1f516801fc8426b429529d0a1abb6cdb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d94ad728b395e449bba490050eefb91, type: 3}
 --- !u!4 &1521128543 stripped
@@ -9349,6 +9361,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b2d44595d76f4824091600f5b67954ce, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0012cc4ec2c75a3418aa620aa4fb5af2, type: 2}
     - target: {fileID: 919132149155446097, guid: b2d44595d76f4824091600f5b67954ce, type: 3}
       propertyPath: m_Name
       value: UpperBanister(5th_pole)01
