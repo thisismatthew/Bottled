@@ -1067,7 +1067,6 @@ namespace KinematicCharacterController.Examples
             GrabAnim.SetBool("Pickup", true);
 
             //Temporary testing placement, please find better spot
-            Interactable.GetComponent<Pickupable>().FillVolume();
         }
     }
 }

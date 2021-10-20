@@ -25,7 +25,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (currentDialogue != null)
         {
-            if (currentDialogue.triggered)
+            if (currentDialogue.triggered && Input.GetKeyDown(KeyCode.Space))
             {
                 if (controller.LookTargetOveride == currentDialogue.transform)
                 {
