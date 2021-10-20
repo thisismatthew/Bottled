@@ -25,10 +25,13 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (currentDialogue != null)
         {
-            if (currentDialogue.triggered)
+            if (currentDialogue.triggered && Input.GetKeyDown(KeyCode.Space))
             {
                 if (controller.LookTargetOveride == currentDialogue.transform)
+                {
                     controller.LookTargetOveride = null;
+                }
+                controller.AnimMovementOveride = false;
                 input.Locked = false;
             }
         }
@@ -47,7 +50,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 ui.currentDialogue = currentDialogue;
                 Debug.Log("Initiated Dialogue");
-                   
+                controller.AnimMovementOveride = true;
                 controller.LookTargetOveride = currentDialogue.transform;
                 input.Locked = true;
                 Debug.Log("Dialogue Locked");
