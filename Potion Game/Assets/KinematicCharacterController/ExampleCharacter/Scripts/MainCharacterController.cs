@@ -98,6 +98,7 @@ namespace KinematicCharacterController.Examples
         //public Transform CameraFollowPoint;
         public float CrouchedCapsuleHeight = 0.5f;
         public GameObject SmashedCharacterPrefab;
+        public int SmashesBeforeCleanup = 3;
         public GameObject Body;
         public SpringJoint SpringWeightObject;
         public Rigidbody SpringRoot;
@@ -118,6 +119,7 @@ namespace KinematicCharacterController.Examples
         [Header("Overides")]
         public Transform LookTargetOveride = null;
 
+        private List<GameObject> oldSmashParticles;
         private Collider[] _probedColliders = new Collider[8];
         private RaycastHit[] _probedHits = new RaycastHit[8];
         private Vector3 _moveInputVector;
@@ -148,6 +150,7 @@ namespace KinematicCharacterController.Examples
 
         private void Awake()
         {
+            oldSmashParticles = new List<GameObject>();
             //get Potion Component;
             _potion = GetComponent<Potion>();
             // Handle initial state
@@ -211,8 +214,20 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Dead:
                     {
                         Body.active = false;
-                        Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
+                        GameObject smash = Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
+                        oldSmashParticles.Add(smash);
+                        if (oldSmashParticles.Count > SmashesBeforeCleanup)
+                        {
+                            GameObject old = oldSmashParticles[0];
+                            oldSmashParticles.Remove(old);
+                            GameObject.Destroy(old);
+                        }
                         SpringWeightObject.connectedBody = null;
+
+                        if (IsHolding)
+                        {
+                            Drop();
+                        }
                         break;
                     }
                 case CharacterState.Spilling:
@@ -293,7 +308,7 @@ namespace KinematicCharacterController.Examples
                     {
                         anim.SetBool("Climbing", false);
 
-                        if (Mathf.Abs(GetComponent<KinematicCharacterMotor>().Velocity.y) < 0.05f)
+                        if (Mathf.Abs(GetComponent<KinematicCharacterMotor>().Velocity.y) < 0.01f)
                         {
                             _groundCounter += 1;
                             if (_groundCounter > 10)
@@ -348,36 +363,13 @@ namespace KinematicCharacterController.Examples
                         {
                             if (IsHolding)
                             {
-                               
-                                Interactable.AddComponent<Rigidbody>(); 
-                                Interactable.transform.parent = null;
-                                IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
-                                Interactable.tag = "PickUpable";
-                                IsHolding = false;
-                                if(NearCauldron)
-                                {
-                                    anim.SetTrigger("Yeet");
-                                    Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
-                                }
-                                anim.SetBool("Hold", false);
-                                anim.ResetTrigger("Pickup");
-                                GrabAnim.SetBool("Pickup", false);
+                                Drop();
+
                             }
                             else
                             {
-                                Interactable.tag = "HeldObject";
-                                IsHolding = true;
-                                Interactable.GetComponent<Pickupable>().RotateToDefault = true;
-                                //this is parenting to the grab object now
-                                Interactable.transform.parent = this.transform.GetChild(1).transform;
-                                Interactable.transform.position = Interactable.transform.parent.position;
-                                IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
-                                Destroy(Interactable.GetComponent<Rigidbody>());
-                                anim.SetBool("Hold", true);
-                                anim.SetTrigger("Pickup");
-                                GrabAnim.SetBool("Pickup", true);
+                                Pickup();
                             }
-
                         }
                         break;
 
@@ -918,15 +910,6 @@ namespace KinematicCharacterController.Examples
                         }
                         break;
                     }
-
-                case CharacterState.Spilling:
-                {
-                        if (tiltmod == 1)
-                        {
-                            SpringWeightObject.transform.localPosition = new Vector3(SpringWeightObject.transform.localPosition.x, SpringWeightObject.transform.localPosition.y, SpringWeightObject.transform.localPosition.z - 0.02f);
-                        }
-                        break;
-                }
             }
         }
 
@@ -1044,6 +1027,41 @@ namespace KinematicCharacterController.Examples
             Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * ClimbingJumpArcHeight / Physics.gravity.y) + Mathf.Sqrt(2 * (displacementY - ClimbingJumpArcHeight) / Physics.gravity.y));
 
             return velocityXZ + velocityY;
+        }
+
+        private void Drop()
+        {
+            Interactable.AddComponent<Rigidbody>();
+            Interactable.transform.parent = null;
+            IgnoredColliders.Remove(Interactable.GetComponent<BoxCollider>());
+            Interactable.tag = "PickUpable";
+            IsHolding = false;
+            if (NearCauldron)
+            {
+                anim.SetTrigger("Yeet");
+                Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
+            }
+            anim.SetBool("Hold", false);
+            anim.ResetTrigger("Pickup");
+            GrabAnim.SetBool("Pickup", false);
+        }
+
+        private void Pickup()
+        {
+            Interactable.tag = "HeldObject";
+            IsHolding = true;
+            Interactable.GetComponent<Pickupable>().RotateToDefault = true;
+            //this is parenting to the grab object now
+            Interactable.transform.parent = this.transform.GetChild(1).transform;
+            Interactable.transform.position = Interactable.transform.parent.position;
+            IgnoredColliders.Add(Interactable.GetComponent<BoxCollider>());
+            Destroy(Interactable.GetComponent<Rigidbody>());
+            anim.SetBool("Hold", true);
+            anim.SetTrigger("Pickup");
+            GrabAnim.SetBool("Pickup", true);
+
+            //Temporary testing placement, please find better spot
+            Interactable.GetComponent<Pickupable>().FillVolume();
         }
     }
 }

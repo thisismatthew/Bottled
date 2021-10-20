@@ -18,11 +18,16 @@ public class OptionsHelper : MonoBehaviour
     {
         if (_currentVolume != MasterVolume)
         {
-            _currentVolume = MasterVolume;
-            foreach(Sound s in _audioManager.sounds)
-            {
-                s.source.volume = _currentVolume;
-            }
+            SetVolumeMaster();
+        }
+    }
+
+    public void SetVolumeMaster()
+    {
+        _currentVolume = MasterVolume;
+        foreach (Sound s in _audioManager.sounds)
+        {
+            s.source.volume = _currentVolume;
         }
     }
 }

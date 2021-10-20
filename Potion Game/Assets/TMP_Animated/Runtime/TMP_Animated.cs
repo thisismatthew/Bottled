@@ -48,6 +48,7 @@ namespace TMPro
 
             IEnumerator Read()
             {
+                Debug.Log("Read Coroutine");
                 int subCounter = 0;
                 int visibleCounter = 0;
                 while (subCounter < subTexts.Length)

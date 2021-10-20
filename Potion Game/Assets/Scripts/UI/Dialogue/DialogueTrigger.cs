@@ -9,9 +9,9 @@ public class DialogueTrigger : MonoBehaviour
 {
     private DialogueManager ui;
     private DialogueEvent currentDialogue = null;
-    public CinemachineTargetGroup targetGroup;
     private PlayerInputHandler input;
     private MainCharacterController controller;
+    private bool InsideDialogue = false;
 
 
     void Start()
@@ -37,8 +37,9 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("DialogueEvent"))
+        if (other.CompareTag("DialogueEvent")&& !InsideDialogue)
         {
+            InsideDialogue = true;
             Debug.Log("Dialogue Triggered");
             currentDialogue = other.GetComponent<DialogueEvent>();
             
@@ -46,17 +47,13 @@ public class DialogueTrigger : MonoBehaviour
             {
                 ui.currentDialogue = currentDialogue;
                 Debug.Log("Initiated Dialogue");
-
-                for (int i = 0; i < currentDialogue.LookTargets.Count; i++)
-                {
-                    targetGroup.m_Targets[i + 1].target = currentDialogue.LookTargets[i];
-                }
-
+                   
                 controller.LookTargetOveride = currentDialogue.transform;
                 input.Locked = true;
                 Debug.Log("Dialogue Locked");
                 currentDialogue.active = false;
                 ui.inDialogue = true;
+                ui.dialogueCam = currentDialogue.CameraShots[0];
                 ui.CameraChange(true);
                 ui.ClearText();
                 ui.FadeUI(true, .2f, .65f);
@@ -68,6 +65,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (other.CompareTag("DialogueEvent")&&(currentDialogue.triggered))
         {
+            InsideDialogue = false;
             currentDialogue = null;
             ui.currentDialogue = currentDialogue;
         }

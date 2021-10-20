@@ -72,12 +72,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_1c17462a892741428d2713de231533d0_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 02b0d7628bab7a7448a2fc5b71b77369, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_c321a9a111b8483d984b86afb20b0263_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 02b0d7628bab7a7448a2fc5b71b77369, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_a19d26f50cd14a7e841e81f262659669_Out_0:
-        m_Texture: {fileID: 2800000, guid: d002d148832776e4b9a5670f9752eabe, type: 3}
+        m_Texture: {fileID: 2800000, guid: ae0a979938c3a40418bbd561348cb751, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_e77fbfec76944be89a64c4247929d8ba_Out_0:
+        m_Texture: {fileID: 2800000, guid: 1bbea38d5d9469f4ead0620cf921717f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -120,10 +132,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Vector2_babd9e00b3c54f44810e769e30ef9aae: {r: 1, g: 1, b: 0, a: 0}
+    - Vector2_babd9e00b3c54f44810e769e30ef9aae: {r: 1, g: 0.5, b: 0, a: 0}
     - Vector2_c7350431dd6e49bbba5504fd429ecf21: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EyePosition: {r: 0, g: 1, b: 0, a: 0}
+    - _MouthPosition: {r: 1.2222, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
