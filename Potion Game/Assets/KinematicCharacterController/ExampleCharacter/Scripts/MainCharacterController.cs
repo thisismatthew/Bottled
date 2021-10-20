@@ -118,6 +118,7 @@ namespace KinematicCharacterController.Examples
 
         [Header("Overides")]
         public Transform LookTargetOveride = null;
+        public bool AnimMovementOveride = false;
 
         private List<GameObject> oldSmashParticles;
         private Collider[] _probedColliders = new Collider[8];
@@ -989,7 +990,12 @@ namespace KinematicCharacterController.Examples
 
         private void CharacterMoving()
         {
-            Vector3 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
+            Vector3 vel = Vector3.zero;
+            if (!AnimMovementOveride)
+            {
+                 vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
+            }
+
             Vector3 localVel = transform.InverseTransformDirection(vel);
             if (localVel.z > 0.01f && Motor.GroundingStatus.IsStableOnGround)
             {

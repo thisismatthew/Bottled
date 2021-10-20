@@ -7,6 +7,7 @@ public class TeaZone : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool TeaSpotComplete = false;
+    public DialogueEvent dialogueEvent;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -34,6 +35,6 @@ public class TeaZone : MonoBehaviour
     }
     private void WitchDrinksTea()
     {
-
+        dialogueEvent.gameObject.SetActive(true);
     }
 }
