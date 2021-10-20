@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Cobweb : MonoBehaviour
 {
-    private bool burnTrigger = false, animTriggered = false;
-    public GameObject DialogueEvent;
+    public bool burnTrigger = false, animTriggered = false;
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Flamable>() != null)
@@ -21,7 +20,6 @@ public class Cobweb : MonoBehaviour
     {
         if (burnTrigger && !animTriggered)
         {
-            DialogueEvent.SetActive(true);
             GetComponent<Animator>().Play("Spiderweb Animation");
         }
     }

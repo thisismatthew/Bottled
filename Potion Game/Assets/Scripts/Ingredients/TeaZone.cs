@@ -25,9 +25,15 @@ public class TeaZone : MonoBehaviour
                     other.gameObject.AddComponent<LockRotation>();
                     other.GetComponent<LockRotation>().LockMovement = true;
                     TeaSpotComplete = true;
+
+                    WitchDrinksTea();
                 }
             }
         }
+
+    }
+    private void WitchDrinksTea()
+    {
 
     }
 }
