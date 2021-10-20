@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Fillable : MonoBehaviour
 {
+    public bool Full = false;
     public Renderer _rend;
     private float rotateAmount = 0;
     public ParticleSystem _spillCup;
@@ -47,6 +48,7 @@ public class Fillable : MonoBehaviour
 
     void CupSpillLiquid()
     {
+        Full = false;
         _spillCup.Play();
     }
     void CupHideLiquid()
@@ -55,6 +57,7 @@ public class Fillable : MonoBehaviour
     }
     void CupFillLiquid()
     {
+        Full = true;
         _rend.enabled = true;
     }
 }
