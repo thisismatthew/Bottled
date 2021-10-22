@@ -28,6 +28,9 @@ public class DialogueManager : MonoBehaviour
     [Header("Cameras")]
     public CinemachineVirtualCamera dialogueCam;
 
+    [Header("Player")]
+    public GameObject player;
+
     private void Awake()
     {
         instance = this;
@@ -53,6 +56,8 @@ public class DialogueManager : MonoBehaviour
                     Sequence s = DOTween.Sequence();
                     s.AppendInterval(.8f);
                     s.AppendCallback(() => ResetState());
+                    player.GetComponent<DialogueTrigger>().StopDialog();
+
                 }
 
                 if (nextDialogue)

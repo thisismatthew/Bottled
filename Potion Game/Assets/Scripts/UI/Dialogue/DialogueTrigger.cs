@@ -12,7 +12,7 @@ public class DialogueTrigger : MonoBehaviour
     private PlayerInputHandler input;
     private MainCharacterController controller;
     private bool InsideDialogue = false;
-
+    private bool lockout = false;
 
     void Start()
     {
@@ -25,6 +25,11 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (currentDialogue != null)
         {
+            if (lockout == false)
+            {
+                StartDialog();
+            }
+
             if (currentDialogue.triggered && Input.GetKeyDown(KeyCode.Space))
             {
                 if (controller.LookTargetOveride == currentDialogue.transform)
@@ -57,7 +62,7 @@ public class DialogueTrigger : MonoBehaviour
                 currentDialogue.active = false;
                 ui.inDialogue = true;
                 ui.dialogueCam = currentDialogue.CameraShots[0];
-                ui.CameraChange(true);
+                //ui.CameraChange(true);
                 ui.ClearText();
                 ui.FadeUI(true, .2f, .65f);
             }
@@ -73,5 +78,14 @@ public class DialogueTrigger : MonoBehaviour
             ui.currentDialogue = currentDialogue;
         }
     }
+    public void StartDialog()
+    {
+        GetComponent<MainCharacterController>().StartDialog();
+        lockout = true;
+    }
 
+    public void StopDialog()
+    {
+        GetComponent<MainCharacterController>().StopDialog();
+    }
 }
