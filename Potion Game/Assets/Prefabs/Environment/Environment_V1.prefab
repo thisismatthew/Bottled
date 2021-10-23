@@ -16459,8 +16459,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76b1537f4d0677d4daf10a49ed6ae57c, type: 2}
-  - {fileID: 2100000, guid: 76b1537f4d0677d4daf10a49ed6ae57c, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23334,6 +23334,10 @@ PrefabInstance:
       value: Square_Table_Area
       objectReference: {fileID: 0}
     - target: {fileID: 3597099275658665315, guid: 711d07ecaaf47e44aa866da0939fa0e9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3597099276070503936, guid: 711d07ecaaf47e44aa866da0939fa0e9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
