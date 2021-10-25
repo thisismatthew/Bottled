@@ -8,13 +8,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Floorboard_04
-  m_Shader: {fileID: -6465566751694194690, guid: ddc537f80646a704e8a9b3d30cd6b84a, type: 3}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -24,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_4f796dca18cf4ece8b47f48fc8f9b123:
-        m_Texture: {fileID: 2800000, guid: b18845edee92be54db552a276645eec1, type: 3}
+        m_Texture: {fileID: 2800000, guid: c45eff1dee20552488c94d652f9f1c00, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_6a9b2f9b52c54c70adb022236529bf7f:
@@ -32,19 +33,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_7d5595e73e5748b8a263c7985511beb6:
-        m_Texture: {fileID: 2800000, guid: d8319cd750b7f5e4e88cf71dadc92659, type: 3}
+        m_Texture: {fileID: 2800000, guid: 79ad99135c5e67247a43e2eafba73eba, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_e5aadde84d6f485ab235b562d0bb8d7f:
-        m_Texture: {fileID: 2800000, guid: bd8c4d91b8bb01645b3cef51e6c70288, type: 3}
+        m_Texture: {fileID: 2800000, guid: a5965be5166a6ef4d8d08d597e90fcf7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8e97f7a8f425c51459893d17bbb95444, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a7aa11e6afd5fe24fbab8401ca8c3c32, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -64,11 +65,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8e97f7a8f425c51459893d17bbb95444, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9599c1eeeadb6a24796d4e7cdf5ea9a5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
