@@ -3,7 +3,6 @@ using UnityEngine;
 using Obi;
 using UnityEngine.VFX;
 
-
 namespace KinematicCharacterController.Examples
 {
     [System.Serializable]
@@ -144,9 +143,7 @@ namespace KinematicCharacterController.Examples
         private float _climbSpeed = 0;
         private float _groundedFrame = 0;
         private float _groundCounter = 0;
-        private Vector3 lastInnerNormal = Vector3.zero;
-        private Vector3 lastOuterNormal = Vector3.zero;
-
+        private bool _inDialog = false;
 
 
         private void Awake()
@@ -351,7 +348,8 @@ namespace KinematicCharacterController.Examples
                             _shouldBeCrouching = false;
                         }
 
-                        if (inputs.UsePotion)
+                        bool carrying = anim.GetBool("Hold");
+                        if (inputs.UsePotion && carrying == false)
                         {
                             if (Motor.GroundingStatus.IsStableOnGround)
                             {
@@ -550,6 +548,10 @@ namespace KinematicCharacterController.Examples
 
                             // Smooth movement Velocity
                             currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
+                            if (_inDialog == true)
+                            {
+                                currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, 0.1f);
+                            }
                         }
                         // Air movement
                         else
@@ -603,7 +605,8 @@ namespace KinematicCharacterController.Examples
                         _jumpedThisFrame = false;
                         _timeSinceJumpRequested += deltaTime;
                         Vector3 jumpDirection = Motor.CharacterUp;
-                        if (_jumpRequested)
+
+                        if (_jumpRequested && _inDialog == false)
                         {
                             // See if we actually are allowed to jump
                             if (!_jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime))
@@ -630,6 +633,7 @@ namespace KinematicCharacterController.Examples
                                 anim.SetTrigger("Jump");         
                             }
                         }
+
 
                         if (_jumpEndRequested)
                         {
@@ -690,12 +694,13 @@ namespace KinematicCharacterController.Examples
                             currentVelocity += _internalVelocityAdd;
                             _internalVelocityAdd = Vector3.zero;
                         }
+                        
                         break;
                     }
                 case CharacterState.Climbing:
                     {
-                        Debug.Log("Rope Index: "+ _currentRopeParticleIndex);
-                        Debug.Log("Lowest Rope Index: " + CurrentClimbRope.activeParticleCount);
+                        //Debug.Log("Rope Index: "+ _currentRopeParticleIndex);
+                        //Debug.Log("Lowest Rope Index: " + CurrentClimbRope.activeParticleCount);
                         //if this is the first update where we are climbing set velocity to 0
                         if (_startedClimbing == true)
                         {
@@ -731,8 +736,7 @@ namespace KinematicCharacterController.Examples
                                 {
                                     _currentRopeParticleIndex += 1;
                                     _climbSpeed = -1f;
-                                    anim.SetFloat("ClimbState", _climbSpeed);
-                                    anim.SetBool("ClimbUp", false);
+                                    anim.SetFloat("ClimbState", Mathf.Round(_climbSpeed));                                 
                                     _climbingIndexThreshold = 0;
                                 }
                             }
@@ -751,7 +755,6 @@ namespace KinematicCharacterController.Examples
                                     _climbSpeed = 1f;
                                     //Mathf.Clamp(_climbSpeed, -1, 1);
                                     anim.SetFloat("ClimbState", _climbSpeed);
-                                    anim.SetBool("ClimbUp", true);
                                     _climbingIndexThreshold = 0;
                                 }
                             }
@@ -766,6 +769,8 @@ namespace KinematicCharacterController.Examples
                                     _climbSpeed -= 0.05f;
                                 }
                                 anim.SetFloat("ClimbState", _climbSpeed);
+                                anim.SetTrigger("StopClimb");
+
                             }
 
                             target = CurrentClimbRope.GetParticlePosition(_currentRopeParticleIndex);
@@ -1068,5 +1073,23 @@ namespace KinematicCharacterController.Examples
 
             //Temporary testing placement, please find better spot
         }
+
+        public void StopDialog()
+        {
+            Invoke("DialogOff", 0.3f);
+        }
+        public void StartDialog()
+        {
+            if (_inDialog == false)
+            {
+                _inDialog = true;
+            }
+        }
+
+        private void DialogOff()
+        {
+            _inDialog = false;
+        }
     }
+
 }
