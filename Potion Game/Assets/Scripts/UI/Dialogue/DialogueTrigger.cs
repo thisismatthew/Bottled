@@ -36,7 +36,7 @@ public class DialogueTrigger : MonoBehaviour
                 {
                     controller.LookTargetOveride = null;
                 }
-                controller.AnimMovementOveride = false;
+                controller.AnimMovementLocked = false;
                 input.Locked = false;
             }
         }
@@ -55,7 +55,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 ui.currentDialogue = currentDialogue;
                 Debug.Log("Initiated Dialogue");
-                controller.AnimMovementOveride = true;
+                controller.AnimMovementLocked = true;
                 controller.LookTargetOveride = currentDialogue.transform;
                 input.Locked = true;
                 Debug.Log("Dialogue Locked");

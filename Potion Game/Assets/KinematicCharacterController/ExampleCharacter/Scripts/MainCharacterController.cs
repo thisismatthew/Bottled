@@ -117,7 +117,7 @@ namespace KinematicCharacterController.Examples
 
         [Header("Overides")]
         public Transform LookTargetOveride = null;
-        public bool AnimMovementOveride = false;
+        public bool AnimMovementLocked = false;
 
         private List<GameObject> oldSmashParticles;
         private Collider[] _probedColliders = new Collider[8];
@@ -996,7 +996,7 @@ namespace KinematicCharacterController.Examples
         private void CharacterMoving()
         {
             Vector3 vel = Vector3.zero;
-            if (!AnimMovementOveride)
+            if (!AnimMovementLocked)
             {
                  vel = Camera.main.transform.forward * Input.GetAxis("Vertical") + Camera.main.transform.right * Input.GetAxis("Horizontal");
             }

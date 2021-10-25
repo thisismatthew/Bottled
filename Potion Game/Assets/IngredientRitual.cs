@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController.Examples;
 
 public class IngredientRitual : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class IngredientRitual : MonoBehaviour
     public List<RitualSpot> RitualSpots;
     private List<RitualSpot> _ritualSpotsUpdate;
     public int _ritualSpotsNeeded;
-    public GameObject IngredientPrefab;
+    public GameObject IngredientPrefab, RitualCutscene;
     public Animator RitualCircleAnimator;
     public bool SummonIngredient = false;
 
@@ -40,12 +41,17 @@ public class IngredientRitual : MonoBehaviour
         {
             RitualCircleAnimator.SetBool("All Candle", true);
             RitualSpotsCompleted = 0;
+            RitualCutscene.SetActive(true);
+            FindObjectOfType<PlayerInputHandler>().Locked = true;
+            FindObjectOfType<MainCharacterController>().AnimMovementLocked = true;
         }
 
         if (SummonIngredient)
         {
             RitualCircleAnimator.SetBool("All Candle", false);
             IngredientPrefab.SetActive(true);
+            FindObjectOfType<PlayerInputHandler>().Locked = false;
+            FindObjectOfType<MainCharacterController>().AnimMovementLocked = false;
         }
     }
 }
