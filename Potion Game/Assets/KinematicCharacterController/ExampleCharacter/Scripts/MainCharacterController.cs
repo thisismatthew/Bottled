@@ -1082,6 +1082,7 @@ namespace KinematicCharacterController.Examples
         {
             if (_inDialog == false)
             {
+                //Debug.Log("Slowdown");
                 _inDialog = true;
             }
         }
