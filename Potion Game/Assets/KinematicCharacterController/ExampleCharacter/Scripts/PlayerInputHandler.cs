@@ -89,9 +89,9 @@ namespace KinematicCharacterController.Examples
                 FreeLookVirtualCamera.m_XAxis.m_MaxSpeed = 300;
                 FreeLookVirtualCamera.m_YAxis.m_InputAxisName = "Mouse Y";
                 FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.MaxSpeed;
-                FreeLookVirtualCamera.m_YAxis.m_MaxSpeed = 0.2f;
+                FreeLookVirtualCamera.m_YAxis.m_MaxSpeed = 2f;
                 FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.MaxSpeed;
-                FreeLookVirtualCamera.m_YAxis.m_InvertInput = false;
+                FreeLookVirtualCamera.m_YAxis.m_InvertInput = true;
             }
 
 

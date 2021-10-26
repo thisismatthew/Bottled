@@ -61,7 +61,7 @@ namespace TMPro
             // send that string to textmeshpro and hide all of it, then start reading
             text = displayText;
 
-            // lets find our custom input tag
+            // lets find our custom input tag and sub it out for the correct string
             string[] inputSplit = text.Split('[', ']');
             if (inputSplit.Length > 1)
             {
@@ -95,7 +95,6 @@ namespace TMPro
                     {
                         while (visibleCounter < subTexts[subCounter].Length)
                         {
-                            Debug.Log(text);
                             onTextReveal.Invoke(subTexts[subCounter][visibleCounter]);
                             visibleCounter++;
                             maxVisibleCharacters++;

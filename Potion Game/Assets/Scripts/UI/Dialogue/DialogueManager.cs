@@ -45,10 +45,11 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space)|| Input.GetKeyDown(KeyCode.Joystick1Button1))
+        if (Input.anyKeyDown)
         {
             if (inDialogue)
             {
+
                 if (canExit)
                 {
                     CameraChange(false);
@@ -56,13 +57,12 @@ public class DialogueManager : MonoBehaviour
                     Sequence s = DOTween.Sequence();
                     s.AppendInterval(.8f);
                     s.AppendCallback(() => ResetState());
-                    player.GetComponent<DialogueTrigger>().StopDialog();
-
                 }
 
                 if (nextDialogue)
                 {
-                    if(camIndex < currentDialogue.CameraShots.Count)
+
+                    if (camIndex < currentDialogue.CameraShots.Count -1)
                     {
                         camIndex++;
                         CameraChange(true);

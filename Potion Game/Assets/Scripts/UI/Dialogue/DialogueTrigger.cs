@@ -13,6 +13,7 @@ public class DialogueTrigger : MonoBehaviour
     private MainCharacterController controller;
     private bool InsideDialogue = false;
     private bool lockout = false;
+    private bool _freeFromDialogueNextFrame=false;
 
     void Start()
     {
@@ -23,6 +24,12 @@ public class DialogueTrigger : MonoBehaviour
 
     void Update()
     {
+        if (_freeFromDialogueNextFrame)
+        {
+            StopDialog();
+            _freeFromDialogueNextFrame = false;
+        }
+
         if (currentDialogue != null)
         {
             if (lockout == false)
@@ -30,8 +37,9 @@ public class DialogueTrigger : MonoBehaviour
                 StartDialog();
             }
 
-            if (currentDialogue.triggered && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)))
+            if (currentDialogue.triggered && Input.anyKeyDown)
             {
+                _freeFromDialogueNextFrame = true;
                 if (controller.LookTargetOveride == currentDialogue.transform)
                 {
                     controller.LookTargetOveride = null;
@@ -62,7 +70,7 @@ public class DialogueTrigger : MonoBehaviour
                 currentDialogue.active = false;
                 ui.inDialogue = true;
                 ui.dialogueCam = currentDialogue.CameraShots[0];
-                //ui.CameraChange(true);
+                ui.CameraChange(true);
                 ui.ClearText();
                 ui.FadeUI(true, .2f, .65f);
             }
