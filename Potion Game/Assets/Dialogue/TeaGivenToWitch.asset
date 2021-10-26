@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c243f7db4b8c0f4895ef2c85d2f8674, type: 3}
+  m_Name: TeaGivenToWitch
+  m_EditorClassIdentifier: 
+  conversationBlock:
+  - <speed=30><size=250%> Ooooooh that is delicious... don't look at me like that,
+    cauldron tea is the best way to brew a cup!
+  - '<speed=30><size=400%> OH! '
+  - '<speed=30><size=400%> I feel recharged! '
+  - '<speed=30><size=400%> Look at me I feel a hundred years young! '
+  - <speed=30><size=400%>Oh no...
+  - <speed=30><size=300%>The tea has not helped, I still have slugsickness on
