@@ -30,7 +30,7 @@ public class DialogueTrigger : MonoBehaviour
                 StartDialog();
             }
 
-            if (currentDialogue.triggered && Input.GetKeyDown(KeyCode.Space))
+            if (currentDialogue.triggered && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)))
             {
                 if (controller.LookTargetOveride == currentDialogue.transform)
                 {

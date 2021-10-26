@@ -69,10 +69,10 @@ namespace KinematicCharacterController.Examples
             
             if (options.GamepadController)
             {
-                characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Joystick1Button0);
-                characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Joystick1Button0);
-                characterInputs.UsePotion = Input.GetKeyDown(KeyCode.Joystick1Button1);
-                characterInputs.Interact = Input.GetKeyDown(KeyCode.Joystick1Button2);
+                characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Joystick1Button1);
+                characterInputs.JumpUp = Input.GetKeyUp(KeyCode.Joystick1Button1);
+                characterInputs.UsePotion = Input.GetKeyDown(KeyCode.Joystick1Button2);
+                characterInputs.Interact = Input.GetKeyDown(KeyCode.Joystick1Button0);
                 FreeLookVirtualCamera.m_XAxis.m_InputAxisName = "Joystick X";
                 FreeLookVirtualCamera.m_XAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
                 FreeLookVirtualCamera.m_XAxis.m_MaxSpeed = 50;
@@ -82,6 +82,18 @@ namespace KinematicCharacterController.Examples
                 FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
                 FreeLookVirtualCamera.m_YAxis.m_InvertInput = false;
             }
+            else
+            {
+                FreeLookVirtualCamera.m_XAxis.m_InputAxisName = "Mouse X";
+                FreeLookVirtualCamera.m_XAxis.m_SpeedMode = AxisState.SpeedMode.MaxSpeed;
+                FreeLookVirtualCamera.m_XAxis.m_MaxSpeed = 300;
+                FreeLookVirtualCamera.m_YAxis.m_InputAxisName = "Mouse Y";
+                FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.MaxSpeed;
+                FreeLookVirtualCamera.m_YAxis.m_MaxSpeed = 0.2f;
+                FreeLookVirtualCamera.m_YAxis.m_SpeedMode = AxisState.SpeedMode.MaxSpeed;
+                FreeLookVirtualCamera.m_YAxis.m_InvertInput = false;
+            }
+
 
             characterInputs.CameraRotation = CharacterCamera.transform.rotation;
             // Apply inputs to character
