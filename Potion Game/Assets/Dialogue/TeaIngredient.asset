@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: TeaIngredient
   m_EditorClassIdentifier: 
   conversationBlock:
-  - <speed=30><size=200%> Oh you found some Tea! you can press [E:keyboard/B:controller]
-    to pick it up
-  - <speed=40><size=150%>ooh throw it in the cualdron with [E:keyboard/B:controller]
-    and brew me a cup would you! You should be able to throw it in from your little
-    spot at the top of those books!
+  - <speed=30><size=200%>Oh good you found the Tea! You can press [grab] to pick
+    it up.
+  - <speed=40><size=150%>Throw it in the cauldron with [grab] and brew me a cup,
+    would you?
+  - '<speed=40><size=150%>You should be able to throw it in from your little spot
+    at the top of those books! '
+  - <speed=40><size=150%>You think its weird I make my tea in a cauldron? I'm a witch,
+    deary! What did you expect!
