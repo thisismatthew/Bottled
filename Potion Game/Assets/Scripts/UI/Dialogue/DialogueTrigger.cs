@@ -8,10 +8,10 @@ using KinematicCharacterController.Examples;
 public class DialogueTrigger : MonoBehaviour
 {
     private DialogueManager ui;
-    private DialogueEvent currentDialogue = null;
+    public DialogueEvent currentDialogue = null;
     private PlayerInputHandler input;
     private MainCharacterController controller;
-    private bool InsideDialogue = false;
+    public bool InsideDialogue = false;
     private bool lockout = false;
     private bool _freeFromDialogueNextFrame=false;
 
@@ -53,6 +53,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        
         if (other.CompareTag("DialogueEvent")&& !InsideDialogue)
         {
             InsideDialogue = true;
@@ -79,6 +80,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+
         if (other.CompareTag("DialogueEvent")&&(currentDialogue.triggered))
         {
             InsideDialogue = false;
