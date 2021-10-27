@@ -7,7 +7,8 @@ public class ChainAwakeDialogue : MonoBehaviour
     public DialogueEvent ChainFrom, ChainTo;
     private bool swapped = false;
 
-    private void Update()
+    //depreciatied 
+/*    private void Update()
     {
         if (ChainFrom.triggered && !swapped)
         {
@@ -16,5 +17,5 @@ public class ChainAwakeDialogue : MonoBehaviour
             FindObjectOfType<DialogueTrigger>().InsideDialogue = false;
             ChainTo.gameObject.SetActive(true);
         }
-    }
+    }*/
 }

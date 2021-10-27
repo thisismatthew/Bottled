@@ -11,7 +11,7 @@ public class DialogueTrigger : MonoBehaviour
     public DialogueEvent currentDialogue = null;
     private PlayerInputHandler input;
     private MainCharacterController controller;
-    public bool InsideDialogue = false;
+    private bool InsideDialogue = false;
     private bool lockout = false;
     private bool _freeFromDialogueNextFrame=false;
 
@@ -39,6 +39,7 @@ public class DialogueTrigger : MonoBehaviour
 
             if (currentDialogue.triggered && Input.anyKeyDown)
             {
+                InsideDialogue = false;
                 _freeFromDialogueNextFrame = true;
                 if (controller.LookTargetOveride == currentDialogue.transform)
                 {
@@ -53,8 +54,9 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        
-        if (other.CompareTag("DialogueEvent")&& !InsideDialogue)
+        Debug.Log("colliding with:" + other.name);
+        Debug.Log("inside collider" + InsideDialogue);
+        if (other.CompareTag("DialogueEvent") && !InsideDialogue)
         {
             InsideDialogue = true;
             Debug.Log("Dialogue Triggered");
