@@ -6,6 +6,16 @@ using KinematicCharacterController.Examples;
 public class IntroController : MonoBehaviour
 {
     public GameObject IntroCutscene;
+
+    public bool disableOpening = false;
+    private void Update()
+    {
+        if (disableOpening)
+        {
+            IntroCutscene.SetActive(false);
+            OnFinishCutscene();
+        }
+    }
     void Start()
     {
         //enable Cutscene
