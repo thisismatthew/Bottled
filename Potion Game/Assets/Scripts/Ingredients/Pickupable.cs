@@ -70,7 +70,6 @@ public class Pickupable : MonoBehaviour
             _target = target;
         }
         transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * MoveSpeed);
-        Debug.Log("test");
         transform.rotation = Quaternion.Lerp(transform.rotation, _normalRotation, 0.1f);
     }
 
