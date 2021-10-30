@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
 {
@@ -8,18 +9,22 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
     public Renderer Potion;
     public Material NewLiquidMaterial;
     private string _name = "teaAttribute";
+    private VisualEffect TeaLeaves;
 
     public void Equip()
     {
         Debug.Log("Equiped tea.");
         Potion.material = NewLiquidMaterial;
-        Potion.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        TeaLeaves = Potion.gameObject.transform.GetChild(0).GetComponent<VisualEffect>();
+        TeaLeaves.enabled = true;
+        TeaLeaves.Play();
     }
 
     public void Unequip()
     {
         Potion.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         Debug.Log("No tea left.");
+        TeaLeaves.enabled = false;
     }
 
     public bool Use()

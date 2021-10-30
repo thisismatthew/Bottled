@@ -8,19 +8,26 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BloodSplashParticle
-  m_Shader: {fileID: 4800000, guid: b7839dad95683814aa64166edc107ae2, type: 3}
-  m_ShaderKeywords: _EMISSION _NORMALMAP
-  m_LightmapFlags: 2
+  m_Shader: {fileID: -6465566751694194690, guid: 34a75800ec3b6bd4a8f4f883bf50e71c, type: 3}
+  m_ShaderKeywords: _NORMALMAP
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses:
   - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_90d44b9cab4f4df8b824bac8c7902e84:
+        m_Texture: {fileID: 2800000, guid: 12595500d23505f44876c2e13f2e0352, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_bbe6544615f840c8aeabb4d1d9edb4be:
+        m_Texture: {fileID: 2800000, guid: 530db08959b582546843d7376b72ba17, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 12595500d23505f44876c2e13f2e0352, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -65,7 +72,21 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_012f2302f3814b58883d2769c7de45f6: 0.07
+    - Vector1_9891214957844e63b2ebed09f3caaa1d: 0.3
     - _AlphaClip: 0
     - _Blend: 0
     - _BlendOp: 0
@@ -105,10 +126,12 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
+    - Color_ca41b5b2414048aa9abd8c7e7ef6ea26: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 0}
     - _BaseColor: {r: 0.14285517, g: 0, b: 1, a: 1}
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 0.39705884, g: 0, b: 0, a: 1}
+    - _Emission: {r: 0, g: 0.003575325, b: 1, a: 0}
     - _EmissionColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.30882353, g: 0.30882353, b: 0.30882353, a: 1}

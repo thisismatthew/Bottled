@@ -28,6 +28,9 @@ public class DialogueManager : MonoBehaviour
     [Header("Cameras")]
     public CinemachineVirtualCamera dialogueCam;
 
+    [Header("Player")]
+    public GameObject player;
+
     private void Awake()
     {
         instance = this;
@@ -42,10 +45,11 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space)|| Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.anyKeyDown)
         {
             if (inDialogue)
             {
+
                 if (canExit)
                 {
                     CameraChange(false);
@@ -57,7 +61,8 @@ public class DialogueManager : MonoBehaviour
 
                 if (nextDialogue)
                 {
-                    if(camIndex < currentDialogue.CameraShots.Count)
+
+                    if (camIndex < currentDialogue.CameraShots.Count -1)
                     {
                         camIndex++;
                         CameraChange(true);

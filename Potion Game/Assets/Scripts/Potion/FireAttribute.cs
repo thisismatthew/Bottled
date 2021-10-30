@@ -5,6 +5,7 @@ using UnityEngine;
 public class FireAttribute : MonoBehaviour, IPotionAttribute
 {
     public Light FireLight;
+    public SpillCollider SpillCollider;
     public Transform FlameParticlePosition;
     public Renderer Potion;
     public Material NewLiquidMaterial;
@@ -29,6 +30,13 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
 
     public bool Use()
     {
+        foreach (GameObject g in SpillCollider.ObjectsInSplashZone)
+        {
+            if (g.GetComponent<Cobweb>() != null)
+            {
+                g.GetComponent<Cobweb>().burnTrigger = true;
+            }
+        }
 
         GameObject childobject = Instantiate(FirePrefab, FlameParticlePosition);//= Instantiate(FirePrefab) as GameObject;
         childobject.transform.localPosition = Vector3.zero;

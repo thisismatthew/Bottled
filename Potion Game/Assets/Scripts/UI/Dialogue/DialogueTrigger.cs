@@ -8,11 +8,12 @@ using KinematicCharacterController.Examples;
 public class DialogueTrigger : MonoBehaviour
 {
     private DialogueManager ui;
-    private DialogueEvent currentDialogue = null;
+    public DialogueEvent currentDialogue = null;
     private PlayerInputHandler input;
     private MainCharacterController controller;
     private bool InsideDialogue = false;
-
+    private bool lockout = false;
+    private bool _freeFromDialogueNextFrame=false;
 
     void Start()
     {
@@ -23,21 +24,39 @@ public class DialogueTrigger : MonoBehaviour
 
     void Update()
     {
+        if (_freeFromDialogueNextFrame)
+        {
+            StopDialog();
+            _freeFromDialogueNextFrame = false;
+        }
+
         if (currentDialogue != null)
         {
-            if (currentDialogue.triggered)
+            if (lockout == false)
             {
+                StartDialog();
+            }
+
+            if (currentDialogue.triggered && Input.anyKeyDown)
+            {
+                InsideDialogue = false;
+                _freeFromDialogueNextFrame = true;
                 if (controller.LookTargetOveride == currentDialogue.transform)
+                {
                     controller.LookTargetOveride = null;
+                }
+                controller.AnimMovementLocked = false;
                 input.Locked = false;
             }
         }
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("DialogueEvent")&& !InsideDialogue)
+        Debug.Log("colliding with:" + other.name);
+        Debug.Log("inside collider" + InsideDialogue);
+        if (other.CompareTag("DialogueEvent") && !InsideDialogue)
         {
             InsideDialogue = true;
             Debug.Log("Dialogue Triggered");
@@ -47,7 +66,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 ui.currentDialogue = currentDialogue;
                 Debug.Log("Initiated Dialogue");
-                   
+                controller.AnimMovementLocked = true;
                 controller.LookTargetOveride = currentDialogue.transform;
                 input.Locked = true;
                 Debug.Log("Dialogue Locked");
@@ -63,6 +82,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+
         if (other.CompareTag("DialogueEvent")&&(currentDialogue.triggered))
         {
             InsideDialogue = false;
@@ -70,5 +90,14 @@ public class DialogueTrigger : MonoBehaviour
             ui.currentDialogue = currentDialogue;
         }
     }
+    public void StartDialog()
+    {
+        GetComponent<MainCharacterController>().StartDialog();
+        lockout = true;
+    }
 
+    public void StopDialog()
+    {
+        GetComponent<MainCharacterController>().StopDialog();
+    }
 }

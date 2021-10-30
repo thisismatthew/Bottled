@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController.Examples;
 
 public class Cobweb : MonoBehaviour
 {
-    private bool burnTrigger = false, animTriggered = false;
-    public GameObject DialogueEvent;
+    public bool burnTrigger = false, animTriggered = false;
+    public GameObject CobwebBurnCutscene;
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Flamable>() != null)
@@ -21,13 +22,17 @@ public class Cobweb : MonoBehaviour
     {
         if (burnTrigger && !animTriggered)
         {
-            DialogueEvent.SetActive(true);
             GetComponent<Animator>().Play("Spiderweb Animation");
+            CobwebBurnCutscene.SetActive(true);
+            FindObjectOfType<PlayerInputHandler>().Locked = true;
+            FindObjectOfType<MainCharacterController>().AnimMovementLocked = true;
         }
     }
 
     public void DisableCobweb()
     {
+        FindObjectOfType<PlayerInputHandler>().Locked = false;
+        FindObjectOfType<MainCharacterController>().AnimMovementLocked = false;
         this.gameObject.SetActive(false);
     }
 }
