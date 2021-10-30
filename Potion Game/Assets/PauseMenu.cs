@@ -53,5 +53,11 @@ public class PauseMenu : MonoBehaviour
         Application.Quit();
     }
 
+    public void OptionsToggle(bool val)
+    {
+        OptionsMenuUI.SetActive(val);
+        PauseMenuUI.SetActive(!val);
+    }
+
 
 }
