@@ -6,13 +6,14 @@ public class CopyColour : MonoBehaviour
 {
     // Start is called before the first frame update
     private Color PlayerLiquidColor;
-    public Renderer PlayerLiquid;
+    private Renderer PlayerLiquid;
     private Renderer Deathball;
     private Renderer Deathpool;
     void Start()
     {
         Deathball = GetComponent<Renderer>();
         Deathpool = Deathball.transform.GetChild(0).GetComponent<Renderer>();
+        PlayerLiquid = FindObjectOfType<SpringSystem>().gameObject.GetComponent<Renderer>();
     }
 
     // Update is called once per frame

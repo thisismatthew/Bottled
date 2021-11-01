@@ -6,7 +6,7 @@ public class CopyColourSpill : MonoBehaviour
 {
     // Start is called before the first frame update
     private Color PlayerLiquidColor;
-    public Renderer PlayerLiquid;
+    private Renderer PlayerLiquid;
     private Renderer Stream;
     private Renderer Splash;
     private Renderer Pool;
@@ -15,6 +15,7 @@ public class CopyColourSpill : MonoBehaviour
         Stream = GetComponent<Renderer>();
         Splash = Stream.transform.GetChild(0).GetComponent<Renderer>();
         Pool = Stream.transform.GetChild(1).transform.GetChild(0).GetComponentInChildren<Renderer>();
+        PlayerLiquid = FindObjectOfType<SpringSystem>().gameObject.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
