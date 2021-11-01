@@ -54,22 +54,22 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("colliding with:" + other.name);
-        Debug.Log("inside collider" + InsideDialogue);
+       /* Debug.Log("colliding with:" + other.name);
+        Debug.Log("inside collider" + InsideDialogue);*/
         if (other.CompareTag("DialogueEvent") && !InsideDialogue)
         {
             InsideDialogue = true;
-            Debug.Log("Dialogue Triggered");
+           // Debug.Log("Dialogue Triggered");
             currentDialogue = other.GetComponent<DialogueEvent>();
             
             if (!currentDialogue.triggered)
             {
                 ui.currentDialogue = currentDialogue;
-                Debug.Log("Initiated Dialogue");
+               // Debug.Log("Initiated Dialogue");
                 controller.AnimMovementLocked = true;
                 controller.LookTargetOveride = currentDialogue.transform;
                 input.Locked = true;
-                Debug.Log("Dialogue Locked");
+              //  Debug.Log("Dialogue Locked");
                 currentDialogue.active = false;
                 ui.inDialogue = true;
                 ui.dialogueCam = currentDialogue.CameraShots[0];
