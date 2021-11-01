@@ -112,6 +112,7 @@ namespace KinematicCharacterController.Examples
         public GameObject Interactable;
         public Transform GrabPosition;
         public Animator GrabAnim;
+        public float TossForce = 2f;
         public bool NearCauldron;
         public Transform CauldronThrowTarget;
 
@@ -1051,6 +1052,14 @@ namespace KinematicCharacterController.Examples
             {
                 anim.SetTrigger("Yeet");
                 Interactable.GetComponent<Pickupable>().ThrowToTarget(CauldronThrowTarget.position);
+            }
+            else
+            {
+                //anim.SetTrigger("Yeet");
+                //get the direction away from the player. 
+                Vector3 dir = Vector3.Normalize(Interactable.transform.position - this.transform.position);
+                //small yeet
+                Interactable.GetComponent<Rigidbody>().velocity = dir * TossForce;
             }
             anim.SetBool("Hold", false);
             anim.ResetTrigger("Pickup");
