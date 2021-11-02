@@ -824,6 +824,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 18b1d199ea8cbe34da2c7f9050085b41, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1be0d0db4e1bf9741872c15e8c239560, type: 2}
     - target: {fileID: 919132149155446097, guid: 18b1d199ea8cbe34da2c7f9050085b41, type: 3}
       propertyPath: m_Name
       value: CandleSmall01
@@ -6993,6 +6997,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ingredient_Wisp01
       objectReference: {fileID: 0}
+    - target: {fileID: 3510143651658741594, guid: 5b2e68358cbcfec40a15acfea3aeaddd, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6579cf0d5d795214380fc02b643d83e0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b2e68358cbcfec40a15acfea3aeaddd, type: 3}
 --- !u!4 &654362665 stripped
@@ -8490,6 +8498,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a3794959549acbc479e5d0d952f8820c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 00cbda0273fff7642b17bb5c99ec22c3, type: 2}
     - target: {fileID: 919132149155446097, guid: a3794959549acbc479e5d0d952f8820c, type: 3}
       propertyPath: m_Name
       value: KitchenWindow01
@@ -8782,7 +8794,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 7c7e868aeb0cb3549aeb04dfad745aa9, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c7e868aeb0cb3549aeb04dfad745aa9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8967,10 +8979,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7757982828643625648, guid: fdf6fcff821ecd5488742a37f39ffbe5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 94bc765bf52451c4b9cb836da0b50c74, type: 2}
+    - target: {fileID: -2990177835767950224, guid: fdf6fcff821ecd5488742a37f39ffbe5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 94bc765bf52451c4b9cb836da0b50c74, type: 2}
     - target: {fileID: 919132149155446097, guid: fdf6fcff821ecd5488742a37f39ffbe5, type: 3}
       propertyPath: m_Name
       value: Ingredient_Teabags01
       objectReference: {fileID: 0}
+    - target: {fileID: 3510143651658741594, guid: fdf6fcff821ecd5488742a37f39ffbe5, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 78294feba24701644b4365fcccedc06a, type: 2}
+    - target: {fileID: 6065843959617793177, guid: fdf6fcff821ecd5488742a37f39ffbe5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 94bc765bf52451c4b9cb836da0b50c74, type: 2}
+    - target: {fileID: 9168378659572773295, guid: fdf6fcff821ecd5488742a37f39ffbe5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 94bc765bf52451c4b9cb836da0b50c74, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdf6fcff821ecd5488742a37f39ffbe5, type: 3}
 --- !u!4 &1509098592 stripped
@@ -10174,7 +10206,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: a561e40aa4a6d4d438eb1efb6a2c51c6, type: 2}
     - target: {fileID: -8679921383154817045, guid: 44a540e1aba0ce04abf513383d4504bf, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 44a540e1aba0ce04abf513383d4504bf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10236,6 +10268,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallDrawers02
       objectReference: {fileID: 0}
+    - target: {fileID: 1762584707230738973, guid: 44a540e1aba0ce04abf513383d4504bf, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 666b084f1cbe2064e9b725c9b4411f9e, type: 2}
     - target: {fileID: 2475206337446706658, guid: 44a540e1aba0ce04abf513383d4504bf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
