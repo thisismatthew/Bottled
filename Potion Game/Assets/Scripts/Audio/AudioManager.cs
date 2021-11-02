@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     private bool openingDone = false;
     public Sound[] sounds;
+    public AudioMixerGroup MixerGroupOutput;
 
     // This is Brackeys Audio Manager system with some small tweaks. 
     void Awake()
@@ -17,6 +18,7 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+            s.source.outputAudioMixerGroup = MixerGroupOutput;
         }
     }
 
