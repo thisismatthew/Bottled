@@ -15,8 +15,8 @@ public class DialogueManager : MonoBehaviour
     public bool inDialogue;
     public Image textBubble;
     public TMP_Animated animatedText;
-    
 
+    private PauseMenu pause;
     private int dialogueIndex;
     public bool canExit;
     public bool nextDialogue;
@@ -39,13 +39,14 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
+        pause = FindObjectOfType<PauseMenu>();
         animatedText.onDialogueFinish.AddListener(() => FinishDialogue());
     }
 
     private void Update()
     {
 
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape) && !pause.GameIsPaused)
         {
             if (inDialogue)
             {
@@ -73,6 +74,7 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("Skip Input Requested");
                     StopCoroutine(animatedText.readCoroutine);
                     animatedText.SkipText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
                     //nextDialogue = true;

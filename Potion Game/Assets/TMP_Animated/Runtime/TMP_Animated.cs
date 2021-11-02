@@ -20,6 +20,7 @@ namespace TMPro
         public DialogueEvent onDialogueFinish;
         public Coroutine readCoroutine;
         private Dictionary<string, string> ControllerInputs, KeyboardInputs;
+        public bool ReadPaused = false;
 
         private void LoadInputDictionaries()
         {
@@ -86,7 +87,6 @@ namespace TMPro
                 int visibleCounter = 0;
                 while (subCounter < subTexts.Length)
                 {
-                    // if 
                     if (subCounter % 2 == 1)
                     {
                         yield return EvaluateTag(subTexts[subCounter].Replace(" ", ""));
@@ -95,10 +95,14 @@ namespace TMPro
                     {
                         while (visibleCounter < subTexts[subCounter].Length)
                         {
-                            onTextReveal.Invoke(subTexts[subCounter][visibleCounter]);
-                            visibleCounter++;
-                            maxVisibleCharacters++;
-                            yield return new WaitForSeconds(1f / speed);
+                            if (!ReadPaused)
+                            {
+                                onTextReveal.Invoke(subTexts[subCounter][visibleCounter]);
+                                visibleCounter++;
+                                maxVisibleCharacters++;
+                            }
+                            yield return new WaitForSecondsRealtime(1f / speed);
+
                         }
                         visibleCounter = 0;
                     }
@@ -106,7 +110,7 @@ namespace TMPro
                 }
                 yield return null;
 
-                WaitForSeconds EvaluateTag(string tag)
+                WaitForSecondsRealtime EvaluateTag(string tag)
                 {
                     if (tag.Length > 0)
                     {
@@ -116,7 +120,8 @@ namespace TMPro
                         }
                         else if (tag.StartsWith("pause="))
                         {
-                            return new WaitForSeconds(float.Parse(tag.Split('=')[1]));
+                            return new WaitForSecondsRealtime(float.Parse(tag.Split('=')[1]));
+
                         }
                     }
                     return null;

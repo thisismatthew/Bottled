@@ -56,6 +56,7 @@ public class DialogueTrigger : MonoBehaviour
     {
        /* Debug.Log("colliding with:" + other.name);
         Debug.Log("inside collider" + InsideDialogue);*/
+       //dialogue events should disable themselves when done. 
         if (other.CompareTag("DialogueEvent") && !InsideDialogue)
         {
             InsideDialogue = true;
@@ -82,7 +83,6 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-
         if (other.CompareTag("DialogueEvent")&&(currentDialogue.triggered))
         {
             InsideDialogue = false;
@@ -98,6 +98,7 @@ public class DialogueTrigger : MonoBehaviour
 
     public void StopDialog()
     {
+        ui.CameraChange(false);
         GetComponent<MainCharacterController>().StopDialog();
     }
 }

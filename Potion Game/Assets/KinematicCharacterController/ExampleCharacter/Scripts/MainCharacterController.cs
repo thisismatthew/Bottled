@@ -1085,7 +1085,7 @@ namespace KinematicCharacterController.Examples
 
         public void StopDialog()
         {
-            Invoke("DialogOff", 0.3f);
+            Invoke("DialogOff", 0.8f);
         }
         public void StartDialog()
         {

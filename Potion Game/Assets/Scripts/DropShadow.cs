@@ -11,7 +11,7 @@ public class DropShadow : MonoBehaviour
     public MeshRenderer _dropShadow;
     public bool _climbShadowRemove = false;
 
-    void Update()
+    void LateUpdate()
     {
         _dropShadow.GetComponent<MeshRenderer>().enabled = !_climbShadowRemove;
         /*
