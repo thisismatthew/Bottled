@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Obi;
 
 
 public class TeaZone : MonoBehaviour
@@ -8,6 +9,7 @@ public class TeaZone : MonoBehaviour
     // Start is called before the first frame update
     public bool TeaSpotComplete = false;
     public DialogueEvent dialogueEvent;
+    public ObiParticleAttachment ropeHook;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,7 +28,7 @@ public class TeaZone : MonoBehaviour
                     other.gameObject.AddComponent<LockRotation>();
                     other.GetComponent<LockRotation>().LockMovement = true;
                     TeaSpotComplete = true;
-
+                    ropeHook.enabled = false;
                     WitchDrinksTea();
                 }
             }

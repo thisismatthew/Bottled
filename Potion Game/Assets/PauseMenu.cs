@@ -2,14 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
+    public bool GameIsPaused = false;
 
     public GameObject PauseMenuUI;
     public GameObject OptionsMenuUI;
-    public GameObject GameUI;
+    //public GameObject GameUI;
+    private TMP_Animated textCoroutine;
+
+    private void Start()
+    {
+        textCoroutine = FindObjectOfType<TMP_Animated>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -28,15 +35,18 @@ public class PauseMenu : MonoBehaviour
     }
     public void Resume()
     {
+        textCoroutine.ReadPaused = false;
+        OptionsMenuUI.SetActive(false);
         PauseMenuUI.SetActive(false);
-        GameUI.SetActive(true);
+        //GameUI.SetActive(true);
         Time.timeScale = 1f;
         GameIsPaused = false;
     }
     public void Pause()
     {
+        textCoroutine.ReadPaused = true;
         PauseMenuUI.SetActive(true);
-        GameUI.SetActive(false);
+        //GameUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
         //Cursor.visible = true;
@@ -51,6 +61,12 @@ public class PauseMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void OptionsToggle(bool val)
+    {
+        OptionsMenuUI.SetActive(val);
+        PauseMenuUI.SetActive(!val);
     }
 
 

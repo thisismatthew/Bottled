@@ -15,8 +15,8 @@ public class DialogueManager : MonoBehaviour
     public bool inDialogue;
     public Image textBubble;
     public TMP_Animated animatedText;
-    
 
+    private PauseMenu pause;
     private int dialogueIndex;
     public bool canExit;
     public bool nextDialogue;
@@ -28,6 +28,9 @@ public class DialogueManager : MonoBehaviour
     [Header("Cameras")]
     public CinemachineVirtualCamera dialogueCam;
 
+    [Header("Player")]
+    public GameObject player;
+
     private void Awake()
     {
         instance = this;
@@ -36,16 +39,18 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
+        pause = FindObjectOfType<PauseMenu>();
         animatedText.onDialogueFinish.AddListener(() => FinishDialogue());
     }
 
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space)|| Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape) && !pause.GameIsPaused)
         {
             if (inDialogue)
             {
+
                 if (canExit)
                 {
                     CameraChange(false);
@@ -57,7 +62,8 @@ public class DialogueManager : MonoBehaviour
 
                 if (nextDialogue)
                 {
-                    if(camIndex < currentDialogue.CameraShots.Count)
+
+                    if (camIndex < currentDialogue.CameraShots.Count -1)
                     {
                         camIndex++;
                         CameraChange(true);
@@ -68,6 +74,7 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("Skip Input Requested");
                     StopCoroutine(animatedText.readCoroutine);
                     animatedText.SkipText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
                     //nextDialogue = true;

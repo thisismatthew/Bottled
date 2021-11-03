@@ -8,11 +8,12 @@ using KinematicCharacterController.Examples;
 public class DialogueTrigger : MonoBehaviour
 {
     private DialogueManager ui;
-    private DialogueEvent currentDialogue = null;
+    public DialogueEvent currentDialogue = null;
     private PlayerInputHandler input;
     private MainCharacterController controller;
     private bool InsideDialogue = false;
-
+    private bool lockout = false;
+    private bool _freeFromDialogueNextFrame=false;
 
     void Start()
     {
@@ -23,37 +24,53 @@ public class DialogueTrigger : MonoBehaviour
 
     void Update()
     {
+        if (_freeFromDialogueNextFrame)
+        {
+            StopDialog();
+            _freeFromDialogueNextFrame = false;
+        }
+
         if (currentDialogue != null)
         {
-            if (currentDialogue.triggered && Input.GetKeyDown(KeyCode.Space))
+            if (lockout == false)
             {
+                StartDialog();
+            }
+
+            if (currentDialogue.triggered && Input.anyKeyDown)
+            {
+                InsideDialogue = false;
+                _freeFromDialogueNextFrame = true;
                 if (controller.LookTargetOveride == currentDialogue.transform)
                 {
                     controller.LookTargetOveride = null;
                 }
-                controller.AnimMovementOveride = false;
+                controller.AnimMovementLocked = false;
                 input.Locked = false;
             }
         }
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("DialogueEvent")&& !InsideDialogue)
+       /* Debug.Log("colliding with:" + other.name);
+        Debug.Log("inside collider" + InsideDialogue);*/
+       //dialogue events should disable themselves when done. 
+        if (other.CompareTag("DialogueEvent") && !InsideDialogue)
         {
             InsideDialogue = true;
-            Debug.Log("Dialogue Triggered");
+           // Debug.Log("Dialogue Triggered");
             currentDialogue = other.GetComponent<DialogueEvent>();
             
             if (!currentDialogue.triggered)
             {
                 ui.currentDialogue = currentDialogue;
-                Debug.Log("Initiated Dialogue");
-                controller.AnimMovementOveride = true;
+               // Debug.Log("Initiated Dialogue");
+                controller.AnimMovementLocked = true;
                 controller.LookTargetOveride = currentDialogue.transform;
                 input.Locked = true;
-                Debug.Log("Dialogue Locked");
+              //  Debug.Log("Dialogue Locked");
                 currentDialogue.active = false;
                 ui.inDialogue = true;
                 ui.dialogueCam = currentDialogue.CameraShots[0];
@@ -73,5 +90,15 @@ public class DialogueTrigger : MonoBehaviour
             ui.currentDialogue = currentDialogue;
         }
     }
+    public void StartDialog()
+    {
+        GetComponent<MainCharacterController>().StartDialog();
+        lockout = true;
+    }
 
+    public void StopDialog()
+    {
+        ui.CameraChange(false);
+        GetComponent<MainCharacterController>().StopDialog();
+    }
 }

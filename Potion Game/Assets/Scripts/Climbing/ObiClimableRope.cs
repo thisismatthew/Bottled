@@ -38,7 +38,7 @@ namespace Obi
                 //then set the player as climbing this rope
                 if (Vector3.Distance(_closestPos, PlayerRopeGrabPos.position) < RopeGrabDistance)
                 {
-                    if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2))
+                    if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button0))
                     {
                         Debug.Log("climbing started");
                         playerController.TransitionToState(CharacterState.Climbing);
