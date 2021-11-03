@@ -60,7 +60,7 @@ public class DialogueManager : MonoBehaviour
                     s.AppendCallback(() => ResetState());
                 }
 
-                if (nextDialogue)
+                if (nextDialogue && currentDialogue != null)
                 {
 
                     if (camIndex < currentDialogue.CameraShots.Count -1)

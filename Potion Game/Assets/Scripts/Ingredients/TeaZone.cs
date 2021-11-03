@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController.Examples;
 using Obi;
 
 
@@ -23,10 +24,13 @@ public class TeaZone : MonoBehaviour
                 if (other.transform.GetChild(0).GetComponent<Fillable>().Full == true)
                 {
                     Debug.Log("Full!");
+                    
                     other.GetComponent<Pickupable>().DisablePickup = true;
                     other.GetComponent<Pickupable>().MoveToTarget(transform.position);
-                    other.gameObject.AddComponent<LockRotation>();
-                    other.GetComponent<LockRotation>().LockMovement = true;
+                    //FindObjectOfType<MainCharacterController>().Interactable = null;
+                    Destroy(other.gameObject.GetComponent<Rigidbody>());
+                    other.gameObject.transform.parent = this.transform;
+                        
                     TeaSpotComplete = true;
                     ropeHook.enabled = false;
                     WitchDrinksTea();
