@@ -399,6 +399,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f80fe33679b9e1c4a89a2cffe74ed436, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b00a699852783834fa4931518e17fe4c, type: 2}
+    - target: {fileID: -7511558181221131132, guid: f80fe33679b9e1c4a89a2cffe74ed436, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5c7c079f38170e14daed4c13c4e5ad62, type: 2}
     - target: {fileID: 919132149155446097, guid: f80fe33679b9e1c4a89a2cffe74ed436, type: 3}
       propertyPath: m_Name
       value: GrainSack01
@@ -1357,7 +1365,11 @@ PrefabInstance:
     - target: {fileID: 761437530807819658, guid: 5eb9f7d0b377b6941b17b93a7e209560, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
+<<<<<<< HEAD
       objectReference: {fileID: 2100000, guid: 6e45dfcca7b53394c9adb877ff7867f6, type: 2}
+=======
+      objectReference: {fileID: 2100000, guid: 53361a978ee3d584da2d3ab1e44620ff, type: 2}
+>>>>>>> ArtDevelopment
     - target: {fileID: 919132149155446097, guid: 5eb9f7d0b377b6941b17b93a7e209560, type: 3}
       propertyPath: m_Name
       value: Witch01_Anims
@@ -1717,6 +1729,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6e24930d93177d04281dc97793e2277c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 02210c1433f07b04cb2eb9f7876a5569, type: 2}
     - target: {fileID: 919132149155446097, guid: 6e24930d93177d04281dc97793e2277c, type: 3}
       propertyPath: m_Name
       value: Broom1_01
@@ -7309,6 +7325,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: af8fac866a0a03248a8a76c8f1ed16ba, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 094d46bfca665ae41a0615f4b5b8cc23, type: 2}
     - target: {fileID: 919132149155446097, guid: af8fac866a0a03248a8a76c8f1ed16ba, type: 3}
       propertyPath: m_Name
       value: Broom2_01
@@ -7577,6 +7597,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5208dfa0bc1d0fd4baf1c782789f0d16, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e6b841a5780bae8489e5e8aee2d861e7, type: 2}
     - target: {fileID: 919132149155446097, guid: 5208dfa0bc1d0fd4baf1c782789f0d16, type: 3}
       propertyPath: m_Name
       value: Broom3_01
@@ -9821,6 +9845,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 55cd31a9263824649a6540d901a9f79f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0a0e14b655550f48862b7d3c437d009, type: 2}
     - target: {fileID: 919132149155446097, guid: 55cd31a9263824649a6540d901a9f79f, type: 3}
       propertyPath: m_Name
       value: SquareBench02
@@ -11722,6 +11750,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 702e1a9142f77d34298cd3379c8eabd8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0a0e14b655550f48862b7d3c437d009, type: 2}
     - target: {fileID: 919132149155446097, guid: 702e1a9142f77d34298cd3379c8eabd8, type: 3}
       propertyPath: m_Name
       value: SquareTable02
