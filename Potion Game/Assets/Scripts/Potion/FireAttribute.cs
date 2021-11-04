@@ -12,6 +12,7 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
     private string _name = "fireAttribute";
     public GameObject FirePrefab;
     public bool FireLit = false;
+    public GameObject Flame;
 
     public void Equip()
     {
@@ -25,7 +26,8 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
         Debug.Log("UnEquiped fire ");
         FireLit = false;
         FireLight.enabled = false;
-        FirePrefab.SetActive(false);
+        Destroy(Flame);
+        
     }
 
     public bool Use()
@@ -38,8 +40,9 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
             }
         }
 
-        GameObject childobject = Instantiate(FirePrefab, FlameParticlePosition);//= Instantiate(FirePrefab) as GameObject;
-        childobject.transform.localPosition = Vector3.zero;
+        Flame = Instantiate(FirePrefab, FlameParticlePosition);//= Instantiate(FirePrefab) as GameObject;
+        //Flame = childobject;
+        Flame.transform.localPosition = Vector3.zero;
         var player = GameObject.FindGameObjectWithTag("Player");
         if (FireLit == false)
         {
