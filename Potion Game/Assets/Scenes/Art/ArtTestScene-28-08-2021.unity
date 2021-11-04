@@ -8775,6 +8775,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ingredient_Horn01
       objectReference: {fileID: 0}
+    - target: {fileID: 3510143651658741594, guid: 4f31d17c94590ab45a1af00791ec37cc, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c772b5c493c93c4cbf6a1871ef6a4f9, type: 2}
+    - target: {fileID: 4665163136729128497, guid: 4f31d17c94590ab45a1af00791ec37cc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 579235d250e351946bbe17a25b3a57ae, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f31d17c94590ab45a1af00791ec37cc, type: 3}
 --- !u!4 &1122575773 stripped
