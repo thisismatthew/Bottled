@@ -12,10 +12,10 @@ public class TeaZone : MonoBehaviour
     public DialogueEvent dialogueEvent;
     public ObiParticleAttachment ropeHook;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
 
-        if (other.tag == "PickUpable" && TeaSpotComplete == false)
+        if (other.tag == "PickUpable" && TeaSpotComplete == false && FindObjectOfType<MainCharacterController>().Interactable == null)
         {
             //will need to fix candles beinglit inside the radius
             if (other.transform.GetChild(0).GetComponent<Fillable>()!= false)
