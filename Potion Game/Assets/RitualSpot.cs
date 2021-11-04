@@ -10,7 +10,7 @@ public class RitualSpot : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         
-        if (other.tag == "Candle")
+        if (other.tag == "Candle" && RitualSpotComplete == false)
         {
             //will need to fix candles beinglit inside the radius
             if (other.GetComponentInParent<Flamable>().Burning)
