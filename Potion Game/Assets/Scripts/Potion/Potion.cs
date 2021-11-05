@@ -39,10 +39,10 @@ public class Potion : MonoBehaviour
     //just a debug method for calling the ID names on the attributes. 
     public void DebugAttributes()
     {
-        Debug.Log("\nCurrent Potion Attributes:");
+        
         foreach (IPotionAttribute a in Attributes)
         {
-            Debug.Log(" - "+a.Name);
+            Debug.Log(a.Name);
         }
     }
     public int Charges { get => _charges; set => _charges = value; }
