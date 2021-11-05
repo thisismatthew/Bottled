@@ -11,7 +11,7 @@ namespace Obi
         private ObiRope _rope;
         public Transform PlayerRopeGrabPos;
         private MainCharacterController playerController;
-        private bool _playerIsClimbing = false;
+        //private bool _playerIsClimbing = false;
         private int _closestParticleIndex;
         public float RopeGrabDistance = 2f;
         public float RopeLetGoDistance = 3f;
@@ -42,14 +42,14 @@ namespace Obi
                     {
                         Debug.Log("climbing started");
                         playerController.TransitionToState(CharacterState.Climbing);
-                        _playerIsClimbing = true;
+                        //_playerIsClimbing = true;
                         playerController.CurrentClimbRope = _rope;
                     }
                 }
 
             }
 
-            if (_playerIsClimbing)
+/*            if (_playerIsClimbing)
             {
                 //if the player moves outside of the LetGoDistance set climbing back to false
                 //TODO remove this without breaking things. 
@@ -58,7 +58,7 @@ namespace Obi
                     Debug.Log("climbing finished");
                     _playerIsClimbing = false;
                 }
-            }
+            }*/
         }
     }
 }

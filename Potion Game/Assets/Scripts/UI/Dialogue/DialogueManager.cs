@@ -68,13 +68,13 @@ public class DialogueManager : MonoBehaviour
                         camIndex++;
                         CameraChange(true);
                     }
-                    Debug.Log("next Input Requested");
+                    //Debug.Log("next Input Requested");
                     animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
                     nextDialogue = false;
                 }
                 else
                 {
-                    Debug.Log("Skip Input Requested");
+                    //Debug.Log("Skip Input Requested");
                     StopCoroutine(animatedText.readCoroutine);
                     animatedText.SkipText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
                     //nextDialogue = true;
@@ -133,7 +133,7 @@ public class DialogueManager : MonoBehaviour
             dialogueIndex = 0;
             nextDialogue = false;
             canExit = true;
-            Debug.Log("Dialogue Done");
+            //Debug.Log("Dialogue Done");
             camIndex = 0;
         }
     }

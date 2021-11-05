@@ -14,7 +14,7 @@ public class YieldCamToPlayer : MonoBehaviour
     {
         if (other.tag == "IntroCam")
         {
-            Debug.Log("trig");
+            //Debug.Log("trig");
             //might not need to release the player for a brief period of time since dialogue should release them. 
             GetComponent<LockPlayer>().FlipLock();
             // lets reduce the current dialogue cam to 0 priority/ 

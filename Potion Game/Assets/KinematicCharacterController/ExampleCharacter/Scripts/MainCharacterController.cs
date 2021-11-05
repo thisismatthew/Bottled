@@ -793,6 +793,11 @@ namespace KinematicCharacterController.Examples
                             }*/
                         }
 
+                        if (LandingTarget != null)
+                        {
+                            Debug.DrawLine(LandingTarget.position, transform.position);
+                        }
+
 
                         // Handle jumping from climbing
                         _timeSinceJumpRequested += deltaTime;
@@ -803,6 +808,7 @@ namespace KinematicCharacterController.Examples
                             // Add to the return velocity and reset jump state
                             if (LandingTarget != null)
                             {
+                                Debug.Log("parabola Jump");
                                 currentVelocity = CalculateParabolaVelocity(LandingTarget.position) * ClimbJumpPowerModifier;
                             }
                             else
