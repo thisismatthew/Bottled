@@ -39,6 +39,7 @@ public class IngredientRitual : MonoBehaviour
 
         if (RitualSpotsCompleted == _ritualSpotsNeeded)
         {
+            GameObject.FindObjectOfType<AudioManager>().Play("Summon");
             RitualCircleAnimator.SetBool("All Candle", true);
             RitualSpotsCompleted = 0;
             RitualCutscene.SetActive(true);

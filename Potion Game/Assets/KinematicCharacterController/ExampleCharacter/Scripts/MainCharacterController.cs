@@ -230,6 +230,7 @@ namespace KinematicCharacterController.Examples
                     }
                 case CharacterState.Spilling:
                     {
+                        GameObject.FindObjectOfType<AudioManager>().Play("Spill");
                         _potion.UsePotion();
                         anim.SetTrigger("Spill");
                         GetComponent<PlayerInputHandler>().Locked = true;

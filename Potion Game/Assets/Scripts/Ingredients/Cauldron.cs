@@ -61,6 +61,7 @@ public class Cauldron : MonoBehaviour
         //the item must have the tag PickUpable for the collider to detect them 
         if (collider.gameObject.tag == "PickUpable")
         {
+            GameObject.FindObjectOfType<AudioManager>().Play("Plop");
             Ingredient ingredientAdded = collider.gameObject.GetComponent<Pickupable>().IngredientName;
             Debug.Log(ingredientAdded.ToString());
             if (ingredientAdded.ToString() == "fire")
