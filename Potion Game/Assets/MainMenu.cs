@@ -29,7 +29,7 @@ public class MainMenu : MonoBehaviour
     public void PlayGame()
     {
         audio.Play("PageTurn");
-        SceneManager.LoadScene("Latest_Build_V6");
+        SceneManager.LoadScene("Latest_Build_V7");
     }
 
     public void QuitGame()

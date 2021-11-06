@@ -6,6 +6,7 @@ using KinematicCharacterController.Examples;
 
 public class Cauldron : MonoBehaviour
 {
+    public Transform OutCauldronTarget;
     public GameObject MyDistributerCollider;
     public Ladel ladel;
     private Distributer MyDistributer;
@@ -64,6 +65,15 @@ public class Cauldron : MonoBehaviour
             GameObject.FindObjectOfType<AudioManager>().Play("Plop");
             Ingredient ingredientAdded = collider.gameObject.GetComponent<Pickupable>().IngredientName;
             Debug.Log(ingredientAdded.ToString());
+
+            if (ingredientAdded.ToString() == "Object")
+            {
+
+                Debug.Log("object in cauldron");
+                //collider.GetComponent<Pickupable>().ThrowToTarget(OutCauldronTarget.position);
+                collider.transform.position = OutCauldronTarget.position;
+                return;
+            }
             if (ingredientAdded.ToString() == "fire")
             {
                 CauldronNuetralFX.SetActive(false);
