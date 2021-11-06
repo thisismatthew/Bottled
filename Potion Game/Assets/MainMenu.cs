@@ -23,6 +23,11 @@ public class MainMenu : MonoBehaviour
 
     private void Update()
     {
+        if (options == null)
+        {
+            Debug.Log("no option helper");
+            options = FindObjectOfType<OptionsHelper>();
+        }
         options.MasterVolume = volumeSlider.value;
     }
 

@@ -23,6 +23,7 @@ public class DialogueManager : MonoBehaviour
     [HideInInspector]
     public DialogueEvent currentDialogue;
     private int camIndex = 0;
+    private bool _skippedText = false;
     [Space]
 
     [Header("Cameras")]
@@ -63,7 +64,7 @@ public class DialogueManager : MonoBehaviour
                 if (nextDialogue && currentDialogue != null)
                 {
 
-                    if (camIndex < currentDialogue.CameraShots.Count -1)
+                    if (camIndex < currentDialogue.CameraShots.Count - 1)
                     {
                         camIndex++;
                         CameraChange(true);
@@ -72,11 +73,13 @@ public class DialogueManager : MonoBehaviour
                     animatedText.ReadText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
                     nextDialogue = false;
                 }
-                else
+                else if (!_skippedText)
                 {
+                    _skippedText = true;
                     //Debug.Log("Skip Input Requested");
                     StopCoroutine(animatedText.readCoroutine);
                     animatedText.SkipText(currentDialogue.dialogue.conversationBlock[dialogueIndex]);
+                    Invoke("ResetSkip", 0.5f);
                     //nextDialogue = true;
                 }
             }
@@ -103,7 +106,7 @@ public class DialogueManager : MonoBehaviour
             dialogueCam.m_Priority = 0;
             dialogueCam = currentDialogue.CameraShots[camIndex];
             dialogueCam.m_Priority = 20;
-            
+
         }
         else
             dialogueCam.m_Priority = 0;
@@ -136,6 +139,11 @@ public class DialogueManager : MonoBehaviour
             //Debug.Log("Dialogue Done");
             camIndex = 0;
         }
+    }
+
+    public void ResetSkip()
+    {
+        _skippedText = false;
     }
 }
 

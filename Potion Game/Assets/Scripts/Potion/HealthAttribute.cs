@@ -7,6 +7,7 @@ public class HealthAttribute : MonoBehaviour, IPotionAttribute
     public SpillCollider SpillCollider;
     public Renderer Potion;
     public Material NewLiquidMaterial;
+    public GameObject DialogueEvent;
     private string _name = "healthAttribute";
 
     public void Equip()
@@ -22,13 +23,7 @@ public class HealthAttribute : MonoBehaviour, IPotionAttribute
 
     public bool Use()
     {
-        foreach (GameObject g in SpillCollider.ObjectsInSplashZone)
-        {
-            if (g.GetComponent<Fillable>() != null)
-            {
-                //g.GetComponent<Fillable>().Fill();
-            }
-        }
+        DialogueEvent.SetActive(true);
         return true;
     }
 
