@@ -15,11 +15,13 @@ public class FloatyAttribute : MonoBehaviour, IPotionAttribute
     {
         Debug.Log("Equiped floatiness!!!!");
         Potion.material.SetColor("_LiquidColour", NewPotionColor);
+        FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 2);
     }
 
     public void Unequip()
     {
         Debug.Log("No floatiness left... :(");
+        FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 1);
     }
 
     public bool Use()

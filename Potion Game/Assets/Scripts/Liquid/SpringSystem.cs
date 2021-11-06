@@ -23,6 +23,7 @@ public class SpringSystem : MonoBehaviour
 
     public ComputeShader calculationEngine;
     public ParticleSystem bubbles;
+    public Vector3 NormalFacingPublic;
     private RenderTexture texture;
     private Renderer m_renderer;
     private int physicsSimID;
@@ -239,6 +240,8 @@ public class SpringSystem : MonoBehaviour
         Ray ray = new Ray(bottleCenter, pointNormal);
         float waveangle = Vector3.Angle(ray.direction.normalized, MainCharacterParent.forward);
         float sphereangle = 180 - MainCharacterParent.rotation.eulerAngles.y;
+
+        NormalFacingPublic = pointNormal;
 
         //sending data to shader
         m_renderer.material.SetVector("_planeNormal", pointNormal);

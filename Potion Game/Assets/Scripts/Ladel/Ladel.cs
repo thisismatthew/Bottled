@@ -17,8 +17,7 @@ public class Ladel : MonoBehaviour
 
     public Renderer _ladle;
     public VisualEffect _sparkle;
-    public VisualEffect _dip;
-    public VisualEffect _handle;
+
     public List<GameObject> DialogueEvents;
     private GameObject ActiveDialogueEvent;
     private int dialogueEventIndex = 0;
@@ -28,6 +27,8 @@ public class Ladel : MonoBehaviour
         ActiveDialogueEvent = DialogueEvents[dialogueEventIndex];
         _startPosition = transform.position;
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _ladle.materials[0].renderQueue = 3010;
+        _ladle.materials[1].SetFloat("_OnOff", 0);
         EffectsOff();
     }
 
@@ -40,21 +41,17 @@ public class Ladel : MonoBehaviour
     }
     private void EffectsOn()
     {
-        //_ladle.materials[1].SetFloat("_OnOff", 1);
+        _ladle.materials[1].SetFloat("_OnOff", 1);
         _sparkle.enabled = true;
         _sparkle.Play();
-        _dip.enabled = true; ;
-        _dip.Play();
-        _handle.enabled = true;
-        _handle.Play();
+        _sparkle.playRate = 4;
+        SlowVFX();
     }
 
     private void EffectsOff()
     {
-        //ALSO THIS _ladle.materials[1].SetFloat("_OnOff", 0);
+        _ladle.materials[1].SetFloat("_OnOff", 0);
         _sparkle.enabled = false;
-        _dip.enabled = false;
-        _handle.enabled = false;
     }
 
     void Update()
@@ -114,5 +111,15 @@ public class Ladel : MonoBehaviour
         }
 
         
+    }
+
+    public void SlowVFX()
+    {
+        Invoke("SlowVFXMethod", 2f);
+    }
+
+    public void SlowVFXMethod()
+    {
+        _sparkle.playRate = 2;
     }
 }

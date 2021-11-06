@@ -11,13 +11,27 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
     private string _name = "teaAttribute";
     private VisualEffect TeaLeaves;
 
+    public void Start()
+    {
+        TeaLeaves = Potion.gameObject.transform.GetChild(0).GetComponent<VisualEffect>();
+    }
+
+    public void Update()
+    {
+        if (TeaLeaves.enabled == true)
+        {
+            Vector3 copyNormal = Potion.GetComponent<SpringSystem>().NormalFacingPublic;
+            TeaLeaves.SetVector3("_PlaneCollider", copyNormal);
+        }
+    }
+
     public void Equip()
     {
         Debug.Log("Equiped tea.");
         Potion.material = NewLiquidMaterial;
-        TeaLeaves = Potion.gameObject.transform.GetChild(0).GetComponent<VisualEffect>();
         TeaLeaves.enabled = true;
         TeaLeaves.Play();
+        FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 2);
     }
 
     public void Unequip()
@@ -25,6 +39,7 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
         Potion.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         Debug.Log("No tea left.");
         TeaLeaves.enabled = false;
+        FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 1);
     }
 
     public bool Use()

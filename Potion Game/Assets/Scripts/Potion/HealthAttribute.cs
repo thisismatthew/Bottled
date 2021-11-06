@@ -14,11 +14,12 @@ public class HealthAttribute : MonoBehaviour, IPotionAttribute
     {
         Debug.Log("Equiped final potion.");
         Potion.material = NewLiquidMaterial;
+        FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 2);
     }
 
     public void Unequip()
     {
-
+        FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 1);
     }
 
     public bool Use()
