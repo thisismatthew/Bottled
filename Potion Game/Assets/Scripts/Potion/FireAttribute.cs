@@ -19,6 +19,8 @@ public class FireAttribute : MonoBehaviour, IPotionAttribute
         Potion.material = NewLiquidMaterial;
         FireLight.enabled = true;
         FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 2);
+        FindObjectOfType<KinematicCharacterController.Examples.MainCharacterController>()._lockSpill = false;
+        FindObjectOfType<KinematicCharacterController.Examples.PlayerDeathTrigger>()._poolBool = true;
     }
 
     public void Unequip()

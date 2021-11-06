@@ -66,7 +66,8 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
         playerController.HangtimeGravityDampness = AntiGravityHangtimeGravityDampness;
         //playerController.JumpPreGroundingGraceTime = AntiGravityJumpPreGroundingGraceTime;
         //playerController.JumpPostGroundingGraceTime = AntiGravityJumpPostGroundingGraceTime;
-       
+        playerController._lockSpill = false;
+        FindObjectOfType<KinematicCharacterController.Examples.PlayerDeathTrigger>()._poolBool = true;
     }
 
     public void Unequip()

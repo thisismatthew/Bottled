@@ -32,6 +32,8 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
         TeaLeaves.enabled = true;
         TeaLeaves.Play();
         FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 2);
+        FindObjectOfType<KinematicCharacterController.Examples.MainCharacterController>()._lockSpill = false;
+        FindObjectOfType<KinematicCharacterController.Examples.PlayerDeathTrigger>()._poolBool = true;
     }
 
     public void Unequip()

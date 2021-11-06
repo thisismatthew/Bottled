@@ -141,11 +141,11 @@ namespace KinematicCharacterController.Examples
         private bool _isCrouching = false;
         private Potion _potion;
         public bool IsHolding = false;
+        public bool _lockSpill = true;
         private float _climbSpeed = 0;
         private float _groundedFrame = 0;
         private float _groundCounter = 0;
         private bool _inDialog = false;
-
 
         private void Awake()
         {
@@ -351,7 +351,7 @@ namespace KinematicCharacterController.Examples
                         }
 
                         bool carrying = anim.GetBool("Hold");
-                        if (inputs.UsePotion && carrying == false)
+                        if (inputs.UsePotion && carrying == false && _lockSpill == false)
                         {
                             if (Motor.GroundingStatus.IsStableOnGround)
                             {

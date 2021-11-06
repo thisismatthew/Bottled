@@ -15,6 +15,8 @@ public class HealthAttribute : MonoBehaviour, IPotionAttribute
         Debug.Log("Equiped final potion.");
         Potion.material = NewLiquidMaterial;
         FindObjectOfType<ReflectionProbe>().GetComponent<Renderer>().material.SetFloat("_Occlusion", 2);
+        FindObjectOfType<KinematicCharacterController.Examples.MainCharacterController>()._lockSpill = false;
+        FindObjectOfType<KinematicCharacterController.Examples.PlayerDeathTrigger>()._poolBool = true;
     }
 
     public void Unequip()

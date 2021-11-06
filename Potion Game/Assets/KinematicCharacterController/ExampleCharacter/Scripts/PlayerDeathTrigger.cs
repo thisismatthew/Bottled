@@ -16,7 +16,7 @@ namespace KinematicCharacterController.Examples
         public Transform DeathBlobSpawn;
         public float CheckpointResetFrequency = 1;
         public ParticleSystem DeathBlobs;
-
+        public bool _poolBool = false;
         public Animator anim;
 
         private KinematicCharacterMotor Motor;
@@ -29,7 +29,6 @@ namespace KinematicCharacterController.Examples
         private float _fallTimer = 0f;
         private float _deadTimer = 0f;
         private float _checkpointTimer = 0f;
-        
 
         private void Start()
         {
@@ -37,8 +36,6 @@ namespace KinematicCharacterController.Examples
             Motor = GetComponent<KinematicCharacterMotor>();
             _currentHeight = transform.position.y;
             _previousHeight = _currentHeight;
-
-
         }
         // Update is called once per frame
         void Update()
@@ -101,7 +98,10 @@ namespace KinematicCharacterController.Examples
 
         public void SmashCharacter()
         {
-            Blob();
+            if (_poolBool)
+            {
+                Blob();
+            }
             FindObjectOfType<AudioManager>().Play("Glass_Smash");
             SpringWeight.parent = this.transform;
             Controller.TransitionToState(CharacterState.Dead);
