@@ -5,6 +5,10 @@ using KinematicCharacterController.Examples;
 
 public class LockPlayer : MonoBehaviour
 {
+    private void Start()
+    {
+        FlipLock();
+    }
     public void FlipLock()
     {
         FindObjectOfType<PlayerInputHandler>().Locked = !FindObjectOfType<PlayerInputHandler>().Locked;
