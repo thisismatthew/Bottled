@@ -95,6 +95,10 @@ public class AntiGravityAttribute : MonoBehaviour, IPotionAttribute
             {
                 g.GetComponent<Floatable>().Floating = true;
             }
+            if (g.GetComponent<OscilateFloat>() != null)
+            {
+                g.GetComponent<OscilateFloat>().Floating = true;
+            }
         }
         return true;
     }
