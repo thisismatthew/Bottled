@@ -14,10 +14,13 @@ public class HealthPotionEnd : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            //Debug.Log(other.GetComponent<Potion>().Attributes[0].Name);
-            if (other.GetComponent<Potion>().Attributes[0].Name == "healthAttribute")
+            if (other.GetComponent<Potion>().Attributes.Count > 0)
             {
-                FinalDialogueEvent.SetActive(true);
+                //Debug.Log(other.GetComponent<Potion>().Attributes[0].Name);
+                if (other.GetComponent<Potion>().Attributes[0].Name == "healthAttribute")
+                {
+                    FinalDialogueEvent.SetActive(true);
+                }
             }
         }
     }
