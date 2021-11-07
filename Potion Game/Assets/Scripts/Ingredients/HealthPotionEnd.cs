@@ -14,13 +14,20 @@ public class HealthPotionEnd : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (other.GetComponent<Potion>().Attributes.Count > 0)
+            /*if (other.GetComponent<Potion>().Attributes.Count > 0)
             {
                 //Debug.Log(other.GetComponent<Potion>().Attributes[0].Name);
                 if (other.GetComponent<Potion>().Attributes[0].Name == "healthAttribute")
                 {
                     FinalDialogueEvent.SetActive(true);
                 }
+            }*/
+            Renderer liquidBall = FindObjectOfType<SpringSystem>().GetComponent<Renderer>();
+            //Debug.Log(liquidBall.material.name);
+            if (liquidBall.material.name == "Health Material (Instance)")
+            {
+                //Debug.Log("player inside");
+                FinalDialogueEvent.SetActive(true);
             }
         }
     }

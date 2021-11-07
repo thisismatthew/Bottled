@@ -23,7 +23,7 @@ public class Cobweb : MonoBehaviour
         if (burnTrigger && !animTriggered)
         {
             GameObject.FindObjectOfType<AudioManager>().Play("Burn");
-            GetComponent<Animator>().Play("Spiderweb Animation");
+            GetComponent<Animator>().Play("Spiderweb Animation_V2");
             CobwebBurnCutscene.SetActive(true);
             FindObjectOfType<PlayerInputHandler>().Locked = true;
             FindObjectOfType<MainCharacterController>().AnimMovementLocked = true;
