@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.VFX;
 public class SpringSystem : MonoBehaviour
 {
 
@@ -40,6 +40,7 @@ public class SpringSystem : MonoBehaviour
     private bool swishing = false;
     private Queue<Vector3> lastVelo = new Queue<Vector3>();
     private Animator anim;
+    private VisualEffect _leaveEffect;
     public RenderTexture getSimulatedTexture
     {
         get { return texture; }
@@ -82,6 +83,7 @@ public class SpringSystem : MonoBehaviour
         }
 
         anim = MainCharacterParent.GetChild(0).GetComponent<Animator>();
+        _leaveEffect = GetComponentInChildren<VisualEffect>();
     }
 
     void FixedUpdate()
@@ -242,6 +244,7 @@ public class SpringSystem : MonoBehaviour
 
         //sending data to shader
         m_renderer.material.SetVector("_planeNormal", pointNormal);
+        _leaveEffect.SetVector3("_PlaneCollider", pointNormal);
         m_renderer.material.SetFloat("_Rotate", sphereangle);
         m_renderer.material.SetFloat("_Rotate2", sphereangle - waveangle);
     }
