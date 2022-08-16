@@ -22,7 +22,8 @@ public class SpringSystem : MonoBehaviour
     public Transform MainCharacterParent;
 
     public ComputeShader calculationEngine;
-    public ParticleSystem bubbles;
+    //couldn't find a reference to this so I have commented it out. 
+    //public ParticleSystem bubbles;
     private RenderTexture texture;
     private Renderer m_renderer;
     private int physicsSimID;
@@ -45,7 +46,6 @@ public class SpringSystem : MonoBehaviour
         get { return texture; }
     }
 
-
     void Start()
     {
         texture = new RenderTexture(16, 16, 0);
@@ -63,8 +63,8 @@ public class SpringSystem : MonoBehaviour
         propertiesBuffer = new ComputeBuffer(2, sizeof(float));
 
 
-        float[] velArray = new float[SPRING_COUNT*SPRING_COUNT];
-        float[] posArray = new float[SPRING_COUNT*SPRING_COUNT];
+        float[] velArray = new float[SPRING_COUNT * SPRING_COUNT];
+        float[] posArray = new float[SPRING_COUNT * SPRING_COUNT];
         for (int y = 0; y < SPRING_COUNT; y++)
         {
             for (int x = 0; x < SPRING_COUNT; x++)
@@ -75,8 +75,8 @@ public class SpringSystem : MonoBehaviour
         _springHeightBuffer.SetData(posArray);
         _spring1DVelocityBuffer.SetData(velArray);
         SetGridProperties();
-  
-        for (int i=0;i<3;i++)
+
+        for (int i = 0; i < 3; i++)
         {
             lastVelo.Enqueue(Vector3.zero);
         }
@@ -101,7 +101,7 @@ public class SpringSystem : MonoBehaviour
             liquidpulse = 0;
         }
 
-        if ( dancin== true && swishing == false)
+        if (dancin == true && swishing == false)
         {
             swishing = true;
             liquidwave = 0;
@@ -118,8 +118,8 @@ public class SpringSystem : MonoBehaviour
         float oldmulti = m_renderer.sharedMaterial.GetFloat("_SpringMultiplier");
         if (dancin || spillin)
         {
-            dancemulti = 2;          
-            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti,0.45f,0.05f));
+            dancemulti = 2;
+            m_renderer.sharedMaterial.SetFloat("_SpringMultiplier", Mathf.Lerp(oldmulti, 0.45f, 0.05f));
         }
         else
         {
@@ -137,25 +137,25 @@ public class SpringSystem : MonoBehaviour
         {
             if (liquidpulse < 40)
             {
-                /*for (int y = 0; y < SPRING_COUNT; y++)
+                for (int y = 0; y < SPRING_COUNT; y++)
                 {
                     for (int x = 0; x < SPRING_COUNT - 2; x++)
                     {
                         extForce[2 + x * SPRING_COUNT] = liquidwave;
                         extForce[13 + x * SPRING_COUNT] = -liquidwave;
                     }
-                }*/
+                }
 
-                for (int y = 2; y < SPRING_COUNT-2; y++)
+                for (int y = 2; y < SPRING_COUNT - 2; y++)
                 {
                     for (int x = 2; x < SPRING_COUNT - 2; x++)
                     {
-                        extForce[2 + x * SPRING_COUNT] = -liquidwave* dancemulti;
-                        extForce[14 + x * SPRING_COUNT] = liquidwave* dancemulti;
+                        extForce[2 + x * SPRING_COUNT] = -liquidwave * dancemulti;
+                        extForce[14 + x * SPRING_COUNT] = liquidwave * dancemulti;
                     }
                 }
 
-                if (liquidpulse <20)
+                if (liquidpulse < 20)
                     liquidwave += 1;
                 else
                     liquidwave -= 1f;
@@ -208,12 +208,12 @@ public class SpringSystem : MonoBehaviour
         calculationEngine.SetTexture(physicsSimID, "Result", texture);
         calculationEngine.Dispatch(physicsSimID, SPRING_COUNT, SPRING_COUNT, 1);
 
-        /*
+
         float[] test = new float[16 * 16];
         _springHeightBuffer.GetData(test);
-        Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] +","+ test[4] + "," + test[5] + "," + test[6] + "," + test[7] +","+ test[8] + "," + test[9] + "," + test[10] + "," + test[11] +","+ test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
-        Debug.Log("line2 " + test[14*15 + 0] + "," + test[14 * 15 + 1] + "," + test[14 * 15 + 2] + "," + test[14 * 15 + 3] +","+ test[14 * 15 + 4] + "," + test[14 * 15 + 5] + "," + test[14 * 15 + 6] + "," + test[14 * 15 + 7] +","+ test[14 * 15 + 8] + "," + test[14 * 15 + 9] + "," + test[14 * 15 + 10] + "," + test[14 * 15 + 11] + test[14 * 15 + 12] + "," + test[14 * 15 + 13] + "," + test[14 * 15 + 14] + "," + test[14 * 15 + 15]);
-        */
+        Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] + "," + test[4] + "," + test[5] + "," + test[6] + "," + test[7] + "," + test[8] + "," + test[9] + "," + test[10] + "," + test[11] + "," + test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
+        Debug.Log("line2 " + test[14 * 15 + 0] + "," + test[14 * 15 + 1] + "," + test[14 * 15 + 2] + "," + test[14 * 15 + 3] + "," + test[14 * 15 + 4] + "," + test[14 * 15 + 5] + "," + test[14 * 15 + 6] + "," + test[14 * 15 + 7] + "," + test[14 * 15 + 8] + "," + test[14 * 15 + 9] + "," + test[14 * 15 + 10] + "," + test[14 * 15 + 11] + test[14 * 15 + 12] + "," + test[14 * 15 + 13] + "," + test[14 * 15 + 14] + "," + test[14 * 15 + 15]);
+
 
         //sends the compute shader generated texture to the main shader
         m_renderer.sharedMaterial.SetTexture("_WaveDeformTex", texture);
@@ -268,7 +268,7 @@ public class SpringSystem : MonoBehaviour
 
     void SetGridProperties()
     {
-        propertiesBuffer.SetData(new float[] {Damping, SpringStiffness});
+        propertiesBuffer.SetData(new float[] { Damping, SpringStiffness });
     }
 
     Vector3 NormalizePrecise(Vector3 v)

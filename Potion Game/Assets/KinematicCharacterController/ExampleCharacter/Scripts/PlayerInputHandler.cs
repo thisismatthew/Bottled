@@ -29,7 +29,7 @@ namespace KinematicCharacterController.Examples
         {
             if (FindObjectOfType<OptionsHelper>() == null)
             {
-                Debug.LogError("No Player Options Detected: Adding One To Player Input Handler.");
+                Debug.LogWarning("No Player Options Detected: Adding One To Player Input Handler.");
                 gameObject.AddComponent<OptionsHelper>();
             }
         }
