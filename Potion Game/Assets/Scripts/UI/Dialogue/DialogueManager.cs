@@ -9,7 +9,7 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager instance;
+ /*   public static DialogueManager instance;
 
     public CanvasGroup canvasGroup;
     public bool inDialogue;
@@ -144,6 +144,6 @@ public class DialogueManager : MonoBehaviour
     public void ResetSkip()
     {
         _skippedText = false;
-    }
+    }*/
 }
 

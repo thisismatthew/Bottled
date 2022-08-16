@@ -5,7 +5,8 @@ using DG.Tweening;
 
 public class DialogueAudio : MonoBehaviour
 {
-    private DialogueEvent dialogueEvent;
+    //TODO
+   /* private DialogueEvent dialogueEvent;
     private TMP_Animated animatedText;
 
     public AudioClip[] voices;
@@ -48,5 +49,5 @@ public class DialogueAudio : MonoBehaviour
     }
 
 
-
+*/
 }

@@ -27,13 +27,14 @@ public class HealthPotionEnd : MonoBehaviour
 
     private void Update()
     {
-        if (FinalDialogueEvent.activeInHierarchy)
+        //TODO
+  /*      if (FinalDialogueEvent.activeInHierarchy)
         {
             if (FinalDialogueEvent.GetComponent<DialogueEvent>().triggered && FindObjectOfType<DialogueManager>().inDialogue == false)
             {
                 CreditsTimeline.SetActive(true);
                 Credits.SetActive(true);
             }
-        }
+        }*/
     }
 }

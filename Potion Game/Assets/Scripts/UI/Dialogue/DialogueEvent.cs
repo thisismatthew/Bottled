@@ -7,7 +7,8 @@ using Cinemachine;
 
 public class DialogueEvent : MonoBehaviour
 {
-    public DialogueData dialogue;
+    //TODO
+    /*public DialogueData dialogue;
     private TMP_Animated animatedText;
     public bool active = false;
     public bool triggered = false;
@@ -18,6 +19,6 @@ public class DialogueEvent : MonoBehaviour
     void Start()
     {
         animatedText = DialogueManager.instance.animatedText;
-    }
+    }*/
 
 }

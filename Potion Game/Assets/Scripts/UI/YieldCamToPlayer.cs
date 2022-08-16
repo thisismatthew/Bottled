@@ -20,7 +20,7 @@ public class YieldCamToPlayer : MonoBehaviour
             // lets reduce the current dialogue cam to 0 priority/ 
             other.GetComponent<CinemachineVirtualCamera>().Priority = 0;
             //initiate the dialogue event placed on the player
-            Dialogue.SetActive(true);
+            //TODO Dialogue.SetActive(true);
         }
     }
 }
