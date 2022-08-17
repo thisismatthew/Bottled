@@ -7,18 +7,16 @@ using Cinemachine;
 
 public class DialogueEvent : MonoBehaviour
 {
-    //TODO
-    /*public DialogueData dialogue;
-    private TMP_Animated animatedText;
-    public bool active = false;
+    public string DialogueName;
     public bool triggered = false;
     public List<CinemachineVirtualCamera> CameraShots;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        animatedText = DialogueManager.instance.animatedText;
-    }*/
-
+        if (other.tag == "Player" && !triggered)
+        {
+            DialogueManager.Instance.BeginDialogueEvent(DialogueName, CameraShots);
+            triggered = true;
+        }
+    }
 }

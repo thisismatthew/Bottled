@@ -45,6 +45,8 @@ namespace KinematicCharacterController.Examples
     [RequireComponent(typeof(Potion))]
     public class MainCharacterController : MonoBehaviour, ICharacterController
     {
+        public static MainCharacterController Instance;
+
         public KinematicCharacterMotor Motor;
         public Animator anim;
         public CharacterState CurrentCharacterState { get; private set; }
@@ -149,6 +151,7 @@ namespace KinematicCharacterController.Examples
 
         private void Awake()
         {
+            Instance = this;
             oldSmashParticles = new List<GameObject>();
             //get Potion Component;
             _potion = GetComponent<Potion>();
