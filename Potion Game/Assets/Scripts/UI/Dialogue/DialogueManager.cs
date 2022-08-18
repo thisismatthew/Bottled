@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
 using DG.Tweening;
-using UnityEngine.UI;
 using UnityEngine;
 using Cinemachine;
 using TMPro;
@@ -84,18 +82,16 @@ public class DialogueManager : MonoBehaviour
         }
 
         //SETUP
-        MainCharacterController.Instance.StartDialog(); //this locks the player, but check the input guy as well. 
-        DialogueUIContainer.SetActive(true); // TODO Animate the text intro. 
-
+        LockPlayer.Instance.FlipLock(); //this locks the player, but check the input guy as well. 
+        DialogueUIContainer.transform.DOScale(0.175f, 1f).SetEase(Ease.InBounce);
         //WAITING
         await RunDialogueSequence(); //execute this and wait for it to finish before moving on. 
 
         //CLEANUP
-        MainCharacterController.Instance.StopDialog(); //release the player
+        LockPlayer.Instance.FlipLock(); //release the player
         foreach (var c in camShots) c.m_Priority = 0;//clear the priorities on all the camera shots
         camShots = null; //wipe the list of camera shots
-        DialogueUIContainer.SetActive(false);
-        
+        DialogueUIContainer.transform.DOScale(0f, 1f).SetEase(Ease.OutBounce);  
     }
 
     private string UpdateControlsTags(string text)
@@ -119,17 +115,20 @@ public class DialogueManager : MonoBehaviour
         foreach(string s in current.Blocks)
         {
             displayText = UpdateControlsTags(s);
-            textMeshPro.text = displayText;
+            textAnimatorPlayer.ShowText(displayText);
             await WaitForInput();//wait for the player to click before loading the next text. 
+            await Task.Delay(100);
         }
+        
     }
 
     public async Task WaitForInput()
     {  
         while (!Input.GetMouseButtonDown(0))//TODO need to make this work for controllers too
-        {
+        { 
             await Task.Yield();
         }
+        Debug.Log("Input Detected");
     }
 
     public async Task WaitForInputOrSeconds(float duration)
@@ -143,6 +142,8 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEvent(string message)
     {
+        Debug.Log(message);
+
         //when we hit a cam trigger in the string we'll trigger a camera shot. 
         switch (message)
         {
@@ -162,11 +163,17 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 //set the camera priority to next shot in our list
-                for (int i = 0; i < camShots.Count - 1; i++)
+                if (camIndex == 0)
                 {
-                    if (i == camIndex) camShots[camIndex].m_Priority = 20;
-                    else camShots[i].m_Priority = 0;
+                    camShots[0].m_Priority = 20;
                 }
+                else
+                {
+                    camShots[camIndex-1].m_Priority = 0;
+                    camShots[camIndex].m_Priority = 20;
+                }
+
+                
 
                 //prime us for the next cam call
                 camIndex++;

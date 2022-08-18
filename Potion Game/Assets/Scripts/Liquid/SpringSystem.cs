@@ -211,8 +211,8 @@ public class SpringSystem : MonoBehaviour
 
         float[] test = new float[16 * 16];
         _springHeightBuffer.GetData(test);
-        Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] + "," + test[4] + "," + test[5] + "," + test[6] + "," + test[7] + "," + test[8] + "," + test[9] + "," + test[10] + "," + test[11] + "," + test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
-        Debug.Log("line2 " + test[14 * 15 + 0] + "," + test[14 * 15 + 1] + "," + test[14 * 15 + 2] + "," + test[14 * 15 + 3] + "," + test[14 * 15 + 4] + "," + test[14 * 15 + 5] + "," + test[14 * 15 + 6] + "," + test[14 * 15 + 7] + "," + test[14 * 15 + 8] + "," + test[14 * 15 + 9] + "," + test[14 * 15 + 10] + "," + test[14 * 15 + 11] + test[14 * 15 + 12] + "," + test[14 * 15 + 13] + "," + test[14 * 15 + 14] + "," + test[14 * 15 + 15]);
+        //Debug.Log("line1 " + test[0] + "," + test[1] + "," + test[2] + "," + test[3] + "," + test[4] + "," + test[5] + "," + test[6] + "," + test[7] + "," + test[8] + "," + test[9] + "," + test[10] + "," + test[11] + "," + test[12] + "," + test[13] + "," + test[14] + "," + test[15]);
+        //Debug.Log("line2 " + test[14 * 15 + 0] + "," + test[14 * 15 + 1] + "," + test[14 * 15 + 2] + "," + test[14 * 15 + 3] + "," + test[14 * 15 + 4] + "," + test[14 * 15 + 5] + "," + test[14 * 15 + 6] + "," + test[14 * 15 + 7] + "," + test[14 * 15 + 8] + "," + test[14 * 15 + 9] + "," + test[14 * 15 + 10] + "," + test[14 * 15 + 11] + test[14 * 15 + 12] + "," + test[14 * 15 + 13] + "," + test[14 * 15 + 14] + "," + test[14 * 15 + 15]);
 
 
         //sends the compute shader generated texture to the main shader

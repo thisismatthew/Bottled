@@ -5,6 +5,11 @@ using KinematicCharacterController.Examples;
 
 public class LockPlayer : MonoBehaviour
 {
+    public static LockPlayer Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         FlipLock();
