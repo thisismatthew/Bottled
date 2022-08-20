@@ -15,16 +15,17 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
     {
         Debug.Log("Equiped tea.");
         Potion.material = NewLiquidMaterial;
-        TeaLeaves = Potion.gameObject.transform.GetChild(0).GetComponent<VisualEffect>();
+        //hey will pls fix
+        /*TeaLeaves = Potion.gameObject.transform.GetChild(0).GetComponent<VisualEffect>();
         TeaLeaves.enabled = true;
-        TeaLeaves.Play();
+        TeaLeaves.Play();*/
     }
 
     public void Unequip()
     {
         Potion.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         Debug.Log("No tea left.");
-        TeaLeaves.enabled = false;
+        //TeaLeaves.enabled = false;
     }
 
     public bool Use()

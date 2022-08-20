@@ -80,6 +80,7 @@ public class DialogueManager : MonoBehaviour
             Debug.LogError("No Dialogue with the name" + _eventName + "exists in Dialogue file");
             return; // lil gaurd clause for if theres a null dialogue
         }
+        Debug.Log("Initiating: \"" + current.Name + "\" Dialogue Sequence");
 
         //SETUP
         LockPlayer.Instance.FlipLock(); //this locks the player, but check the input guy as well. 
@@ -88,10 +89,11 @@ public class DialogueManager : MonoBehaviour
         await RunDialogueSequence(); //execute this and wait for it to finish before moving on. 
 
         //CLEANUP
-        LockPlayer.Instance.FlipLock(); //release the player
         foreach (var c in camShots) c.m_Priority = 0;//clear the priorities on all the camera shots
-        camShots = null; //wipe the list of camera shots
+        camIndex = 0;
+        camShots.Clear(); //wipe the list of camera shots
         DialogueUIContainer.transform.DOScale(0f, 1f).SetEase(Ease.OutBounce);  
+        LockPlayer.Instance.FlipLock(); //release the player
     }
 
     private string UpdateControlsTags(string text)
@@ -124,11 +126,10 @@ public class DialogueManager : MonoBehaviour
 
     public async Task WaitForInput()
     {  
-        while (!Input.GetMouseButtonDown(0))//TODO need to make this work for controllers too
+        while (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.Joystick1Button1))//TODO need to make this work for controllers too
         { 
             await Task.Yield();
         }
-        Debug.Log("Input Detected");
     }
 
     public async Task WaitForInputOrSeconds(float duration)
@@ -142,12 +143,18 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEvent(string message)
     {
-        Debug.Log(message);
-
+        
         //when we hit a cam trigger in the string we'll trigger a camera shot. 
         switch (message)
         {
             case "cam":
+
+                //eeep hopefully this never happens
+                if (camShots.Count == 0)
+                {
+                    Debug.LogWarning("Camera tag called from dialogue but no camera was found... sorry");
+                    return;
+                }
                 //if this is the last one set all priorities to 0 and get outtie
                 if (camIndex > camShots.Count - 1)
                 {
@@ -155,12 +162,6 @@ public class DialogueManager : MonoBehaviour
                     return;
                 }
 
-                //eeep hopefully this never happens
-                if (camShots[camIndex] == null)
-                {
-                    Debug.LogError("Camera tag called from dialogue but no camera was found... sorry");
-                    return;
-                }
 
                 //set the camera priority to next shot in our list
                 if (camIndex == 0)

@@ -8,7 +8,7 @@ public class YieldCamToPlayer : MonoBehaviour
     public GameObject Dialogue;
     private void Start()
     {
-        GetComponent<LockPlayer>().FlipLock();
+        //GetComponent<LockPlayer>().FlipLock();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -20,7 +20,7 @@ public class YieldCamToPlayer : MonoBehaviour
             // lets reduce the current dialogue cam to 0 priority/ 
             other.GetComponent<CinemachineVirtualCamera>().Priority = 0;
             //initiate the dialogue event placed on the player
-            //TODO Dialogue.SetActive(true);
+            Dialogue.SetActive(true);
         }
     }
 }

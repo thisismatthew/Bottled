@@ -43,16 +43,14 @@ public class IngredientRitual : MonoBehaviour
             RitualCircleAnimator.SetBool("All Candle", true);
             RitualSpotsCompleted = 0;
             RitualCutscene.SetActive(true);
-            FindObjectOfType<PlayerInputHandler>().Locked = true;
-            FindObjectOfType<MainCharacterController>().AnimMovementLocked = true;
+            LockPlayer.Instance.FlipLock();
         }
 
         if (SummonIngredient)
         {
             RitualCircleAnimator.SetBool("All Candle", false);
             IngredientPrefab.SetActive(true);
-            FindObjectOfType<PlayerInputHandler>().Locked = false;
-            FindObjectOfType<MainCharacterController>().AnimMovementLocked = false;
+            LockPlayer.Instance.FlipLock();
         }
     }
 }

@@ -18,15 +18,14 @@ public class IntroController : MonoBehaviour
     }
     void Start()
     {
+        Debug.Log(this.gameObject.name + "Intro Controller");
         //enable Cutscene
         IntroCutscene.SetActive(true);
-        FindObjectOfType<PlayerInputHandler>().Locked = true;
-        FindObjectOfType<MainCharacterController>().AnimMovementLocked = true;
+        LockPlayer.Instance.FlipLock();
     }
 
     public void OnFinishCutscene()
     {
-        FindObjectOfType<PlayerInputHandler>().Locked = false;
-        FindObjectOfType<MainCharacterController>().AnimMovementLocked = false;
+        LockPlayer.Instance.FlipLock();
     }
 }

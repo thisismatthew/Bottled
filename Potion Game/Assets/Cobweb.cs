@@ -25,15 +25,13 @@ public class Cobweb : MonoBehaviour
             GameObject.FindObjectOfType<AudioManager>().Play("Burn");
             GetComponent<Animator>().Play("Spiderweb Animation");
             CobwebBurnCutscene.SetActive(true);
-            FindObjectOfType<PlayerInputHandler>().Locked = true;
-            FindObjectOfType<MainCharacterController>().AnimMovementLocked = true;
+            LockPlayer.Instance.FlipLock();
         }
     }
 
     public void DisableCobweb()
     {
-        FindObjectOfType<PlayerInputHandler>().Locked = false;
-        FindObjectOfType<MainCharacterController>().AnimMovementLocked = false;
+        LockPlayer.Instance.FlipLock();
         this.gameObject.SetActive(false);
     }
 }

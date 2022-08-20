@@ -10,6 +10,7 @@ namespace KinematicCharacterController.Examples
 
     public class PlayerInputHandler : MonoBehaviour
     {
+        public static PlayerInputHandler Instance;
         public MainCharacterController Character;
         public GameObject CharacterCamera;
         public CinemachineFreeLook FreeLookVirtualCamera;
@@ -27,6 +28,7 @@ namespace KinematicCharacterController.Examples
 
         private void Awake()
         {
+            Instance = this;
             if (FindObjectOfType<OptionsHelper>() == null)
             {
                 Debug.LogWarning("No Player Options Detected: Adding One To Player Input Handler.");

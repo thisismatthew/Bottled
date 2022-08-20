@@ -216,13 +216,14 @@ namespace KinematicCharacterController.Examples
                 case CharacterState.Dead:
                     {
                         Body.active = false;
-                        GameObject smash = Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
-                        oldSmashParticles.Add(smash);
+                        //will pls fix
+                        //GameObject smash = Instantiate(SmashedCharacterPrefab,transform.position, transform.rotation, transform.parent);
+                        //oldSmashParticles.Add(smash);
                         if (oldSmashParticles.Count > SmashesBeforeCleanup)
                         {
-                            GameObject old = oldSmashParticles[0];
-                            oldSmashParticles.Remove(old);
-                            GameObject.Destroy(old);
+                            //GameObject old = oldSmashParticles[0];
+                            //oldSmashParticles.Remove(old);
+                            //GameObject.Destroy(old);
                         }
                         SpringWeightObject.connectedBody = null;
 

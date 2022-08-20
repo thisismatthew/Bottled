@@ -10,13 +10,10 @@ public class LockPlayer : MonoBehaviour
     {
         Instance = this;
     }
-    private void Start()
-    {
-        FlipLock();
-    }
     public void FlipLock()
     {
-        FindObjectOfType<PlayerInputHandler>().Locked = !FindObjectOfType<PlayerInputHandler>().Locked;
+        PlayerInputHandler.Instance.Locked = !PlayerInputHandler.Instance.Locked;
         FindObjectOfType<MainCharacterController>().AnimMovementLocked = !FindObjectOfType<MainCharacterController>().AnimMovementLocked;
+        if (PlayerInputHandler.Instance.Locked) Debug.Log("Locked = " + PlayerInputHandler.Instance.Locked);
     }
 }
