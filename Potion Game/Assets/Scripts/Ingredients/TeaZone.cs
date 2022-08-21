@@ -17,7 +17,7 @@ public class TeaZone : MonoBehaviour
 
         if (other.tag == "PickUpable" && TeaSpotComplete == false && FindObjectOfType<MainCharacterController>().Interactable == null)
         {
-            //will need to fix candles beinglit inside the radius
+            //will need to fix candles being lit inside the radius
             if (other.transform.GetChild(0).GetComponent<Fillable>()!= false)
             {
                 Debug.Log("fillable detected");

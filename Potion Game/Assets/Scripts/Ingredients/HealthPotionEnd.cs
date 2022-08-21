@@ -10,7 +10,7 @@ public class HealthPotionEnd : MonoBehaviour
     
 
     // Start is called before the first frame update
-    private void OnTriggerStay(Collider other)
+/*    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {
@@ -23,18 +23,18 @@ public class HealthPotionEnd : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 
     private void Update()
     {
         //TODO
-  /*      if (FinalDialogueEvent.activeInHierarchy)
+        if (FinalDialogueEvent.activeInHierarchy)
         {
-            if (FinalDialogueEvent.GetComponent<DialogueEvent>().triggered && FindObjectOfType<DialogueManager>().inDialogue == false)
+            if (FinalDialogueEvent.GetComponent<DialogueEvent>().triggered)
             {
                 CreditsTimeline.SetActive(true);
                 Credits.SetActive(true);
             }
-        }*/
+        }
     }
 }

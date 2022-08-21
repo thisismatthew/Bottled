@@ -1079,6 +1079,8 @@ namespace KinematicCharacterController.Examples
 
         private void Pickup()
         {
+            if (Interactable == null) return;
+
             Interactable.tag = "HeldObject";
             IsHolding = true;
             Interactable.GetComponent<Pickupable>().RotateToDefault = true;

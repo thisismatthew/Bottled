@@ -23,7 +23,8 @@ public class HerbalTeaAttribute : MonoBehaviour, IPotionAttribute
 
     public void Unequip()
     {
-        Potion.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        //Also here!
+        //Potion.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         Debug.Log("No tea left.");
         //TeaLeaves.enabled = false;
     }
